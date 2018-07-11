@@ -1,8 +1,0 @@
-# ninja log v5
-0	180	0	res/edje/main.edj	e02d4a7b29543081
-0	380	0	src/main.o	303f8a179d23aaaa
-0	436	0	src/view.o	aef3da20798fea04
-436	558	0	digitalwatch	fecde72d2bffb643
-2	468	0	src/view.o	8ae3740372b02181
-1	529	0	src/main.o	fb6572f7e81c9f0d
-529	689	0	digitalwatch	ae7f92b9b8f25d71
