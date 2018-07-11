@@ -1,5 +1,5 @@
-#include <tizen.h>
-#include <service_app.h>
+#include "tizen.h"
+#include "service_app.h"
 #include "service.h"
 
 bool service_app_create(void *data)
