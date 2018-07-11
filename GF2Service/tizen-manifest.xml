@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="2.3.1" package="org.example.service" version="1.0.0">
+    <profile name="wearable"/>
+    <service-application appid="org.example.service" exec="service" multiple="false" nodisplay="true" taskmanage="false" type="capp">
+        <label>service</label>
+        <icon>service.png</icon>
+    </service-application>
+</manifest>

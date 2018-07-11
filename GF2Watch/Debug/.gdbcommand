@@ -1,0 +1,5 @@
+set sysroot /home/artaud/tizen-studio/tools/smart-build-interface/../../platforms/tizen-2.3.1/wearable/rootstraps/wearable-2.3.1-emulator.core
+set debug-file-directory /home/artaud/tizen-studio/tools/smart-build-interface/../../platforms/tizen-2.3.1/wearable/rootstraps/wearable-2.3.1-emulator.core/usr/lib/debug
+set solib-search-path /home/artaud/workspace/DigitalWatch/Debug
+dir /home/artaud/tizen-studio/tools/smart-build-interface/../../platforms/tizen-2.3.1/wearable/rootstraps/wearable-2.3.1-emulator.core/usr/src/debug
+sharedlibrary
