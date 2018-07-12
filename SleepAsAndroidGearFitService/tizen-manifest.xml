@@ -5,11 +5,16 @@
         <label>sleepasandroidgearfitservice</label>
         <icon>sleepasandroidgearfitservice.png</icon>
     </service-application>
-    <privilege>http://tizen.org/privilege/healthinfo</privilege>
+    <privileges>
+        <privilege>http://tizen.org/privilege/healthinfo</privilege>
         <privilege>http://tizen.org/privilege/appmanager.launch</privilege>
         <privilege>http://tizen.org/privilege/bluetooth</privilege>
         <privilege>http://tizen.org/privilege/haptic</privilege>
-        <privilege>http://developer.samsung.com/tizen/privilege/accessoryprotocol</privilege>
         <privilege>http://tizen.org/privilege/display</privilege>
         <privilege>http://tizen.org/privilege/power</privilege>
+        <privilege>http://developer.samsung.com/tizen/privilege/accessoryprotocol</privilege>
+    </privileges>
+    
+    
+    <feature name="http://tizen.org/feature/sensor.accelerometer">true</feature>
 </manifest>

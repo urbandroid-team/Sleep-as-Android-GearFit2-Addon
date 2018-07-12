@@ -353,7 +353,7 @@ static void send_ui_command(const char* command) {
     app_control_h app_control;
 	if (app_control_create(&app_control) == APP_CONTROL_ERROR_NONE) {
 		int res1 = 0, res2 = 0, res3 = 0;
-		if (((res1 = app_control_set_app_id(app_control, "com.urbandroid.sleep.ui")) == APP_CONTROL_ERROR_NONE)
+		if (((res1 = app_control_set_app_id(app_control, "com.urbandroid.sleep.gearfit.watchface")) == APP_CONTROL_ERROR_NONE)
 			&& ((res2 = app_control_add_extra_data(app_control, "app_action", command)) == APP_CONTROL_ERROR_NONE)
 			&& ((res3 = app_control_send_launch_request(app_control, NULL, NULL)) == APP_CONTROL_ERROR_NONE)) {
 			dlog_print(DLOG_INFO, TAG, "App command request sent: %s", command);
@@ -557,7 +557,9 @@ void service_app_control(app_control_h app_control, void *data) {
 	char *action_value = NULL;
     if (app_control_get_extra_data(app_control, "app_action", &action_value) == APP_CONTROL_ERROR_NONE) {
     	dlog_print(DLOG_INFO, LOG_TAG, "App control action: %s", action_value);
-		if (action_value != NULL && strcmp(action_value, "pause") == 0) {
+
+    	// Add start?
+    	if (action_value != NULL && strcmp(action_value, "pause") == 0) {
 			send_data("PAUSE");
 		} else if (action_value != NULL && strcmp(action_value, "resume") == 0) {
 			send_data("RESUME");

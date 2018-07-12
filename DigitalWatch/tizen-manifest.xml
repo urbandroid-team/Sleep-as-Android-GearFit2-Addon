@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <manifest xmlns="http://tizen.org/ns/packages" api-version="2.3.1" package="org.example.digitalwatch" version="1.0.0">
     <profile name="wearable"/>
-    <watch-application ambient-support="true" appid="org.example.digitalwatch" exec="digitalwatch">
+    <watch-application ambient-support="true" appid="org.example.digitalwatch" exec="digitalwatch" hw-acceleration="on">
         <label>digitalwatch</label>
         <icon>digitalwatch.png</icon>
     </watch-application>
