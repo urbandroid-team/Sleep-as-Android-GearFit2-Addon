@@ -1,4 +1,4 @@
-#include "sleepasandroidgearfitservice.h"
+#include "sleepasandroidnativeservice.h"
 
 #include "common.h"
 #include "sleep_sap.h"
