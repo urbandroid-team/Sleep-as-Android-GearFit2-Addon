@@ -1,0 +1,9 @@
+# ninja log v5
+0	664	0	src/digitialwatch2.o	f1446ad8637e3fe3
+665	2561	0	digitialwatch2	1651a597ecf1f81c
+1	166	0	clean_cov	b3de405e02eb7ca8
+166	184	0	clean_sa	46ab9549445ac981
+184	199	0	clean	d59b6dac04fa9b5d
+1	159	0	src/digitialwatch2.o	f1446ad8637e3fe3
+159	366	0	digitialwatch2	a6ef66be6c6c5d52
+1	2353	0	digitialwatch2	a6ef66be6c6c5d52
