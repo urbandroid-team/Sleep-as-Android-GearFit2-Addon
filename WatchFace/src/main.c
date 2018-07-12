@@ -109,7 +109,7 @@ static void send_service_command(const char* command) {
     app_control_h app_control;
 	if (app_control_create(&app_control) == APP_CONTROL_ERROR_NONE) {
 		int res1 = 0, res2 = 0, res3 = 0;
-		if (((res1 = app_control_set_app_id(app_control, "com.urbandroid.sleep.service")) == APP_CONTROL_ERROR_NONE)
+		if (((res1 = app_control_set_app_id(app_control, "org.example.digitialwatch2")) == APP_CONTROL_ERROR_NONE)
 			&& ((res2 = app_control_add_extra_data(app_control, "app_action", command)) == APP_CONTROL_ERROR_NONE)
 			&& ((res3 = app_control_send_launch_request(app_control, NULL, NULL)) == APP_CONTROL_ERROR_NONE)) {
 			dlog_print(DLOG_INFO, LOG_TAG, "App command request sent: %s", command);
