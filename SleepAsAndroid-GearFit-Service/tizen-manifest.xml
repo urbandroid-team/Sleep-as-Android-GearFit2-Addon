@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<manifest xmlns="http://tizen.org/ns/packages" api-version="2.3.1" package="com.urbandroid.sleep.gear.fit" version="1.0.0">
-    <profile name="wearable"/>
-    <service-application appid="com.urbandroid.sleep.gear.fit.service" exec="sleepasandroid-gearfit-service" multiple="false" nodisplay="true" taskmanage="false" type="capp">
-        <label>sleepasandroid-gearfit-service</label>
-        <icon>sleepasandroid-gearfit-service.png</icon>
-    </service-application>
-</manifest>

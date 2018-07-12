@@ -3,3 +3,10 @@
 1	1380	0	src/view.o	2d90adc699435090
 14	1689	0	res/edje/main.edj	910d8db7d8630786
 1381	2024	0	digitalwatch	222a2b42397f6692
+0	14	0	clean_cov	b3de405e02eb7ca8
+14	28	0	clean_sa	46ab9549445ac981
+28	42	0	clean	d59b6dac04fa9b5d
+13	1236	0	src/main.o	4c2b361060ccc6e
+6	1294	0	src/view.o	2d90adc699435090
+18	1305	0	res/edje/main.edj	910d8db7d8630786
+1294	1591	0	digitalwatch	222a2b42397f6692
