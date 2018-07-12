@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>WatchFace</name>
+	<name>SleepAsAndroidGearFitWatchFace</name>
 	<comment></comment>
 	<projects>
-		<project>Service</project>
+		<project>SleepAsAndroidGearFitService</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -26,7 +26,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>0</id>
+			<id>1531391066980</id>
 			<name></name>
 			<type>26</type>
 			<matcher>
@@ -35,7 +35,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>0</id>
+			<id>1531391066996</id>
 			<name></name>
 			<type>6</type>
 			<matcher>
