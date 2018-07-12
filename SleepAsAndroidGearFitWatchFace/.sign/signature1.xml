@@ -4,15 +4,15 @@
 <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></SignatureMethod>
 <Reference URI="author-signature.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>jhRGAVV+lqRqUU2RvajqOAh6OB7aZ3hbPwmLnGm0ejg=</DigestValue>
+<DigestValue>DtJmHaJg+vyERhL28HY7YJZEh29OmrObN+sCEx8FRKE=</DigestValue>
 </Reference>
-<Reference URI="bin%2Fdigitalwatch">
+<Reference URI="bin%2Fsleepasandroidgearfitservice">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>D2+3nXXa3P0J/ztYgNXl2wnvG95Tdb6u9F5qH5AO9xA=</DigestValue>
+<DigestValue>Guo2p+3vwa2ZEajXaTO72oADK8DgB7IJbQTlr49ksC4=</DigestValue>
 </Reference>
-<Reference URI="bin%2Fdigitialwatch2">
+<Reference URI="bin%2Fsleepasandroidgearfitwatchface">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>QEu0LDz/Vuy5PXYXMPD6Cd64WaPpUAdMzOyV6w/9JtU=</DigestValue>
+<DigestValue>/l4tI7Yo1L1QNalitRpbgGUaOK2kvX+ySf0AzBrlLlA=</DigestValue>
 </Reference>
 <Reference URI="res%2Fedje%2Fmain.edj">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -38,17 +38,17 @@
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>AiulWbBU/2MKL6p9lgngtF8QK7sW5JSa9HTG7r4aumE=</DigestValue>
 </Reference>
-<Reference URI="shared%2Fres%2Fdigitalwatch.png">
-<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>is55AwXvLBVTcfwpQoIowUOKXLdmbyDjo7ACUTji2dA=</DigestValue>
-</Reference>
-<Reference URI="shared%2Fres%2Fdigitialwatch2.png">
+<Reference URI="shared%2Fres%2Fsleepasandroidgearfitservice.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>1d0oEZHqPn+QzNzGIHwj9ODby6x9ggFs9uOsav6jPNs=</DigestValue>
 </Reference>
+<Reference URI="shared%2Fres%2Fsleepasandroidgearfitwatchface.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>is55AwXvLBVTcfwpQoIowUOKXLdmbyDjo7ACUTji2dA=</DigestValue>
+</Reference>
 <Reference URI="tizen-manifest.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>tx+1JeRAfcEz2BoFJFwl9KSWml13rx1DJrIohDN072k=</DigestValue>
+<DigestValue>3X/li/zlEgwAebSKcZ+ttR1VIyXDpIcZKKG4pMBaskw=</DigestValue>
 </Reference>
 <Reference URI="#prop">
 <Transforms>
@@ -59,11 +59,11 @@
 </Reference>
 </SignedInfo>
 <SignatureValue>
-VozxjXE6DU3LRbc7FmdZoPKVXw3+c9vx3yZ9O5vurNcdQcUPJIN+MC5wGZVjDKXWewfFIQjx+2pV
-6f8YkORXTx4IC490VoJ/Ed8FtL0HsCpLwyRgPYIyJB3JTvwcCxDfCnrZ6b4UvIHevI/Zr+ccdZju
-EYA0wzfuNcXL0uvSsQocsiXzk2vHc4HpEJrCKN92TipI+6O/F9C9TyXpYOJp/ImJq1uwDU3dZNdD
-R3NedyWFNux3anG9Mv9LOSVQ8IvpeoSQnT54Cz829q+K4SOHT30tlES+cvdMbV3r7+SNpUdUE9s1
-BEudVlS4xbHD2NQMPxTyQ/c31/lLLVgvVq3Ptw==
+IxcQyl9j9y6/L3nDPSuwycTc2VcZNLHAvXgRAbLppyNS28bfhUg4U9dytYgs5dLoUQgVd1p4Us5t
+8EDdprcZTVJTaxg3wWNocK/ZCBd3/JNyZNvlqacqCHWa+quLBMl2jz5DgdqVQM7QiQ5CyMJEKuK3
+V4g6mFz76lDZPI4HQOFoOXEapwqhXOXUdpt0V+DaHGJObrNiL4B8av+4J6zFPCU/6uPR92r34tXI
+R7RXp4rJhOKdds3ozE/ixfIxnk2RhwlGQaFGH5t529hRLRAXHdd1kKIg+LOkmJbSu1EkI/zXqWWp
+Ho5ygfRDFyLshtMmigGlLjZxHbh6SPjLqZv1jw==
 </SignatureValue>
 <KeyInfo>
 <X509Data>

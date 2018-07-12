@@ -534,7 +534,9 @@ static void handle_data_received(unsigned int payload_length, void *buffer) {
 }
 
 bool service_app_create(void *data) {
+	dlog_print(DLOG_INFO, TAG, "Service started");
 	initialize_sap(handle_data_received);
+	dlog_print(DLOG_INFO, TAG, "SAP initialized");
 
     return true;
 }

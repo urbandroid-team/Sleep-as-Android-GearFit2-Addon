@@ -2,13 +2,13 @@
 <SignedInfo>
 <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></CanonicalizationMethod>
 <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></SignatureMethod>
-<Reference URI="bin%2Fdigitalwatch">
+<Reference URI="bin%2Fsleepasandroidgearfitservice">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>D2+3nXXa3P0J/ztYgNXl2wnvG95Tdb6u9F5qH5AO9xA=</DigestValue>
+<DigestValue>Guo2p+3vwa2ZEajXaTO72oADK8DgB7IJbQTlr49ksC4=</DigestValue>
 </Reference>
-<Reference URI="bin%2Fdigitialwatch2">
+<Reference URI="bin%2Fsleepasandroidgearfitwatchface">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>QEu0LDz/Vuy5PXYXMPD6Cd64WaPpUAdMzOyV6w/9JtU=</DigestValue>
+<DigestValue>/l4tI7Yo1L1QNalitRpbgGUaOK2kvX+ySf0AzBrlLlA=</DigestValue>
 </Reference>
 <Reference URI="res%2Fedje%2Fmain.edj">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -34,17 +34,17 @@
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>AiulWbBU/2MKL6p9lgngtF8QK7sW5JSa9HTG7r4aumE=</DigestValue>
 </Reference>
-<Reference URI="shared%2Fres%2Fdigitalwatch.png">
-<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>is55AwXvLBVTcfwpQoIowUOKXLdmbyDjo7ACUTji2dA=</DigestValue>
-</Reference>
-<Reference URI="shared%2Fres%2Fdigitialwatch2.png">
+<Reference URI="shared%2Fres%2Fsleepasandroidgearfitservice.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>1d0oEZHqPn+QzNzGIHwj9ODby6x9ggFs9uOsav6jPNs=</DigestValue>
 </Reference>
+<Reference URI="shared%2Fres%2Fsleepasandroidgearfitwatchface.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>is55AwXvLBVTcfwpQoIowUOKXLdmbyDjo7ACUTji2dA=</DigestValue>
+</Reference>
 <Reference URI="tizen-manifest.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>tx+1JeRAfcEz2BoFJFwl9KSWml13rx1DJrIohDN072k=</DigestValue>
+<DigestValue>3X/li/zlEgwAebSKcZ+ttR1VIyXDpIcZKKG4pMBaskw=</DigestValue>
 </Reference>
 <Reference URI="#prop">
 <Transforms>
@@ -55,11 +55,11 @@
 </Reference>
 </SignedInfo>
 <SignatureValue>
-IOhH0sE5bUCTj7a7Elw8YQweJtI47lFJqJUuEzaUNB6BFvXRFUZNIiwaKieEGh5ObWgqa3xUn7WH
-ovxxNxRBqyiq9MWmdxMGYGB5R0xWVYGX80T6sAcaYEChoAtB95iJt7P86RF1hc3wY+WBPpQbukJI
-2NFeOXa8wxQedke4k+nOOD3gkJIe9SGzVJEWwIxccDT9cZbZFN5s4yR3ovR+xikvVqAWotm7/dam
-3attPYYqONOo5VAKL+g7F699FyZoKFWxrf1GR/h8Rqu+icq2P5usc0g+WbQ7YlMVUs90GSTLl6yv
-Uel++Tzz9HeeahCLZDYQ9J8nxW/PvFnzsWIZVA==
+Zmp+c3Wzo1qePacwtI7sAqOnL70JEhM2bw1yZ4lPARoIHYxIJkidRzoZtSgwCz9RUasngYCqeeJr
+cm7xObWHGPPvbtnGVuGkc9QEtMs7D4Uu5JIUthPW3SkVtgP2RhwMhOpN96p+GsFd88rQAneGs0ab
+vywvDXjwrZzJo4CV4+qpVIW7qZD+miMuyXALoFdXPJLFUzWmnsT+zreJXfmvVA52VPEVpFyZNKKY
+mhI7+vQVVLxt62QyJC+P69YqpiHnzkj4o0RYU7TBjcsSw1oFrhnTsFPJsT32qVR/C97UM/JI3UC9
+9RsNT1VVZiBtczTXa7TWQkagAsIZiIWE1QjFjw==
 </SignatureValue>
 <KeyInfo>
 <X509Data>

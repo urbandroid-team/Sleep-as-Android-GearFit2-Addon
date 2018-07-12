@@ -10,3 +10,7 @@
 6	1294	0	src/view.o	2d90adc699435090
 18	1305	0	res/edje/main.edj	910d8db7d8630786
 1294	1591	0	digitalwatch	222a2b42397f6692
+0	5245	0	src/main.o	fb6572f7e81c9f0d
+1	5258	0	src/view.o	8ae3740372b02181
+5258	5501	0	digitalwatch	c3831a21c5519548
+1	5671	0	res/edje/main.edj	e02d4a7b29543081

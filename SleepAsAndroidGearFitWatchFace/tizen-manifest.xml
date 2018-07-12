@@ -6,7 +6,7 @@
         <icon>sleepasandroidgearfitwatchface.png</icon>
     </watch-application>
     <privileges>
-        <privilege>http://tizen.org/privilege/alarm.set</privilege>
         <privilege>http://tizen.org/privilege/appmanager.launch</privilege>
+        <privilege>http://tizen.org/privilege/alarm.set</privilege>
     </privileges>
 </manifest>
