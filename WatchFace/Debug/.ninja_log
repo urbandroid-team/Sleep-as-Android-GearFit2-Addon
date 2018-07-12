@@ -1,14 +1,5 @@
 # ninja log v5
-0	1224	0	res/edje/main.edj	910d8db7d8630786
-8	2017	0	src/main.o	4c2b361060ccc6e
-402	2024	0	src/view.o	2d90adc699435090
-2024	4030	0	digitalwatch	222a2b42397f6692
-0	26	0	clean_cov	b3de405e02eb7ca8
-26	40	0	clean_sa	46ab9549445ac981
-40	53	0	clean	d59b6dac04fa9b5d
-13	872	0	res/edje/main.edj	910d8db7d8630786
-4	1185	0	src/view.o	2d90adc699435090
-70	1212	0	src/main.o	4c2b361060ccc6e
-1212	1480	0	digitalwatch	222a2b42397f6692
-2	3078	0	src/main.o	4c2b361060ccc6e
-3079	3336	0	digitalwatch	222a2b42397f6692
+19	1340	0	src/main.o	4c2b361060ccc6e
+1	1380	0	src/view.o	2d90adc699435090
+14	1689	0	res/edje/main.edj	910d8db7d8630786
+1381	2024	0	digitalwatch	222a2b42397f6692

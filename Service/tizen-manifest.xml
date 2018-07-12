@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns="http://tizen.org/ns/packages" api-version="2.3.1" package="org.example.digitialwatch2" version="1.0.0">
-    <profile name="wearable" />
-    <service-application appid="org.example.digitialwatch2" exec="digitialwatch2" type="capp" multiple="false" taskmanage="false" nodisplay="true">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="2.3.1" package="com.urbandroid.sleep.gear.fit" version="1.0.0">
+    <profile name="wearable"/>
+    <service-application appid="com.urbandroid.sleep.gear.fit.service" exec="digitialwatch2" multiple="false" nodisplay="true" taskmanage="false" type="capp">
+        <label>SleepAsAndroidGearFitService</label>
         <icon>digitialwatch2.png</icon>
-        <label>digitialwatch2</label>
-	</service-application>
+    </service-application>
 </manifest>

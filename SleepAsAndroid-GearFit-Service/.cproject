@@ -3,9 +3,9 @@
     	
     <storageModule moduleId="org.eclipse.cdt.core.settings">
         		
-        <cconfiguration id="org.tizen.nativecore.config.sbi.gcc45.app.debug.838188943">
+        <cconfiguration id="org.tizen.nativecore.config.sbi.gcc45.app.debug.2072057810">
             			
-            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="org.tizen.nativecore.config.sbi.gcc45.app.debug.838188943" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="org.tizen.nativecore.config.sbi.gcc45.app.debug.2072057810" moduleId="org.eclipse.cdt.core.settings" name="Debug">
                 				
                 <externalSettings/>
                 				
@@ -33,33 +33,33 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration artifactName="digitalwatch" buildArtefactType="org.tizen.nativecore.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.tizen.nativecore.buildArtefactType.app,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;" id="org.tizen.nativecore.config.sbi.gcc45.app.debug.838188943" name="Debug" parent="org.tizen.nativecore.config.sbi.gcc45.app.debug">
+                <configuration artifactName="sleepasandroid-gearfit-service" buildArtefactType="org.tizen.nativecore.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.tizen.nativecore.buildArtefactType.app,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;" id="org.tizen.nativecore.config.sbi.gcc45.app.debug.2072057810" name="Debug" parent="org.tizen.nativecore.config.sbi.gcc45.app.debug">
                     					
-                    <folderInfo id="org.tizen.nativecore.config.sbi.gcc45.app.debug.838188943." name="/" resourcePath="">
+                    <folderInfo id="org.tizen.nativecore.config.sbi.gcc45.app.debug.2072057810." name="/" resourcePath="">
                         						
-                        <toolChain id="org.tizen.nativecore.toolchain.sbi.gcc45.app.debug.1043741081" name="Tizen Native Toolchain" superClass="org.tizen.nativecore.toolchain.sbi.gcc45.app.debug">
+                        <toolChain id="org.tizen.nativecore.toolchain.sbi.gcc45.app.debug.664808432" name="Tizen Native Toolchain" superClass="org.tizen.nativecore.toolchain.sbi.gcc45.app.debug">
                             							
-                            <targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="org.tizen.nativeide.target.sbi.gnu.platform.base.505168830" osList="linux,win32" superClass="org.tizen.nativeide.target.sbi.gnu.platform.base"/>
+                            <targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="org.tizen.nativeide.target.sbi.gnu.platform.base.117992729" osList="linux,win32" superClass="org.tizen.nativeide.target.sbi.gnu.platform.base"/>
                             							
-                            <builder autoBuildTarget="all" buildPath="${workspace_loc:/DigitalWatch}/Debug" enableAutoBuild="true" id="org.tizen.nativecore.target.sbi.gnu.builder.1144574342" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Tizen Application Builder" superClass="org.tizen.nativecore.target.sbi.gnu.builder"/>
+                            <builder autoBuildTarget="all" buildPath="${workspace_loc:/SleepAsAndroid-GearFit-Service}/Debug" enableAutoBuild="true" id="org.tizen.nativecore.target.sbi.gnu.builder.1111644632" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Tizen Application Builder" superClass="org.tizen.nativecore.target.sbi.gnu.builder"/>
                             							
-                            <tool command="i386-linux-gnueabi-ar.exe" id="org.tizen.nativecore.tool.sbi.gnu.archiver.1745872935" name="Archiver" superClass="org.tizen.nativecore.tool.sbi.gnu.archiver"/>
+                            <tool command="i386-linux-gnueabi-ar.exe" id="org.tizen.nativecore.tool.sbi.gnu.archiver.1157172351" name="Archiver" superClass="org.tizen.nativecore.tool.sbi.gnu.archiver"/>
                             							
-                            <tool command="clang++.exe" id="org.tizen.nativecore.tool.sbi.gnu.cpp.compiler.1841623701" name="C++ Compiler" superClass="org.tizen.nativecore.tool.sbi.gnu.cpp.compiler">
+                            <tool command="clang++.exe" id="org.tizen.nativecore.tool.sbi.gnu.cpp.compiler.1155391314" name="C++ Compiler" superClass="org.tizen.nativecore.tool.sbi.gnu.cpp.compiler">
                                 								
-                                <option id="gnu.cpp.compiler.option.optimization.level.906485952" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
+                                <option id="gnu.cpp.compiler.option.optimization.level.1585152632" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
                                 								
-                                <option defaultValue="gnu.cpp.compiler.debugging.level.max" id="sbi.gnu.cpp.compiler.option.debugging.level.core.102285806" name="Debug level" superClass="sbi.gnu.cpp.compiler.option.debugging.level.core" useByScannerDiscovery="false" valueType="enumerated"/>
+                                <option defaultValue="gnu.cpp.compiler.debugging.level.max" id="sbi.gnu.cpp.compiler.option.debugging.level.core.1149837211" name="Debug level" superClass="sbi.gnu.cpp.compiler.option.debugging.level.core" valueType="enumerated"/>
                                 								
-                                <option defaultValue="false" id="sbi.gnu.cpp.compiler.option.misc.pic.core.78856368" name="-fPIC option" superClass="sbi.gnu.cpp.compiler.option.misc.pic.core" useByScannerDiscovery="false" valueType="boolean"/>
+                                <option defaultValue="false" id="sbi.gnu.cpp.compiler.option.misc.pic.core.48238815" name="-fPIC option" superClass="sbi.gnu.cpp.compiler.option.misc.pic.core" valueType="boolean"/>
                                 								
-                                <option id="sbi.gnu.cpp.compiler.option.518049118" name="Tizen-Target" superClass="sbi.gnu.cpp.compiler.option" useByScannerDiscovery="false" valueType="userObjs">
+                                <option id="sbi.gnu.cpp.compiler.option.937324204" superClass="sbi.gnu.cpp.compiler.option" valueType="userObjs">
                                     									
                                     <listOptionValue builtIn="false" value="wearable-2.3.1-emulator.core_llvm40.i386"/>
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.cpp.compiler.option.frameworks_inc.core.104286509" name="Tizen-Frameworks-Include-Path" superClass="sbi.gnu.cpp.compiler.option.frameworks_inc.core" useByScannerDiscovery="false" valueType="includePath">
+                                <option id="sbi.gnu.cpp.compiler.option.frameworks_inc.core.555221308" superClass="sbi.gnu.cpp.compiler.option.frameworks_inc.core" valueType="includePath">
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/libxml2&quot;"/>
                                     									
@@ -163,7 +163,7 @@
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.cpp.compiler.option.frameworks_cflags.core.1454671602" name="Tizen-Frameworks-Other-Cflags" superClass="sbi.gnu.cpp.compiler.option.frameworks_cflags.core" useByScannerDiscovery="false" valueType="stringList">
+                                <option id="sbi.gnu.cpp.compiler.option.frameworks_cflags.core.1392388748" superClass="sbi.gnu.cpp.compiler.option.frameworks_cflags.core" valueType="stringList">
                                     									
                                     <listOptionValue builtIn="false" value="${TC_COMPILER_MISC}"/>
                                     									
@@ -175,19 +175,19 @@
                                     								
                                 </option>
                                 								
-                                <option id="gnu.cpp.compiler.option.include.paths.1674731063" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
+                                <option id="gnu.cpp.compiler.option.include.paths.477835380" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.cpp.compiler.option.frameworks.core.1068446583" name="Tizen-Frameworks" superClass="sbi.gnu.cpp.compiler.option.frameworks.core" useByScannerDiscovery="false" valueType="userObjs">
+                                <option id="sbi.gnu.cpp.compiler.option.frameworks.core.118906938" superClass="sbi.gnu.cpp.compiler.option.frameworks.core" valueType="userObjs">
                                     									
                                     <listOptionValue builtIn="false" value="Native_API"/>
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.cpp.compiler.option.preprocessor.def.deprecation.195906112" name="Defined symbols (-D)" superClass="sbi.gnu.cpp.compiler.option.preprocessor.def.deprecation" useByScannerDiscovery="false" valueType="definedSymbols">
+                                <option id="sbi.gnu.cpp.compiler.option.preprocessor.def.deprecation.710515050" superClass="sbi.gnu.cpp.compiler.option.preprocessor.def.deprecation" valueType="definedSymbols">
                                     									
                                     <listOptionValue builtIn="false" value="TIZEN_DEPRECATION"/>
                                     									
@@ -197,25 +197,25 @@
                                     								
                                 </option>
                                 								
-                                <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1356286091" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+                                <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1814089400" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
                                 							
                             </tool>
                             							
-                            <tool command="clang.exe" id="org.tizen.nativecore.tool.sbi.gnu.c.compiler.551362152" name="C Compiler" superClass="org.tizen.nativecore.tool.sbi.gnu.c.compiler">
+                            <tool command="clang.exe" id="org.tizen.nativecore.tool.sbi.gnu.c.compiler.189242428" name="C Compiler" superClass="org.tizen.nativecore.tool.sbi.gnu.c.compiler">
                                 								
-                                <option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.497961896" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" useByScannerDiscovery="false" valueType="enumerated"/>
+                                <option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.1531020622" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
                                 								
-                                <option defaultValue="gnu.c.debugging.level.max" id="sbi.gnu.c.compiler.option.debugging.level.core.1920857714" name="Debug level" superClass="sbi.gnu.c.compiler.option.debugging.level.core" useByScannerDiscovery="false" valueType="enumerated"/>
+                                <option defaultValue="gnu.c.debugging.level.max" id="sbi.gnu.c.compiler.option.debugging.level.core.28302573" name="Debug level" superClass="sbi.gnu.c.compiler.option.debugging.level.core" valueType="enumerated"/>
                                 								
-                                <option defaultValue="false" id="sbi.gnu.c.compiler.option.misc.pic.core.591416057" name="-fPIC option" superClass="sbi.gnu.c.compiler.option.misc.pic.core" useByScannerDiscovery="false" valueType="boolean"/>
+                                <option defaultValue="false" id="sbi.gnu.c.compiler.option.misc.pic.core.1298311266" name="-fPIC option" superClass="sbi.gnu.c.compiler.option.misc.pic.core" valueType="boolean"/>
                                 								
-                                <option id="sbi.gnu.c.compiler.option.1976150175" name="Tizen-Target" superClass="sbi.gnu.c.compiler.option" useByScannerDiscovery="false" valueType="userObjs">
+                                <option id="sbi.gnu.c.compiler.option.1198605595" superClass="sbi.gnu.c.compiler.option" valueType="userObjs">
                                     									
                                     <listOptionValue builtIn="false" value="wearable-2.3.1-emulator.core_llvm40.i386"/>
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.c.compiler.option.frameworks_inc.core.1968992859" name="Tizen-Frameworks-Include-Path" superClass="sbi.gnu.c.compiler.option.frameworks_inc.core" useByScannerDiscovery="false" valueType="includePath">
+                                <option id="sbi.gnu.c.compiler.option.frameworks_inc.core.1513299065" superClass="sbi.gnu.c.compiler.option.frameworks_inc.core" valueType="includePath">
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/libxml2&quot;"/>
                                     									
@@ -319,7 +319,7 @@
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.c.compiler.option.frameworks_cflags.core.2051134312" name="Tizen-Frameworks-Other-Cflags" superClass="sbi.gnu.c.compiler.option.frameworks_cflags.core" useByScannerDiscovery="false" valueType="stringList">
+                                <option id="sbi.gnu.c.compiler.option.frameworks_cflags.core.329680266" superClass="sbi.gnu.c.compiler.option.frameworks_cflags.core" valueType="stringList">
                                     									
                                     <listOptionValue builtIn="false" value="${TC_COMPILER_MISC}"/>
                                     									
@@ -331,19 +331,19 @@
                                     								
                                 </option>
                                 								
-                                <option id="gnu.c.compiler.option.include.paths.986622866" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
+                                <option id="gnu.c.compiler.option.include.paths.970900501" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.c.compiler.option.frameworks.core.19753031" name="Tizen-Frameworks" superClass="sbi.gnu.c.compiler.option.frameworks.core" useByScannerDiscovery="false" valueType="userObjs">
+                                <option id="sbi.gnu.c.compiler.option.frameworks.core.2034979764" superClass="sbi.gnu.c.compiler.option.frameworks.core" valueType="userObjs">
                                     									
                                     <listOptionValue builtIn="false" value="Native_API"/>
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.c.compiler.option.preprocessor.def.symbols.deprecation.1495255713" name="Defined symbols (-D)" superClass="sbi.gnu.c.compiler.option.preprocessor.def.symbols.deprecation" useByScannerDiscovery="false" valueType="definedSymbols">
+                                <option id="sbi.gnu.c.compiler.option.preprocessor.def.symbols.deprecation.1293068085" superClass="sbi.gnu.c.compiler.option.preprocessor.def.symbols.deprecation" valueType="definedSymbols">
                                     									
                                     <listOptionValue builtIn="false" value="TIZEN_DEPRECATION"/>
                                     									
@@ -353,21 +353,21 @@
                                     								
                                 </option>
                                 								
-                                <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.531155562" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+                                <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.51209804" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
                                 							
                             </tool>
                             							
-                            <tool id="org.tizen.nativeide.tool.sbi.gnu.c.linker.base.627425257" name="C Linker" superClass="org.tizen.nativeide.tool.sbi.gnu.c.linker.base"/>
+                            <tool id="org.tizen.nativeide.tool.sbi.gnu.c.linker.base.430212609" name="C Linker" superClass="org.tizen.nativeide.tool.sbi.gnu.c.linker.base"/>
                             							
-                            <tool command="clang++.exe" id="org.tizen.nativecore.tool.sbi.gnu.cpp.linker.321912183" name="C++ Linker" superClass="org.tizen.nativecore.tool.sbi.gnu.cpp.linker">
+                            <tool command="clang++.exe" id="org.tizen.nativecore.tool.sbi.gnu.cpp.linker.55956206" name="C++ Linker" superClass="org.tizen.nativecore.tool.sbi.gnu.cpp.linker">
                                 								
-                                <option defaultValue="false" id="sbi.gnu.cpp.link.option.strip.1544129094" name="Omit all symbol information (-s)" superClass="sbi.gnu.cpp.link.option.strip" valueType="boolean"/>
+                                <option defaultValue="false" id="sbi.gnu.cpp.link.option.strip.916865108" name="Omit all symbol information (-s)" superClass="sbi.gnu.cpp.link.option.strip" valueType="boolean"/>
                                 								
-                                <option defaultValue="false" id="sbi.gnu.cpp.linker.option.shared_flag.core.1538226378" name="Linker.Shared" superClass="sbi.gnu.cpp.linker.option.shared_flag.core" valueType="boolean"/>
+                                <option defaultValue="false" id="sbi.gnu.cpp.linker.option.shared_flag.core.1275500923" name="Linker.Shared" superClass="sbi.gnu.cpp.linker.option.shared_flag.core" valueType="boolean"/>
                                 								
-                                <option defaultValue="false" id="sbi.gnu.cpp.linker.option.noundefined.core.1195288484" name="Report unresolved symbol references (-Wl,--no-undefined)" superClass="sbi.gnu.cpp.linker.option.noundefined.core" valueType="boolean"/>
+                                <option defaultValue="false" id="sbi.gnu.cpp.linker.option.noundefined.core.927816115" name="Report unresolved symbol references (-Wl,--no-undefined)" superClass="sbi.gnu.cpp.linker.option.noundefined.core" valueType="boolean"/>
                                 								
-                                <option id="sbi.gnu.cpp.linker.option.frameworks_lflags.core.1132669489" name="Tizen-Frameworks-Other-Lflags" superClass="sbi.gnu.cpp.linker.option.frameworks_lflags.core" valueType="stringList">
+                                <option id="sbi.gnu.cpp.linker.option.frameworks_lflags.core.1108223283" superClass="sbi.gnu.cpp.linker.option.frameworks_lflags.core" valueType="stringList">
                                     									
                                     <listOptionValue builtIn="false" value="${TC_LINKER_MISC}"/>
                                     									
@@ -385,13 +385,13 @@
                                     								
                                 </option>
                                 								
-                                <option id="gnu.cpp.link.option.paths.1418226557" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
+                                <option id="gnu.cpp.link.option.paths.970946665" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lib}&quot;"/>
                                     								
                                 </option>
                                 								
-                                <inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.883455466" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
+                                <inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1627800366" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
                                     									
                                     <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
                                     									
@@ -401,25 +401,25 @@
                                 							
                             </tool>
                             							
-                            <tool command="#{PLATFORM_DEFAULT_GCC_PREFIX}as.exe" id="org.tizen.nativeapp.tool.sbi.gnu.assembler.base.368802197" name="Assembler" superClass="org.tizen.nativeapp.tool.sbi.gnu.assembler.base">
+                            <tool command="#{PLATFORM_DEFAULT_GCC_PREFIX}as.exe" id="org.tizen.nativeapp.tool.sbi.gnu.assembler.base.316908695" name="Assembler" superClass="org.tizen.nativeapp.tool.sbi.gnu.assembler.base">
                                 								
-                                <inputType id="cdt.managedbuild.tool.gnu.assembler.input.615607625" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+                                <inputType id="cdt.managedbuild.tool.gnu.assembler.input.483343174" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
                                 							
                             </tool>
                             							
-                            <tool id="org.tizen.nativecore.tool.fnmapgen.710519428" name="C FN-Map Generator" superClass="org.tizen.nativecore.tool.fnmapgen"/>
+                            <tool id="org.tizen.nativecore.tool.fnmapgen.21744471" name="C FN-Map Generator" superClass="org.tizen.nativecore.tool.fnmapgen"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.fnmapgen.cpp.836488216" name="C++ FN-Map Generator" superClass="org.tizen.nativecore.tool.fnmapgen.cpp"/>
+                            <tool id="org.tizen.nativecore.tool.fnmapgen.cpp.706130263" name="C++ FN-Map Generator" superClass="org.tizen.nativecore.tool.fnmapgen.cpp"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.ast.2103572535" name="C Static Analyzer" superClass="org.tizen.nativecore.tool.ast"/>
+                            <tool id="org.tizen.nativecore.tool.ast.500713737" name="C Static Analyzer" superClass="org.tizen.nativecore.tool.ast"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.ast.cpp.1754647242" name="C++ Static Analyzer" superClass="org.tizen.nativecore.tool.ast.cpp"/>
+                            <tool id="org.tizen.nativecore.tool.ast.cpp.1762106966" name="C++ Static Analyzer" superClass="org.tizen.nativecore.tool.ast.cpp"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.sbi.gnu.archiver.mergelib.2137542656" name="Archive Generator" superClass="org.tizen.nativecore.tool.sbi.gnu.archiver.mergelib"/>
+                            <tool id="org.tizen.nativecore.tool.sbi.gnu.archiver.mergelib.66467253" name="Archive Generator" superClass="org.tizen.nativecore.tool.sbi.gnu.archiver.mergelib"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.sbi.po.compiler.533848452" name="PO Resource Compiler" superClass="org.tizen.nativecore.tool.sbi.po.compiler"/>
+                            <tool id="org.tizen.nativecore.tool.sbi.po.compiler.246627859" name="PO Resource Compiler" superClass="org.tizen.nativecore.tool.sbi.po.compiler"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.sbi.edc.compiler.1280853478" name="EDC Resource Compiler" superClass="org.tizen.nativecore.tool.sbi.edc.compiler"/>
+                            <tool id="org.tizen.nativecore.tool.sbi.edc.compiler.1768625517" name="EDC Resource Compiler" superClass="org.tizen.nativecore.tool.sbi.edc.compiler"/>
                             						
                         </toolChain>
                         					
@@ -445,9 +445,9 @@
             		
         </cconfiguration>
         		
-        <cconfiguration id="org.tizen.nativecore.config.sbi.gcc45.app.release.1990313281">
+        <cconfiguration id="org.tizen.nativecore.config.sbi.gcc45.app.release.588586887">
             			
-            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="org.tizen.nativecore.config.sbi.gcc45.app.release.1990313281" moduleId="org.eclipse.cdt.core.settings" name="Release">
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="org.tizen.nativecore.config.sbi.gcc45.app.release.588586887" moduleId="org.eclipse.cdt.core.settings" name="Release">
                 				
                 <externalSettings/>
                 				
@@ -475,33 +475,33 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration artifactName="digitalwatch" buildArtefactType="org.tizen.nativecore.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.tizen.nativecore.buildArtefactType.app,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;" id="org.tizen.nativecore.config.sbi.gcc45.app.release.1990313281" name="Release" parent="org.tizen.nativecore.config.sbi.gcc45.app.release">
+                <configuration artifactName="sleepasandroid-gearfit-service" buildArtefactType="org.tizen.nativecore.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.tizen.nativecore.buildArtefactType.app,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" description="" errorParsers="org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;" id="org.tizen.nativecore.config.sbi.gcc45.app.release.588586887" name="Release" parent="org.tizen.nativecore.config.sbi.gcc45.app.release">
                     					
-                    <folderInfo id="org.tizen.nativecore.config.sbi.gcc45.app.release.1990313281." name="/" resourcePath="">
+                    <folderInfo id="org.tizen.nativecore.config.sbi.gcc45.app.release.588586887." name="/" resourcePath="">
                         						
-                        <toolChain id="org.tizen.nativecore.toolchain.sbi.gcc45.app.release.70206033" name="Tizen Native Toolchain" superClass="org.tizen.nativecore.toolchain.sbi.gcc45.app.release">
+                        <toolChain id="org.tizen.nativecore.toolchain.sbi.gcc45.app.release.1508313548" name="Tizen Native Toolchain" superClass="org.tizen.nativecore.toolchain.sbi.gcc45.app.release">
                             							
-                            <targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="org.tizen.nativeide.target.sbi.gnu.platform.base.1723532986" osList="linux,win32" superClass="org.tizen.nativeide.target.sbi.gnu.platform.base"/>
+                            <targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="org.tizen.nativeide.target.sbi.gnu.platform.base.334769045" osList="linux,win32" superClass="org.tizen.nativeide.target.sbi.gnu.platform.base"/>
                             							
-                            <builder buildPath="${workspace_loc:/DigitalWatch}/Release" id="org.tizen.nativecore.target.sbi.gnu.builder.1017949178" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Tizen Application Builder" superClass="org.tizen.nativecore.target.sbi.gnu.builder"/>
+                            <builder buildPath="${workspace_loc:/SleepAsAndroid-GearFit-Service}/Release" id="org.tizen.nativecore.target.sbi.gnu.builder.903199032" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Tizen Application Builder" superClass="org.tizen.nativecore.target.sbi.gnu.builder"/>
                             							
-                            <tool command="i386-linux-gnueabi-ar.exe" id="org.tizen.nativecore.tool.sbi.gnu.archiver.1096087326" name="Archiver" superClass="org.tizen.nativecore.tool.sbi.gnu.archiver"/>
+                            <tool command="i386-linux-gnueabi-ar.exe" id="org.tizen.nativecore.tool.sbi.gnu.archiver.1649544308" name="Archiver" superClass="org.tizen.nativecore.tool.sbi.gnu.archiver"/>
                             							
-                            <tool command="clang++.exe" id="org.tizen.nativecore.tool.sbi.gnu.cpp.compiler.1771272621" name="C++ Compiler" superClass="org.tizen.nativecore.tool.sbi.gnu.cpp.compiler">
+                            <tool command="clang++.exe" id="org.tizen.nativecore.tool.sbi.gnu.cpp.compiler.653833156" name="C++ Compiler" superClass="org.tizen.nativecore.tool.sbi.gnu.cpp.compiler">
                                 								
-                                <option id="gnu.cpp.compiler.option.optimization.level.1393639549" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
+                                <option id="gnu.cpp.compiler.option.optimization.level.250478996" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
                                 								
-                                <option defaultValue="gnu.cpp.compiler.debugging.level.none" id="sbi.gnu.cpp.compiler.option.debugging.level.core.24771769" name="Debug level" superClass="sbi.gnu.cpp.compiler.option.debugging.level.core" valueType="enumerated"/>
+                                <option defaultValue="gnu.cpp.compiler.debugging.level.none" id="sbi.gnu.cpp.compiler.option.debugging.level.core.501368384" name="Debug level" superClass="sbi.gnu.cpp.compiler.option.debugging.level.core" valueType="enumerated"/>
                                 								
-                                <option defaultValue="false" id="sbi.gnu.cpp.compiler.option.misc.pic.core.63805167" name="-fPIC option" superClass="sbi.gnu.cpp.compiler.option.misc.pic.core" valueType="boolean"/>
+                                <option defaultValue="false" id="sbi.gnu.cpp.compiler.option.misc.pic.core.117286537" name="-fPIC option" superClass="sbi.gnu.cpp.compiler.option.misc.pic.core" valueType="boolean"/>
                                 								
-                                <option id="sbi.gnu.cpp.compiler.option.453541528" name="Tizen-Target" superClass="sbi.gnu.cpp.compiler.option" valueType="userObjs">
+                                <option id="sbi.gnu.cpp.compiler.option.1079566116" superClass="sbi.gnu.cpp.compiler.option" valueType="userObjs">
                                     									
                                     <listOptionValue builtIn="false" value="wearable-2.3.1-emulator.core_llvm40.i386"/>
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.cpp.compiler.option.frameworks_inc.core.1670073527" name="Tizen-Frameworks-Include-Path" superClass="sbi.gnu.cpp.compiler.option.frameworks_inc.core" valueType="includePath">
+                                <option id="sbi.gnu.cpp.compiler.option.frameworks_inc.core.681284788" superClass="sbi.gnu.cpp.compiler.option.frameworks_inc.core" valueType="includePath">
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/libxml2&quot;"/>
                                     									
@@ -605,7 +605,7 @@
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.cpp.compiler.option.frameworks_cflags.core.470509404" name="Tizen-Frameworks-Other-Cflags" superClass="sbi.gnu.cpp.compiler.option.frameworks_cflags.core" valueType="stringList">
+                                <option id="sbi.gnu.cpp.compiler.option.frameworks_cflags.core.1303170556" superClass="sbi.gnu.cpp.compiler.option.frameworks_cflags.core" valueType="stringList">
                                     									
                                     <listOptionValue builtIn="false" value="${TC_COMPILER_MISC}"/>
                                     									
@@ -617,37 +617,37 @@
                                     								
                                 </option>
                                 								
-                                <option id="gnu.cpp.compiler.option.include.paths.962764231" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+                                <option id="gnu.cpp.compiler.option.include.paths.447147414" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.cpp.compiler.option.frameworks.core.936487720" name="Tizen-Frameworks" superClass="sbi.gnu.cpp.compiler.option.frameworks.core" valueType="userObjs">
+                                <option id="sbi.gnu.cpp.compiler.option.frameworks.core.1813656283" superClass="sbi.gnu.cpp.compiler.option.frameworks.core" valueType="userObjs">
                                     									
                                     <listOptionValue builtIn="false" value="Native_API"/>
                                     								
                                 </option>
                                 								
-                                <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.263723555" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
+                                <inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1092087058" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
                                 							
                             </tool>
                             							
-                            <tool command="clang.exe" id="org.tizen.nativecore.tool.sbi.gnu.c.compiler.1154759667" name="C Compiler" superClass="org.tizen.nativecore.tool.sbi.gnu.c.compiler">
+                            <tool command="clang.exe" id="org.tizen.nativecore.tool.sbi.gnu.c.compiler.326136596" name="C Compiler" superClass="org.tizen.nativecore.tool.sbi.gnu.c.compiler">
                                 								
-                                <option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.option.optimization.level.544771826" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
+                                <option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.option.optimization.level.585717389" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
                                 								
-                                <option defaultValue="gnu.c.debugging.level.none" id="sbi.gnu.c.compiler.option.debugging.level.core.1343164363" name="Debug level" superClass="sbi.gnu.c.compiler.option.debugging.level.core" valueType="enumerated"/>
+                                <option defaultValue="gnu.c.debugging.level.none" id="sbi.gnu.c.compiler.option.debugging.level.core.2142653582" name="Debug level" superClass="sbi.gnu.c.compiler.option.debugging.level.core" valueType="enumerated"/>
                                 								
-                                <option defaultValue="false" id="sbi.gnu.c.compiler.option.misc.pic.core.159804951" name="-fPIC option" superClass="sbi.gnu.c.compiler.option.misc.pic.core" valueType="boolean"/>
+                                <option defaultValue="false" id="sbi.gnu.c.compiler.option.misc.pic.core.1528936738" name="-fPIC option" superClass="sbi.gnu.c.compiler.option.misc.pic.core" valueType="boolean"/>
                                 								
-                                <option id="sbi.gnu.c.compiler.option.2090481243" name="Tizen-Target" superClass="sbi.gnu.c.compiler.option" valueType="userObjs">
+                                <option id="sbi.gnu.c.compiler.option.1409734990" superClass="sbi.gnu.c.compiler.option" valueType="userObjs">
                                     									
                                     <listOptionValue builtIn="false" value="wearable-2.3.1-emulator.core_llvm40.i386"/>
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.c.compiler.option.frameworks_inc.core.89072151" name="Tizen-Frameworks-Include-Path" superClass="sbi.gnu.c.compiler.option.frameworks_inc.core" valueType="includePath">
+                                <option id="sbi.gnu.c.compiler.option.frameworks_inc.core.429479401" superClass="sbi.gnu.c.compiler.option.frameworks_inc.core" valueType="includePath">
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/libxml2&quot;"/>
                                     									
@@ -751,7 +751,7 @@
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.c.compiler.option.frameworks_cflags.core.1954286609" name="Tizen-Frameworks-Other-Cflags" superClass="sbi.gnu.c.compiler.option.frameworks_cflags.core" valueType="stringList">
+                                <option id="sbi.gnu.c.compiler.option.frameworks_cflags.core.129454796" superClass="sbi.gnu.c.compiler.option.frameworks_cflags.core" valueType="stringList">
                                     									
                                     <listOptionValue builtIn="false" value="${TC_COMPILER_MISC}"/>
                                     									
@@ -763,33 +763,33 @@
                                     								
                                 </option>
                                 								
-                                <option id="gnu.c.compiler.option.include.paths.567107701" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+                                <option id="gnu.c.compiler.option.include.paths.484420837" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
                                     								
                                 </option>
                                 								
-                                <option id="sbi.gnu.c.compiler.option.frameworks.core.916368988" name="Tizen-Frameworks" superClass="sbi.gnu.c.compiler.option.frameworks.core" valueType="userObjs">
+                                <option id="sbi.gnu.c.compiler.option.frameworks.core.399793237" superClass="sbi.gnu.c.compiler.option.frameworks.core" valueType="userObjs">
                                     									
                                     <listOptionValue builtIn="false" value="Native_API"/>
                                     								
                                 </option>
                                 								
-                                <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1400128526" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+                                <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1520961215" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
                                 							
                             </tool>
                             							
-                            <tool id="org.tizen.nativeide.tool.sbi.gnu.c.linker.base.959186770" name="C Linker" superClass="org.tizen.nativeide.tool.sbi.gnu.c.linker.base"/>
+                            <tool id="org.tizen.nativeide.tool.sbi.gnu.c.linker.base.830395049" name="C Linker" superClass="org.tizen.nativeide.tool.sbi.gnu.c.linker.base"/>
                             							
-                            <tool command="clang++.exe" id="org.tizen.nativecore.tool.sbi.gnu.cpp.linker.1099226683" name="C++ Linker" superClass="org.tizen.nativecore.tool.sbi.gnu.cpp.linker">
+                            <tool command="clang++.exe" id="org.tizen.nativecore.tool.sbi.gnu.cpp.linker.969767514" name="C++ Linker" superClass="org.tizen.nativecore.tool.sbi.gnu.cpp.linker">
                                 								
-                                <option defaultValue="true" id="sbi.gnu.cpp.link.option.strip.1968172893" name="Omit all symbol information (-s)" superClass="sbi.gnu.cpp.link.option.strip" valueType="boolean"/>
+                                <option defaultValue="true" id="sbi.gnu.cpp.link.option.strip.1263272047" name="Omit all symbol information (-s)" superClass="sbi.gnu.cpp.link.option.strip" valueType="boolean"/>
                                 								
-                                <option defaultValue="false" id="sbi.gnu.cpp.linker.option.shared_flag.core.1870032466" name="Linker.Shared" superClass="sbi.gnu.cpp.linker.option.shared_flag.core" valueType="boolean"/>
+                                <option defaultValue="false" id="sbi.gnu.cpp.linker.option.shared_flag.core.1757336350" name="Linker.Shared" superClass="sbi.gnu.cpp.linker.option.shared_flag.core" valueType="boolean"/>
                                 								
-                                <option defaultValue="false" id="sbi.gnu.cpp.linker.option.noundefined.core.1960284620" name="Report unresolved symbol references (-Wl,--no-undefined)" superClass="sbi.gnu.cpp.linker.option.noundefined.core" valueType="boolean"/>
+                                <option defaultValue="false" id="sbi.gnu.cpp.linker.option.noundefined.core.1833908430" name="Report unresolved symbol references (-Wl,--no-undefined)" superClass="sbi.gnu.cpp.linker.option.noundefined.core" valueType="boolean"/>
                                 								
-                                <option id="sbi.gnu.cpp.linker.option.frameworks_lflags.core.1555873895" name="Tizen-Frameworks-Other-Lflags" superClass="sbi.gnu.cpp.linker.option.frameworks_lflags.core" valueType="stringList">
+                                <option id="sbi.gnu.cpp.linker.option.frameworks_lflags.core.858780914" superClass="sbi.gnu.cpp.linker.option.frameworks_lflags.core" valueType="stringList">
                                     									
                                     <listOptionValue builtIn="false" value="${TC_LINKER_MISC}"/>
                                     									
@@ -807,13 +807,13 @@
                                     								
                                 </option>
                                 								
-                                <option id="gnu.cpp.link.option.paths.108995748" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
+                                <option id="gnu.cpp.link.option.paths.1276841181" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
                                     									
                                     <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lib}&quot;"/>
                                     								
                                 </option>
                                 								
-                                <inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1111016267" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
+                                <inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1642966226" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
                                     									
                                     <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
                                     									
@@ -823,25 +823,25 @@
                                 							
                             </tool>
                             							
-                            <tool command="#{PLATFORM_DEFAULT_GCC_PREFIX}as.exe" id="org.tizen.nativeapp.tool.sbi.gnu.assembler.base.2143119297" name="Assembler" superClass="org.tizen.nativeapp.tool.sbi.gnu.assembler.base">
+                            <tool command="#{PLATFORM_DEFAULT_GCC_PREFIX}as.exe" id="org.tizen.nativeapp.tool.sbi.gnu.assembler.base.1119692709" name="Assembler" superClass="org.tizen.nativeapp.tool.sbi.gnu.assembler.base">
                                 								
-                                <inputType id="cdt.managedbuild.tool.gnu.assembler.input.1975386032" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
+                                <inputType id="cdt.managedbuild.tool.gnu.assembler.input.403920771" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
                                 							
                             </tool>
                             							
-                            <tool id="org.tizen.nativecore.tool.fnmapgen.285688953" name="C FN-Map Generator" superClass="org.tizen.nativecore.tool.fnmapgen"/>
+                            <tool id="org.tizen.nativecore.tool.fnmapgen.2114346139" name="C FN-Map Generator" superClass="org.tizen.nativecore.tool.fnmapgen"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.fnmapgen.cpp.2065748038" name="C++ FN-Map Generator" superClass="org.tizen.nativecore.tool.fnmapgen.cpp"/>
+                            <tool id="org.tizen.nativecore.tool.fnmapgen.cpp.570978595" name="C++ FN-Map Generator" superClass="org.tizen.nativecore.tool.fnmapgen.cpp"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.ast.410749435" name="C Static Analyzer" superClass="org.tizen.nativecore.tool.ast"/>
+                            <tool id="org.tizen.nativecore.tool.ast.502558386" name="C Static Analyzer" superClass="org.tizen.nativecore.tool.ast"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.ast.cpp.617639163" name="C++ Static Analyzer" superClass="org.tizen.nativecore.tool.ast.cpp"/>
+                            <tool id="org.tizen.nativecore.tool.ast.cpp.1794947922" name="C++ Static Analyzer" superClass="org.tizen.nativecore.tool.ast.cpp"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.sbi.gnu.archiver.mergelib.1279997301" name="Archive Generator" superClass="org.tizen.nativecore.tool.sbi.gnu.archiver.mergelib"/>
+                            <tool id="org.tizen.nativecore.tool.sbi.gnu.archiver.mergelib.48040960" name="Archive Generator" superClass="org.tizen.nativecore.tool.sbi.gnu.archiver.mergelib"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.sbi.po.compiler.1995233951" name="PO Resource Compiler" superClass="org.tizen.nativecore.tool.sbi.po.compiler"/>
+                            <tool id="org.tizen.nativecore.tool.sbi.po.compiler.29281223" name="PO Resource Compiler" superClass="org.tizen.nativecore.tool.sbi.po.compiler"/>
                             							
-                            <tool id="org.tizen.nativecore.tool.sbi.edc.compiler.1684210437" name="EDC Resource Compiler" superClass="org.tizen.nativecore.tool.sbi.edc.compiler"/>
+                            <tool id="org.tizen.nativecore.tool.sbi.edc.compiler.1546946619" name="EDC Resource Compiler" superClass="org.tizen.nativecore.tool.sbi.edc.compiler"/>
                             						
                         </toolChain>
                         					
@@ -871,7 +871,7 @@
     	
     <storageModule moduleId="cdtBuildSystem" version="4.0.0">
         		
-        <project id="DigitalWatch.org.tizen.nativecore.target.sbi.gcc45.app.1654499644" name="Tizen Native Application" projectType="org.tizen.nativecore.target.sbi.gcc45.app"/>
+        <project id="SleepAsAndroid-GearFit-Service.org.tizen.nativecore.target.sbi.gcc45.app.1965946272" name="Tizen Native Application" projectType="org.tizen.nativecore.target.sbi.gcc45.app"/>
         	
     </storageModule>
     	
@@ -879,13 +879,13 @@
         		
         <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
         		
-        <scannerConfigBuildInfo instanceId="org.tizen.nativecore.config.sbi.gcc45.app.debug.838188943">
+        <scannerConfigBuildInfo instanceId="org.tizen.nativecore.config.sbi.gcc45.app.release.588586887">
             			
             <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
             		
         </scannerConfigBuildInfo>
         		
-        <scannerConfigBuildInfo instanceId="org.tizen.nativecore.config.sbi.gcc45.app.release.1990313281">
+        <scannerConfigBuildInfo instanceId="org.tizen.nativecore.config.sbi.gcc45.app.debug.2072057810">
             			
             <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
             		
@@ -894,9 +894,5 @@
     </storageModule>
     	
     <storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-    	
-    <storageModule moduleId="refreshScope"/>
-    	
-    <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
     
 </cproject>

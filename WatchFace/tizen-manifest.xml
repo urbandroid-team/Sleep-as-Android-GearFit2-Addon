@@ -7,5 +7,6 @@
     </watch-application>
     <privileges>
         <privilege>http://tizen.org/privilege/alarm.set</privilege>
+        <privilege>http://tizen.org/privilege/appmanager.launch</privilege>
     </privileges>
 </manifest>
