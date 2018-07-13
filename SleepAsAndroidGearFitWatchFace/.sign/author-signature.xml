@@ -4,7 +4,7 @@
 <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></SignatureMethod>
 <Reference URI="bin%2Fsleepasandroidgearfitservice">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>Guo2p+3vwa2ZEajXaTO72oADK8DgB7IJbQTlr49ksC4=</DigestValue>
+<DigestValue>R9hDQOD6ACbimmYY6/R2akLosJti9gczxvZGqWlKTM8=</DigestValue>
 </Reference>
 <Reference URI="bin%2Fsleepasandroidgearfitwatchface">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -34,6 +34,10 @@
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>AiulWbBU/2MKL6p9lgngtF8QK7sW5JSa9HTG7r4aumE=</DigestValue>
 </Reference>
+<Reference URI="res%2Fxml%2Faccessoryservices.xml">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>ZXQobMXzttHaqDvMW2Xt2n1K5/QPDiO/boAPAulHESE=</DigestValue>
+</Reference>
 <Reference URI="shared%2Fres%2Fsleepasandroidgearfitservice.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>1d0oEZHqPn+QzNzGIHwj9ODby6x9ggFs9uOsav6jPNs=</DigestValue>
@@ -44,7 +48,7 @@
 </Reference>
 <Reference URI="tizen-manifest.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>3X/li/zlEgwAebSKcZ+ttR1VIyXDpIcZKKG4pMBaskw=</DigestValue>
+<DigestValue>LFN85B88EwksVuHG2zNG/Vz/dZas5LJ3RU0nr1jcBAM=</DigestValue>
 </Reference>
 <Reference URI="#prop">
 <Transforms>
@@ -55,11 +59,11 @@
 </Reference>
 </SignedInfo>
 <SignatureValue>
-Zmp+c3Wzo1qePacwtI7sAqOnL70JEhM2bw1yZ4lPARoIHYxIJkidRzoZtSgwCz9RUasngYCqeeJr
-cm7xObWHGPPvbtnGVuGkc9QEtMs7D4Uu5JIUthPW3SkVtgP2RhwMhOpN96p+GsFd88rQAneGs0ab
-vywvDXjwrZzJo4CV4+qpVIW7qZD+miMuyXALoFdXPJLFUzWmnsT+zreJXfmvVA52VPEVpFyZNKKY
-mhI7+vQVVLxt62QyJC+P69YqpiHnzkj4o0RYU7TBjcsSw1oFrhnTsFPJsT32qVR/C97UM/JI3UC9
-9RsNT1VVZiBtczTXa7TWQkagAsIZiIWE1QjFjw==
+fo2dFYUaqZ+M4szBzWGc1AoLYFMIjPN/9ZJWwq0g/M3wowVKSGsoS+Yl/m2c9gd+mC6tlvoXNQTD
+ii631wKx5jIyFvIcaLhwpvOuxTXreFacjyGflxIxZSy0m9O1rNTicZZIrhG4J/T5o+b6gwB1TVn8
+Cog+L61dOWNV8dGF6MS2HuGSQGmXO7Udp6bj1tEQG8NvW0q+5eGgWua7sPpxBMgHqytlJClOAhnK
+CzowzJDt9rs8dh24haCWYQYG7QXYLVNUZftvqovetKl3jiQjFBfzAnBr37PykRCoJjtKG0ajrJSI
+JFzMnzWUB4qSB4dOjbu0iQy/2XWSnhcAdHra7Q==
 </SignatureValue>
 <KeyInfo>
 <X509Data>

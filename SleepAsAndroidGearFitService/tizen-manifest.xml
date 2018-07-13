@@ -4,7 +4,10 @@
     <service-application appid="com.urbandroid.sleep.gearfit.service" exec="sleepasandroidgearfitservice" multiple="false" nodisplay="true" taskmanage="false" type="capp">
         <label>sleepasandroidgearfitservice</label>
         <icon>sleepasandroidgearfitservice.png</icon>
+   		<metadata key="http://tizen.org/metadata/background-category/sensor"/>
+    	<metadata key="accessory-services-location" value="/res/xml/accessoryservices.xml"/>
     </service-application>
+    
     <privileges>
         <privilege>http://tizen.org/privilege/healthinfo</privilege>
         <privilege>http://tizen.org/privilege/appmanager.launch</privilege>
