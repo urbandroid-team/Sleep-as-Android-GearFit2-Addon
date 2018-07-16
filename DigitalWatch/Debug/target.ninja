@@ -2,5 +2,4 @@ build main_build: phony digitalwatch res
 build all: phony main_build
 default all
 edje-cc-dep-options = -deps $out.d
-apichecker-options = -api-version=2.3.1 -current-profile=wearable -privilege-list=http://tizen.org/privilege/appmanager.launch
 binaryName = digitalwatch

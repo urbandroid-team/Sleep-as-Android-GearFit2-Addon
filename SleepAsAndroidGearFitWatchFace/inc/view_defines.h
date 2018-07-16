@@ -17,6 +17,11 @@
 #if !defined(VIEW_DEFINES_H_)
 #define VIEW_DEFINES_H_
 
+#include <watch_app.h>
+#include <watch_app_efl.h>
+#include <Elementary.h>
+#include <dlog.h>
+
 #define PART_HOUR_TEXT "hour_text"
 #define PART_MINUTE_PREV "minute_prev"
 #define PART_MINUTE_MAIN "minute_main"

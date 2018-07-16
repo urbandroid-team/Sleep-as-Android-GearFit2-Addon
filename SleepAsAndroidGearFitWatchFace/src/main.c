@@ -14,31 +14,101 @@
  * limitations under the License.
  */
 
+#include <tizen.h>
 #include <system_settings.h>
 #include <watch_app.h>
 #include "sleepasandroidgearfitwatchface.h"
-#include "view.h"
 #include "view_defines.h"
 
-struct main_info {
-	int hour;
-	int minute;
-	int second;
-} s_info = {
-	.hour = 0,
-	.minute = 0,
-	.second = 0,
-};
+typedef struct appdata {
+	Evas_Object *win;
+	Evas_Object *conform;
+	Evas_Object *label;
+	//Evas_Object *image;
+} appdata_s;
 
-static void _time_get(watch_time_h watch_time);
-static void _curent_time_get(void);
+#define TEXT_BUF_SIZE 256
+
+static void
+update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
+{
+	char watch_text[TEXT_BUF_SIZE];
+	int hour24, minute, second;
+
+	if (watch_time == NULL)
+		return;
+
+	watch_time_get_hour24(watch_time, &hour24);
+	watch_time_get_minute(watch_time, &minute);
+	watch_time_get_second(watch_time, &second);
+	if (!ambient) {
+		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center>Hello Watch<br/>%02d:%02d:%02d</align>",
+			hour24, minute, second);
+	} else {
+		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center>Hello Watch<br/>%02d:%02d</align>",
+			hour24, minute);
+	}
+
+	elm_object_text_set(ad->label, watch_text);
+}
+
+static void
+create_base_gui(appdata_s *ad, int width, int height)
+{
+	int ret;
+	watch_time_h watch_time = NULL;
+
+	/* Window */
+	ret = watch_app_get_elm_win(&ad->win);
+	if (ret != APP_ERROR_NONE) {
+		dlog_print(DLOG_ERROR, LOG_TAG, "failed to get window. err = %d", ret);
+		return;
+	}
+
+	evas_object_resize(ad->win, width, height);
+
+	/* Conformant */
+	ad->conform = elm_conformant_add(ad->win);
+	evas_object_size_hint_weight_set(ad->conform, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_win_resize_object_add(ad->win, ad->conform);
+	evas_object_show(ad->conform);
+
+	/* Label*/
+	ad->label = elm_label_add(ad->conform);
+	evas_object_resize(ad->label, width, height / 2);
+	evas_object_move(ad->label, 0, height / 3);
+	evas_object_show(ad->label);
+
+
+	/* Image*/
+	/*
+	img = elm_image_add(ad->conform);
+	snprintf(buf, sizeof(buf), "%s/image.jpg", ICON_DIR);
+	elm_image_file_set(img, buf, NULL)
+    evas_object_resize(img, w, h);
+    evas_object_move(img, x, y);
+    evas_object_show(img);
+	 */
+
+
+	ret = watch_time_get_current_time(&watch_time);
+	if (ret != APP_ERROR_NONE)
+		dlog_print(DLOG_ERROR, LOG_TAG, "failed to get current time. err = %d", ret);
+
+	update_watch(ad, watch_time, 0);
+	watch_time_delete(watch_time);
+
+	/* Show window after base gui is set up */
+	evas_object_show(ad->win);
+}
+
 
 /*
  * @brief The system language changed event callback function
  * @param[in] event_info The system event information
- * @param[in] user_data The user data passed from the add event handler function
+ * @param[in] data The user data passed from the add event handler function
  */
-void lang_changed(app_event_info_h event_info, void* user_data)
+void lang_changed(app_event_info_h event_info, void* data)
 {
 	/*
 	 * Takes necessary actions when language setting is changed
@@ -55,12 +125,14 @@ void lang_changed(app_event_info_h event_info, void* user_data)
 	return;
 }
 
+
+
 /*
  * @brief The region format changed event callback function
  * @param[in] event_info The system event information
- * @param[in] user_data The user data passed from the add event handler function
+ * @param[in] data The user data passed from the add event handler function
  */
-void region_changed(app_event_info_h event_info, void* user_data)
+void region_changed(app_event_info_h event_info, void* data)
 {
 	/*
 	 * Takes necessary actions when region setting is changed
@@ -70,9 +142,9 @@ void region_changed(app_event_info_h event_info, void* user_data)
 /*
  * @brief The low battery event callback function
  * @param[in] event_info The system event information
- * @param[in] user_data The user data passed from the add event handler function
+ * @param[in] data The user data passed from the add event handler function
  */
-void low_battery(app_event_info_h event_info, void* user_data)
+void low_battery(app_event_info_h event_info, void* data)
 {
 	/*
 	 * Takes necessary actions when system is running on low battery
@@ -83,9 +155,9 @@ void low_battery(app_event_info_h event_info, void* user_data)
 /*
  * @brief The low memory event callback function
  * @param[in] event_info The system event information
- * @param[in] user_data The user data passed from the add event handler function
+ * @param[in] data The user data passed from the add event handler function
  */
-void low_memory(app_event_info_h event_info, void* user_data)
+void low_memory(app_event_info_h event_info, void* data)
 {
 	/*
 	 * Takes necessary actions when system is running on low memory
@@ -96,9 +168,9 @@ void low_memory(app_event_info_h event_info, void* user_data)
 /*
  * @brief The device orientation changed event callback function
  * @param[in] event_info The system event information
- * @param[in] user_data The user data passed from the add event handler function
+ * @param[in] data The user data passed from the add event handler function
  */
-void device_orientation(app_event_info_h event_info, void* user_data)
+void device_orientation(app_event_info_h event_info, void* data)
 {
 	/*
 	 * Takes necessary actions when device orientation is changed
@@ -128,9 +200,9 @@ static void send_service_command(const char* command) {
  * @brief Called when the application starts.
  * @param[in] width The width of the window of idle screen that will show the watch UI
  * @param[in] height The height of the window of idle screen that will show the watch UI
- * @param[in] user_data The user data passed from the callback registration function
+ * @param[in] data The user data passed from the callback registration function
  */
-static bool app_create(int width, int height, void* user_data)
+static bool app_create(int width, int height, void *data)
 {
 	/*
 	 * Hook to take necessary actions before main event loop starts
@@ -157,9 +229,8 @@ static bool app_create(int width, int height, void* user_data)
 	if (watch_app_add_event_handler(&handlers[APP_EVENT_DEVICE_ORIENTATION_CHANGED], APP_EVENT_DEVICE_ORIENTATION_CHANGED, device_orientation, NULL) != APP_ERROR_NONE)
 		dlog_print(DLOG_ERROR, LOG_TAG, "watch_app_add_event_handler () is failed");
 
-	view_create_with_size(width, height);
-
-	_curent_time_get();
+	appdata_s *ad = data;
+	create_base_gui(ad, width, height);
 
 	send_service_command("start");
 
@@ -170,7 +241,7 @@ static bool app_create(int width, int height, void* user_data)
  * @brief: This callback function is called when another application
  * sends the launch request to the application
  */
-static void app_control(app_control_h app_control, void *user_data)
+static void app_control(app_control_h app_control, void *data)
 {
 	/*
 	 * Handle the launch request.
@@ -182,7 +253,7 @@ static void app_control(app_control_h app_control, void *user_data)
  * the application is completely obscured by another application
  * and becomes invisible to the user
  */
-static void app_pause(void *user_data)
+static void app_pause(void *data)
 {
 	/*
 	 * Take necessary actions when application becomes invisible.
@@ -193,71 +264,69 @@ static void app_pause(void *user_data)
  * @brief: This callback function is called each time
  * the application becomes visible to the user
  */
-static void app_resume(void *user_data)
+static void app_resume(void *data)
 {
 	/*
 	 * Take necessary actions when application becomes visible.
 	 */
-
-	view_reset_display_state();
-	_curent_time_get();
 }
 
 /*
  * @brief: This callback function is called once after the main loop of the application exits
  */
-static void app_terminate(void *user_data)
+static void app_terminate(void *data)
 {
-	view_destroy();
 }
 
 /*
  * @brief Called at each second. This callback is not called while the app is paused or the device is in ambient mode.
  * @param[in] watch_time The watch time handle. watch_time will not be available after returning this callback. It will be freed by the framework.
- * @param[in] user_data The user data to be passed to the callback functions
+ * @param[in] data The user data to be passed to the callback functions
  */
-static void app_time_tick(watch_time_h watch_time, void* user_data)
+static void app_time_tick(watch_time_h watch_time, void *data)
 {
-	_time_get(watch_time);
-
-	if (s_info.second == 60 - (int)MINUTE_PART_ANIMATION_TIME) {
-		view_set_minute(s_info.minute);
-		view_start_minute_update();
-	} else if (s_info.second == 0 && s_info.minute == 0) {
-		view_set_hour(s_info.hour);
-	}
-
-	view_set_second(s_info.second);
+	/* Called at each second while your app is visible. Update watch UI. */
+	appdata_s *ad = data;
+	update_watch(ad, watch_time, 0);
 }
 
 /*
  * @brief Called at each minute when the device in the ambient mode.
  * @param[in] watch_time The watch time handle. watch_time will not be available after returning this callback. It will be freed by the framework.
- * @param[in] user_data The user data to be passed to the callback functions
+ * @param[in] data The user data to be passed to the callback functions
  */
-void app_ambient_tick(watch_time_h watch_time, void* user_data)
+static void app_ambient_tick(watch_time_h watch_time, void *data)
 {
-	int prev_min = s_info.minute;
-	_time_get(watch_time);
-
-	if (s_info.minute != prev_min) {
-		view_set_minute(s_info.minute - 1);
-		view_start_minute_update();
-
-		if (s_info.minute == 0)
-			view_set_hour(s_info.hour);
-	}
+	/* Called at each minute while the device is in ambient mode. Update watch UI. */
+	appdata_s *ad = data;
+	update_watch(ad, watch_time, 1);
 }
 
 /*
  * @brief: This function will be called when the ambient mode is changed
  */
-static void app_ambient_changed(bool ambient_mode, void* user_data)
+static void app_ambient_changed(bool ambient_mode, void* data)
 {
 	/*
 	 * Take necessary actions when application goes to/from ambient state
 	 */
-	view_set_ambient_mode(ambient_mode);
+}
+
+static void
+watch_app_lang_changed(app_event_info_h event_info, void *data)
+{
+	/*APP_EVENT_LANGUAGE_CHANGED*/
+	char *locale = NULL;
+	app_event_get_language(event_info, &locale);
+	elm_language_set(locale);
+	free(locale);
+	return;
+}
+
+static void
+watch_app_region_changed(app_event_info_h event_info, void *data)
+{
+	/*APP_EVENT_REGION_FORMAT_CHANGED*/
 }
 
 /*
@@ -265,9 +334,11 @@ static void app_ambient_changed(bool ambient_mode, void* user_data)
  */
 int main(int argc, char *argv[])
 {
+	appdata_s ad = {0,};
 	int ret = 0;
 
 	watch_app_lifecycle_callback_s event_callback = {0, };
+	app_event_handler_h handlers[5] = {NULL, };
 
 	event_callback.create = app_create;
 	event_callback.terminate = app_terminate;
@@ -278,34 +349,15 @@ int main(int argc, char *argv[])
 	event_callback.ambient_tick = app_ambient_tick;
 	event_callback.ambient_changed = app_ambient_changed;
 
-	ret = watch_app_main(argc, argv, &event_callback, NULL);
-	if (ret != APP_ERROR_NONE)
-		dlog_print(DLOG_ERROR, LOG_TAG, "watch_app_main() is failed. err = %d", ret);
+	watch_app_add_event_handler(&handlers[APP_EVENT_LANGUAGE_CHANGED],
+			APP_EVENT_LANGUAGE_CHANGED, watch_app_lang_changed, &ad);
+		watch_app_add_event_handler(&handlers[APP_EVENT_REGION_FORMAT_CHANGED],
+			APP_EVENT_REGION_FORMAT_CHANGED, watch_app_region_changed, &ad);
+
+		ret = watch_app_main(argc, argv, &event_callback, &ad);
+		if (ret != APP_ERROR_NONE) {
+			dlog_print(DLOG_ERROR, LOG_TAG, "watch_app_main() is failed. err = %d", ret);
+		}
 
 	return ret;
-}
-
-
-/*
- * @brief Gets the time from a watch_time_h handler and stores it in the s_info structure
- * @param watch_time - watch_time_h structure to read the time from
- */
-static void _time_get(watch_time_h watch_time)
-{
-	watch_time_get_second(watch_time, &s_info.second);
-	watch_time_get_minute(watch_time, &s_info. minute);
-	watch_time_get_hour(watch_time, &s_info.hour);
-}
-
-/*
- * @brief Reads the current time.
- */
-static void _curent_time_get(void)
-{
-	watch_time_h watch_time;
-
-	watch_time_get_current_time(&watch_time);
-	_time_get(watch_time);
-	view_update_display_time(s_info.hour, s_info.minute);
-	watch_time_delete(watch_time);
 }
