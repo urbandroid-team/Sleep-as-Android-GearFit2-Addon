@@ -31,8 +31,6 @@ typedef struct appdata {
 	Evas_Object *label;
 	Evas_Object *ic;
 	Evas_Object *button;
-	//Evas_Object *rect;
-	//Evas_Object *img;
 } appdata_s;
 
 #define TEXT_BUF_SIZE 256
@@ -51,14 +49,14 @@ update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 	watch_time_get_minute(watch_time, &minute);
 	watch_time_get_second(watch_time, &second);
 	if (!ambient) {
-		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center>This Doesn't work<br/>%02d:%02d:%02d</align>",
+		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center font_size=50><br/>%02d:%02d:%02d</align>",
 			hour24, minute, second);
 	} else {
-		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center>This Doesn't work either<br/>%02d:%02d</align>",
+		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center font_size=50><br/>%02d:%02d</align>",
 			hour24, minute);
 	}
 
-	//elm_object_text_set(ad->label, watch_text);
+	elm_object_text_set(ad->label, watch_text);
 }
 
 static char *_create_resource_path(const char *file_name)
@@ -101,48 +99,36 @@ create_base_gui(appdata_s *ad, int width, int height)
 
 	/* Box */
 	ad->box = elm_box_add(ad->conform);
+	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	//elm_box_align_set(ad->box,.5,.5);
 	evas_object_show(ad->box);
 
-	/* Label
+	/* Label */
 	ad->label = elm_label_add(ad->box);
 	evas_object_resize(ad->label, width, height / 3);
-	evas_object_move(ad->label, 0, height / 3
+	evas_object_move(ad->label, 0, 0);
+	//evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	//evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, 0.5);
+
+
 	evas_object_show(ad->label);
-
-	/* Rectangle
-	Evas *evas = evas_object_evas_get(ad->box);
-	ad->rect = evas_object_rectangle_add(evas);
-	evas_object_color_set(ad->rect, 255, 255, 255, 255);
-	evas_object_resize(ad->rect, 100,100);
-	evas_object_move(ad->label, 0, height / 3);
-	evas_object_show(ad->rect);
+	//lm_box_pack_end(ad->box,ad->label);
 
 
-	/* Image */
-	//ad->img = elm_image_add(ad->box);
+	/* Load Image */
 	char *image_path = NULL;
-
 	image_path = _create_resource_path(IMAGE_PATH);
 	dlog_print(DLOG_ERROR, LOG_TAG, "image path to get = %s", image_path);
-
-	/*
-	evas_object_image_file_set(ad->img, image_path, NULL);
-	//if (evas_object_image_load_error_get(ad->img) != EVAS_LOAD_ERROR_NONE)
-	//    return;
-    evas_object_resize(ad->img, 100, 100);
-    evas_object_move(ad->img, 0, height/2);
-    evas_object_show(ad->img);
-    */
 
 
 	// Button
 	ad->button = elm_button_add(ad->box);
-	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, 1);
-	elm_object_text_set(ad->button, "Click Me!");
-	evas_object_resize(ad->button, width/2, height / 3);
-	evas_object_move(ad->button, 0, height / 3);
-	//elm_box_pack_end(ad->box, ad->button);
+	//evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	//evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, 1);
+	evas_object_resize(ad->button, width/2, height / 5);
+	evas_object_move(ad->button, width/4, 1.1*height / 2);
+	//evas_object_color_set(ad->button, 70, 77, 89, 255);
+	//elm_box_pack_end(ad->box,ad->button);
 
 	// Icon
 	ad->ic = elm_icon_add(ad->button);
