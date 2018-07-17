@@ -20,14 +20,22 @@
 #include "sleepasandroidgearfitwatchface.h"
 #include "view_defines.h"
 
+#define MAIN_EDJ "icon/main.edj"
+
+static char *_create_resource_path(const char *file_name);
+
 typedef struct appdata {
 	Evas_Object *win;
 	Evas_Object *conform;
+	Evas_Object *box;
 	Evas_Object *label;
-	//Evas_Object *image;
+	Evas_Object *button;
+	//Evas_Object *rect;
+	//Evas_Object *img;
 } appdata_s;
 
 #define TEXT_BUF_SIZE 256
+#define IMAGE_PATH "images/unnamed.png"
 
 static void
 update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
@@ -42,14 +50,31 @@ update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 	watch_time_get_minute(watch_time, &minute);
 	watch_time_get_second(watch_time, &second);
 	if (!ambient) {
-		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center>Hello Watch<br/>%02d:%02d:%02d</align>",
+		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center>This Doesn't work<br/>%02d:%02d:%02d</align>",
 			hour24, minute, second);
 	} else {
-		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center>Hello Watch<br/>%02d:%02d</align>",
+		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center>This Doesn't work either<br/>%02d:%02d</align>",
 			hour24, minute);
 	}
 
 	elm_object_text_set(ad->label, watch_text);
+}
+
+static char *_create_resource_path(const char *file_name)
+{
+	static char res_path_buff[PATH_MAX] = {0,};
+	char *res_path = NULL;
+
+	res_path = app_get_resource_path();
+	if (res_path == NULL) {
+		dlog_print(DLOG_ERROR, LOG_TAG, "failed to get resource path.");
+		return NULL;
+	}
+
+	snprintf(res_path_buff, PATH_MAX, "%s%s", res_path, file_name);
+	free(res_path);
+
+	return &res_path_buff[0];
 }
 
 static void
@@ -73,23 +98,61 @@ create_base_gui(appdata_s *ad, int width, int height)
 	elm_win_resize_object_add(ad->win, ad->conform);
 	evas_object_show(ad->conform);
 
-	/* Label*/
-	ad->label = elm_label_add(ad->conform);
+	/* Box */
+	ad->box = elm_box_add(ad->conform);
+	evas_object_show(ad->box);
+
+	/* Label */
+	ad->label = elm_label_add(ad->box);
 	evas_object_resize(ad->label, width, height / 2);
+
+
+
 	evas_object_move(ad->label, 0, height / 3);
 	evas_object_show(ad->label);
 
+	/* Rectangle
+	Evas *evas = evas_object_evas_get(ad->box);
+	ad->rect = evas_object_rectangle_add(evas);
+	evas_object_color_set(ad->rect, 255, 255, 255, 255);
+	evas_object_resize(ad->rect, 100,100);
+	evas_object_move(ad->label, 0, height / 3);
+	evas_object_show(ad->rect);
 
-	/* Image*/
+
+	/* Image */
+	//ad->img = elm_image_add(ad->box);
+	char *image_path = NULL;
+
+	image_path = _create_resource_path(IMAGE_PATH);
+	dlog_print(DLOG_ERROR, LOG_TAG, "image path to get = %s", image_path);
+
 	/*
-	img = elm_image_add(ad->conform);
-	snprintf(buf, sizeof(buf), "%s/image.jpg", ICON_DIR);
-	elm_image_file_set(img, buf, NULL)
-    evas_object_resize(img, w, h);
-    evas_object_move(img, x, y);
-    evas_object_show(img);
-	 */
+	evas_object_image_file_set(ad->img, image_path, NULL);
+	//if (evas_object_image_load_error_get(ad->img) != EVAS_LOAD_ERROR_NONE)
+	//    return;
+    evas_object_resize(ad->img, 100, 100);
+    evas_object_move(ad->img, 0, height/2);
+    evas_object_show(ad->img);
+    */
 
+
+	// Button
+	ad->button = elm_button_add(ad->box);
+	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, 1);
+	elm_object_text_set(ad->button, "Click Me!");
+	evas_object_move(ad->button, 0, height/3);
+	elm_box_pack_end(ad->box, ad->button);
+
+	// Icon
+	Evas_Object *ic;
+	ic = elm_icon_add(ad->button);
+	elm_image_file_set(ic, image_path, NULL);
+	elm_object_part_content_set(ad->button, "icon", ic);
+
+	evas_object_show(ad->button);
+	evas_object_show(ic);
 
 	ret = watch_time_get_current_time(&watch_time);
 	if (ret != APP_ERROR_NONE)
@@ -101,6 +164,7 @@ create_base_gui(appdata_s *ad, int width, int height)
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
 }
+
 
 
 /*
