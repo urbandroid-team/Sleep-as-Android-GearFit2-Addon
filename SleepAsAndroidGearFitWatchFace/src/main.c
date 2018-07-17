@@ -155,12 +155,11 @@ create_base_gui(appdata_s *ad, int width, int height)
 	ad->ic = elm_icon_add(ad->button);
 	elm_image_file_set(ad->ic, image_path, NULL);
 	elm_object_part_content_set(ad->button, "icon", ad->ic);
-	evas_object_show(ad->button);
 	evas_object_show(ad->ic);
 
 
 	/* Gesture */
-	ad->gest = elm_gesture_layer_add(win);
+	ad->gest = elm_gesture_layer_add(ad->win);
 	elm_gesture_layer_attach(ad->gest, ad->button);
 	elm_gesture_layer_long_tap_start_timeout_set(ad->gest, .5);
 
@@ -168,9 +167,10 @@ create_base_gui(appdata_s *ad, int width, int height)
 	                         n_long_tap_start, NULL);
 	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_LONG_TAPS, ELM_GESTURE_STATE_MOVE,
 	                         n_long_tap_move, NULL);
+	evas_object_show(ad->button);
 
 	/* Button callback */
-	//evas_object_smart_callback_add(ad->button, "clicked", _button_clicked, NULL);
+	evas_object_smart_callback_add(ad->button, "clicked", _button_clicked, NULL);
 
 
 	ret = watch_time_get_current_time(&watch_time);
