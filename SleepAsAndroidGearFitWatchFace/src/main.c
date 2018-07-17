@@ -31,6 +31,7 @@ typedef struct appdata {
 	Evas_Object *label;
 	Evas_Object *ic;
 	Evas_Object *button;
+	Evas_Object *gest;
 } appdata_s;
 
 #define TEXT_BUF_SIZE 256
@@ -77,6 +78,38 @@ static char *_create_resource_path(const char *file_name)
 }
 
 static void
+_button_clicked(void *data, Evas_Object *obj, void *event_info)
+{
+	 dlog_print(DLOG_INFO, LOG_TAG, "Button clicked\n");
+}
+
+
+
+static Evas_Event_Flags
+n_long_tap_start(void *data, void *event_info)
+{
+	dlog_print(DLOG_INFO, LOG_TAG, "Start of long press");
+
+    Elm_Gesture_Taps_Info *p = (Elm_Gesture_Taps_Info *)event_info;
+    printf("N tap started <%p> x,y=<%d,%d> count=<%d> timestamp=<%d> \n",
+           event_info, p->x, p->y, p->n, p->timestamp);
+
+    return EVAS_EVENT_FLAG_ON_HOLD;
+}
+
+static Evas_Event_Flags
+n_long_tap_move(void *data, void *event_info)
+{
+	dlog_print(DLOG_INFO, LOG_TAG, "Move of long press");
+
+    Elm_Gesture_Taps_Info *p = (Elm_Gesture_Taps_Info *)event_info;
+    printf("N tap started <%p> x,y=<%d,%d> count=<%d> timestamp=<%d> \n",
+           event_info, p->x, p->y, p->n, p->timestamp);
+
+    return EVAS_EVENT_FLAG_ON_HOLD;
+}
+
+static void
 create_base_gui(appdata_s *ad, int width, int height)
 {
 	int ret;
@@ -115,6 +148,8 @@ create_base_gui(appdata_s *ad, int width, int height)
 	ad->button = elm_button_add(ad->box);
 	evas_object_resize(ad->button, width/2, height / 5);
 	evas_object_move(ad->button, width/4, 1.1*height / 2);
+	elm_object_text_set(ad->button, "Click me!");
+
 
 	/*Icon */
 	ad->ic = elm_icon_add(ad->button);
@@ -122,6 +157,20 @@ create_base_gui(appdata_s *ad, int width, int height)
 	elm_object_part_content_set(ad->button, "icon", ad->ic);
 	evas_object_show(ad->button);
 	evas_object_show(ad->ic);
+
+
+	/* Gesture */
+	ad->gest = elm_gesture_layer_add(win);
+	elm_gesture_layer_attach(ad->gest, ad->button);
+	elm_gesture_layer_long_tap_start_timeout_set(ad->gest, .5);
+
+	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_LONG_TAPS, ELM_GESTURE_STATE_START,
+	                         n_long_tap_start, NULL);
+	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_LONG_TAPS, ELM_GESTURE_STATE_MOVE,
+	                         n_long_tap_move, NULL);
+
+	/* Button callback */
+	//evas_object_smart_callback_add(ad->button, "clicked", _button_clicked, NULL);
 
 
 	ret = watch_time_get_current_time(&watch_time);
