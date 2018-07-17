@@ -29,6 +29,7 @@ typedef struct appdata {
 	Evas_Object *conform;
 	Evas_Object *box;
 	Evas_Object *label;
+	Evas_Object *ic;
 	Evas_Object *button;
 	//Evas_Object *rect;
 	//Evas_Object *img;
@@ -57,7 +58,7 @@ update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 			hour24, minute);
 	}
 
-	elm_object_text_set(ad->label, watch_text);
+	//elm_object_text_set(ad->label, watch_text);
 }
 
 static char *_create_resource_path(const char *file_name)
@@ -102,13 +103,10 @@ create_base_gui(appdata_s *ad, int width, int height)
 	ad->box = elm_box_add(ad->conform);
 	evas_object_show(ad->box);
 
-	/* Label */
+	/* Label
 	ad->label = elm_label_add(ad->box);
-	evas_object_resize(ad->label, width, height / 2);
-
-
-
-	evas_object_move(ad->label, 0, height / 3);
+	evas_object_resize(ad->label, width, height / 3);
+	evas_object_move(ad->label, 0, height / 3
 	evas_object_show(ad->label);
 
 	/* Rectangle
@@ -142,17 +140,16 @@ create_base_gui(appdata_s *ad, int width, int height)
 	evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, 1);
 	elm_object_text_set(ad->button, "Click Me!");
-	evas_object_move(ad->button, 0, height/3);
-	elm_box_pack_end(ad->box, ad->button);
+	evas_object_resize(ad->button, width/2, height / 3);
+	evas_object_move(ad->button, 0, height / 3);
+	//elm_box_pack_end(ad->box, ad->button);
 
 	// Icon
-	Evas_Object *ic;
-	ic = elm_icon_add(ad->button);
-	elm_image_file_set(ic, image_path, NULL);
-	elm_object_part_content_set(ad->button, "icon", ic);
-
+	ad->ic = elm_icon_add(ad->button);
+	elm_image_file_set(ad->ic, image_path, NULL);
+	elm_object_part_content_set(ad->button, "icon", ad->ic);
 	evas_object_show(ad->button);
-	evas_object_show(ic);
+	evas_object_show(ad->ic);
 
 	ret = watch_time_get_current_time(&watch_time);
 	if (ret != APP_ERROR_NONE)
