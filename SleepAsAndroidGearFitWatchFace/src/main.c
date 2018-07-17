@@ -100,42 +100,29 @@ create_base_gui(appdata_s *ad, int width, int height)
 	/* Box */
 	ad->box = elm_box_add(ad->conform);
 	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	//elm_box_align_set(ad->box,.5,.5);
 	evas_object_show(ad->box);
 
 	/* Label */
 	ad->label = elm_label_add(ad->box);
 	evas_object_resize(ad->label, width, height / 3);
 	evas_object_move(ad->label, 0, 0);
-	//evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	//evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, 0.5);
-
-
 	evas_object_show(ad->label);
-	//lm_box_pack_end(ad->box,ad->label);
 
 
-	/* Load Image */
+	/* Button */
 	char *image_path = NULL;
 	image_path = _create_resource_path(IMAGE_PATH);
-	dlog_print(DLOG_ERROR, LOG_TAG, "image path to get = %s", image_path);
-
-
-	// Button
 	ad->button = elm_button_add(ad->box);
-	//evas_object_size_hint_weight_set(ad->button, EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	//evas_object_size_hint_align_set(ad->button, EVAS_HINT_FILL, 1);
 	evas_object_resize(ad->button, width/2, height / 5);
 	evas_object_move(ad->button, width/4, 1.1*height / 2);
-	//evas_object_color_set(ad->button, 70, 77, 89, 255);
-	//elm_box_pack_end(ad->box,ad->button);
 
-	// Icon
+	/*Icon */
 	ad->ic = elm_icon_add(ad->button);
 	elm_image_file_set(ad->ic, image_path, NULL);
 	elm_object_part_content_set(ad->button, "icon", ad->ic);
 	evas_object_show(ad->button);
 	evas_object_show(ad->ic);
+
 
 	ret = watch_time_get_current_time(&watch_time);
 	if (ret != APP_ERROR_NONE)
