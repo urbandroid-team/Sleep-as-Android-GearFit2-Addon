@@ -77,12 +77,51 @@ static char *_create_resource_path(const char *file_name)
 	return &res_path_buff[0];
 }
 
+static void send_service_command(const char* command) {
+    app_control_h app_control;
+	if (app_control_create(&app_control) == APP_CONTROL_ERROR_NONE) {
+		int res1 = 0, res2 = 0, res3 = 0;
+		if (((res1 = app_control_set_app_id(app_control, "com.urbandroid.sleep.gearfit.service")) == APP_CONTROL_ERROR_NONE)
+			&& ((res2 = app_control_add_extra_data(app_control, "app_action", command)) == APP_CONTROL_ERROR_NONE)
+			&& ((res3 = app_control_send_launch_request(app_control, NULL, NULL)) == APP_CONTROL_ERROR_NONE)) {
+			dlog_print(DLOG_INFO, LOG_TAG, "App command request sent: %s", command);
+		} else {
+			dlog_print(DLOG_ERROR, LOG_TAG, "App command request sending failed! Err: %d %d %d", res1, res2, res3);
+		}
+		if (app_control_destroy(app_control) == APP_CONTROL_ERROR_NONE) {
+			dlog_print(DLOG_INFO, LOG_TAG, "App control destroyed.");
+		}
+	} else {
+		dlog_print(DLOG_ERROR, LOG_TAG, "App control creation failed!");
+	}
+}
 
 static Evas_Event_Flags
-flick_end(void *data, void *event_info)
+line_start(void *data, void *event_info)
 {
 
-	dlog_print(DLOG_INFO, LOG_TAG,"Flick Up Gesture");
+	dlog_print(DLOG_INFO, LOG_TAG,"Line Up Start");
+
+	 return EVAS_EVENT_FLAG_ON_HOLD;
+}
+
+static Evas_Event_Flags
+line_end(void *data, void *event_info)
+{
+
+	Elm_Gesture_Line_Info *p = (Elm_Gesture_Line_Info *)event_info;
+
+
+	dlog_print(DLOG_INFO, LOG_TAG,"Line Up Info: line end angle=<%lf> x1,y1=<%d,%d> x2,y2=<%d,%d> tx,ty=<%u,%u>\n",
+	           p->angle, p->momentum.x1, p->momentum.y1, p->momentum.x2, p->momentum.y2,
+	           p->momentum.tx, p->momentum.ty);
+
+	if (p->angle > 270 || p-> angle < 90){
+		dlog_print(DLOG_INFO, LOG_TAG,"Line Direction UP");
+		send_service_command("start");
+		dlog_print(DLOG_INFO, LOG_TAG,"Created Service");
+	}
+
     return EVAS_EVENT_FLAG_ON_HOLD;
 }
 
@@ -116,8 +155,8 @@ create_base_gui(appdata_s *ad, int width, int height)
 
 	/* Label */
 	ad->label = elm_label_add(ad->box);
-	evas_object_resize(ad->label, width, height / 3);
-	evas_object_move(ad->label, 0, 0);
+	evas_object_resize(ad->label, width, height/3);
+	evas_object_move(ad->label, 0,height/3);
 	evas_object_show(ad->label);
 
 
@@ -125,8 +164,8 @@ create_base_gui(appdata_s *ad, int width, int height)
 	char *image_path = NULL;
 	image_path = _create_resource_path(IMAGE_PATH);
 	ad->button = elm_button_add(ad->box);
-	evas_object_resize(ad->button, width/2, height / 5);
-	evas_object_move(ad->button, width/4, 1.1*height / 2);
+	elm_object_style_set(ad->button, "bottom");
+	evas_object_move(ad->button, width/2, height);
 
 
 	/*Icon */
@@ -139,11 +178,15 @@ create_base_gui(appdata_s *ad, int width, int height)
 	/* Gesture */
 	ad->gest = elm_gesture_layer_add(ad->win);
 	elm_gesture_layer_attach(ad->gest, ad->button);
-	elm_gesture_layer_flick_time_limit_ms_set(ad->gest, 250);
-	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_FLICKS, ELM_GESTURE_STATE_END,flick_end, NULL);
+	//elm_gesture_layer_flick_time_limit_ms_set(ad->gest, 250);
+	elm_gesture_layer_line_min_length_set(ad->gest, 0);
+	elm_gesture_layer_continues_enable_set(ad->gest, EINA_FALSE);
+	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_START,line_start, NULL);
+	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_END,line_end, NULL);
 
 
 	evas_object_show(ad->button);
+
 
 
 
@@ -237,24 +280,7 @@ void device_orientation(app_event_info_h event_info, void* data)
 	 */
 }
 
-static void send_service_command(const char* command) {
-    app_control_h app_control;
-	if (app_control_create(&app_control) == APP_CONTROL_ERROR_NONE) {
-		int res1 = 0, res2 = 0, res3 = 0;
-		if (((res1 = app_control_set_app_id(app_control, "com.urbandroid.sleep.gearfit.service")) == APP_CONTROL_ERROR_NONE)
-			&& ((res2 = app_control_add_extra_data(app_control, "app_action", command)) == APP_CONTROL_ERROR_NONE)
-			&& ((res3 = app_control_send_launch_request(app_control, NULL, NULL)) == APP_CONTROL_ERROR_NONE)) {
-			dlog_print(DLOG_INFO, LOG_TAG, "App command request sent: %s", command);
-		} else {
-			dlog_print(DLOG_ERROR, LOG_TAG, "App command request sending failed! Err: %d %d %d", res1, res2, res3);
-		}
-		if (app_control_destroy(app_control) == APP_CONTROL_ERROR_NONE) {
-			dlog_print(DLOG_INFO, LOG_TAG, "App control destroyed.");
-		}
-	} else {
-		dlog_print(DLOG_ERROR, LOG_TAG, "App control creation failed!");
-	}
-}
+
 
 /*
  * @brief Called when the application starts.
@@ -292,7 +318,7 @@ static bool app_create(int width, int height, void *data)
 	appdata_s *ad = data;
 	create_base_gui(ad, width, height);
 
-	send_service_command("start");
+
 
 	return true;
 }
