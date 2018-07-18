@@ -77,41 +77,20 @@ static char *_create_resource_path(const char *file_name)
 	return &res_path_buff[0];
 }
 
-static void
-_button_clicked(void *data, Evas_Object *obj, void *event_info)
-{
-	 dlog_print(DLOG_INFO, LOG_TAG, "Button clicked\n");
-}
-
-
 
 static Evas_Event_Flags
-n_long_tap_start(void *data, void *event_info)
+flick_end(void *data, void *event_info)
 {
-	dlog_print(DLOG_INFO, LOG_TAG, "Start of long press");
 
-    Elm_Gesture_Taps_Info *p = (Elm_Gesture_Taps_Info *)event_info;
-    printf("N tap started <%p> x,y=<%d,%d> count=<%d> timestamp=<%d> \n",
-           event_info, p->x, p->y, p->n, p->timestamp);
-
-    return EVAS_EVENT_FLAG_ON_HOLD;
-}
-
-static Evas_Event_Flags
-n_long_tap_move(void *data, void *event_info)
-{
-	dlog_print(DLOG_INFO, LOG_TAG, "Move of long press");
-
-    Elm_Gesture_Taps_Info *p = (Elm_Gesture_Taps_Info *)event_info;
-    printf("N tap started <%p> x,y=<%d,%d> count=<%d> timestamp=<%d> \n",
-           event_info, p->x, p->y, p->n, p->timestamp);
-
+	dlog_print(DLOG_INFO, LOG_TAG,"Flick Up Gesture");
     return EVAS_EVENT_FLAG_ON_HOLD;
 }
 
 static void
 create_base_gui(appdata_s *ad, int width, int height)
 {
+	dlog_print(DLOG_INFO, LOG_TAG, "Start to create GUI");
+
 	int ret;
 	watch_time_h watch_time = NULL;
 
@@ -148,7 +127,6 @@ create_base_gui(appdata_s *ad, int width, int height)
 	ad->button = elm_button_add(ad->box);
 	evas_object_resize(ad->button, width/2, height / 5);
 	evas_object_move(ad->button, width/4, 1.1*height / 2);
-	elm_object_text_set(ad->button, "Click me!");
 
 
 	/*Icon */
@@ -161,16 +139,13 @@ create_base_gui(appdata_s *ad, int width, int height)
 	/* Gesture */
 	ad->gest = elm_gesture_layer_add(ad->win);
 	elm_gesture_layer_attach(ad->gest, ad->button);
-	elm_gesture_layer_long_tap_start_timeout_set(ad->gest, .5);
+	elm_gesture_layer_flick_time_limit_ms_set(ad->gest, 250);
+	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_FLICKS, ELM_GESTURE_STATE_END,flick_end, NULL);
 
-	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_LONG_TAPS, ELM_GESTURE_STATE_START,
-	                         n_long_tap_start, NULL);
-	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_LONG_TAPS, ELM_GESTURE_STATE_MOVE,
-	                         n_long_tap_move, NULL);
+
 	evas_object_show(ad->button);
 
-	/* Button callback */
-	evas_object_smart_callback_add(ad->button, "clicked", _button_clicked, NULL);
+
 
 
 	ret = watch_time_get_current_time(&watch_time);
@@ -182,6 +157,8 @@ create_base_gui(appdata_s *ad, int width, int height)
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
+
+
 }
 
 
@@ -359,6 +336,7 @@ static void app_resume(void *data)
  */
 static void app_terminate(void *data)
 {
+
 }
 
 /*
