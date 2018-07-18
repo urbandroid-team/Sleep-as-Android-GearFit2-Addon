@@ -9,6 +9,8 @@
 #define SLEEP_PROFILE_ID "/system/sleepassamsung"
 #define SLEEP_CHANNELID 1750
 
+static bool sent_tracking = false;
+
 struct priv {
 	sap_agent_h agent;
 	sap_socket_h socket;
@@ -118,7 +120,10 @@ static void on_service_connection_created(sap_peer_agent_h peer_agent,
 		sprintf(&outstr, "Version %s",&version[0]);
 		send_data(outstr);
 		free(&version[0]);
-		send_data("STARTING");  // TODO: This should be send only when started from watch, right?
+		if (sent_tracking == false) {
+			send_data("STARTING");  // TODO: This should be send only when started from watch, right?
+			sent_tracking = true;
+		}
 		// update_ui("Connection Established");
 		break;
 
