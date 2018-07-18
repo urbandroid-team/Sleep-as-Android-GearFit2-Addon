@@ -19,6 +19,7 @@
 #include <watch_app.h>
 #include "sleepasandroidgearfitwatchface.h"
 #include "view_defines.h"
+#include <app_manager.h>
 
 #define MAIN_EDJ "icon/main.edj"
 
@@ -27,15 +28,18 @@ static char *_create_resource_path(const char *file_name);
 typedef struct appdata {
 	Evas_Object *win;
 	Evas_Object *conform;
+	Evas_Object *nf;
 	Evas_Object *box;
 	Evas_Object *label;
 	Evas_Object *ic;
-	Evas_Object *button;
+	Evas_Object *btn;
 	Evas_Object *gest;
+
 } appdata_s;
 
 #define TEXT_BUF_SIZE 256
 #define IMAGE_PATH "images/unnamed.png"
+#define ServiceID "com.urbandroid.sleep.gearfit.service"
 
 static void
 update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
@@ -96,19 +100,35 @@ static void send_service_command(const char* command) {
 	}
 }
 
+
+
 static Evas_Event_Flags
 line_start(void *data, void *event_info)
 {
 
-	dlog_print(DLOG_INFO, LOG_TAG,"Line Up Start");
+	dlog_print(DLOG_INFO, LOG_TAG,"Line Start");
 
 	 return EVAS_EVENT_FLAG_ON_HOLD;
 }
 
 static Evas_Event_Flags
+line_move(void *data, void *event_info)
+{
+	dlog_print(DLOG_INFO, LOG_TAG,"Line Move");
+	/* Elm_Gesture_Line_Info *p = (Elm_Gesture_Line_Info *)event_info;
+
+
+	dlog_print(DLOG_INFO, LOG_TAG,"Line Up Info: line end angle=<%lf> x1,y1=<%d,%d> x2,y2=<%d,%d> tx,ty=<%u,%u>\n",
+	           p->angle, p->momentum.x1, p->momentum.y1, p->momentum.x2, p->momentum.y2,
+	           p->momentum.tx, p->momentum.ty);
+	           */
+    return EVAS_EVENT_FLAG_ON_HOLD;
+}
+
+static Evas_Event_Flags
 line_end(void *data, void *event_info)
 {
-
+	dlog_print(DLOG_INFO, LOG_TAG,"Line End");
 	Elm_Gesture_Line_Info *p = (Elm_Gesture_Line_Info *)event_info;
 
 
@@ -121,6 +141,21 @@ line_end(void *data, void *event_info)
 		send_service_command("start");
 		dlog_print(DLOG_INFO, LOG_TAG,"Created Service");
 	}
+    return EVAS_EVENT_FLAG_ON_HOLD;
+}
+
+static Evas_Event_Flags
+line_abort(void *data, void *event_info)
+{
+
+	Elm_Gesture_Line_Info *p = (Elm_Gesture_Line_Info *)event_info;
+
+	dlog_print(DLOG_INFO, LOG_TAG,"Line Abort");
+	dlog_print(DLOG_INFO, LOG_TAG,"Line Up Info: line end angle=<%lf> x1,y1=<%d,%d> x2,y2=<%d,%d> tx,ty=<%u,%u>\n",
+	           p->angle, p->momentum.x1, p->momentum.y1, p->momentum.x2, p->momentum.y2,
+	           p->momentum.tx, p->momentum.ty);
+
+
 
     return EVAS_EVENT_FLAG_ON_HOLD;
 }
@@ -148,44 +183,51 @@ create_base_gui(appdata_s *ad, int width, int height)
 	elm_win_resize_object_add(ad->win, ad->conform);
 	evas_object_show(ad->conform);
 
+	/* Naviframe */
+	ad->nf = elm_naviframe_add(ad->conform);
+	evas_object_show(ad->nf);
+	elm_naviframe_prev_btn_auto_pushed_set(ad->nf, EINA_TRUE);
+	elm_object_content_set(ad->conform, ad->nf);
+
 	/* Box */
-	ad->box = elm_box_add(ad->conform);
-	evas_object_size_hint_weight_set(ad->box, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_show(ad->box);
+    ad->box = elm_box_add(ad->nf);
+    evas_object_show(ad->box);
+    elm_naviframe_item_push(ad->nf, NULL, NULL, NULL, ad->box, NULL);
 
 	/* Label */
 	ad->label = elm_label_add(ad->box);
-	evas_object_resize(ad->label, width, height/3);
-	evas_object_move(ad->label, 0,height/3);
+    evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, 0.8);
+    evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(ad->label);
+	elm_box_pack_end(ad->box, ad->label);
 
-
-	/* Button */
-	char *image_path = NULL;
-	image_path = _create_resource_path(IMAGE_PATH);
-	ad->button = elm_button_add(ad->box);
-	elm_object_style_set(ad->button, "bottom");
-	evas_object_move(ad->button, width/2, height);
-
+    /* Button */
+    ad->btn = elm_button_add(ad->box);
+    evas_object_size_hint_weight_set(ad->btn, EVAS_HINT_EXPAND, 0.2);
+    evas_object_size_hint_align_set(ad->btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
+    elm_box_pack_end(ad->box, ad->btn);
 
 	/*Icon */
-	ad->ic = elm_icon_add(ad->button);
-	elm_image_file_set(ad->ic, image_path, NULL);
-	elm_object_part_content_set(ad->button, "icon", ad->ic);
-	evas_object_show(ad->ic);
-
+    ad->ic = elm_icon_add(ad->btn);
+    char *image_path = NULL;
+    image_path = _create_resource_path(IMAGE_PATH);
+    elm_image_file_set(ad->ic, image_path, NULL);
+    elm_object_part_content_set(ad->btn, "icon", ad->ic);
+    evas_object_show(ad->ic);
+    evas_object_show(ad->btn);
 
 	/* Gesture */
 	ad->gest = elm_gesture_layer_add(ad->win);
-	elm_gesture_layer_attach(ad->gest, ad->button);
-	//elm_gesture_layer_flick_time_limit_ms_set(ad->gest, 250);
-	elm_gesture_layer_line_min_length_set(ad->gest, 0);
-	elm_gesture_layer_continues_enable_set(ad->gest, EINA_FALSE);
-	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_START,line_start, NULL);
-	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_END,line_end, NULL);
+	elm_gesture_layer_attach(ad->gest, ad->btn);
+	//elm_gesture_layer_line_min_length_set(ad->gest, 0);
+	//elm_gesture_layer_continues_enable_set(ad->gest, EINA_FALSE);
+	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_FLICKS, ELM_GESTURE_STATE_START,line_start, NULL);
+	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_FLICKS, ELM_GESTURE_STATE_MOVE,line_move, NULL);
+	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_FLICKS, ELM_GESTURE_STATE_END,line_end, NULL);
+	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_ABORT,line_abort, NULL);
+	evas_object_show(ad->gest);
 
-
-	evas_object_show(ad->button);
+	evas_object_show(ad->btn);
 
 
 
@@ -197,6 +239,7 @@ create_base_gui(appdata_s *ad, int width, int height)
 
 	update_watch(ad, watch_time, 0);
 	watch_time_delete(watch_time);
+
 
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
@@ -318,7 +361,7 @@ static bool app_create(int width, int height, void *data)
 	appdata_s *ad = data;
 	create_base_gui(ad, width, height);
 
-
+	// send_service_command("start");
 
 	return true;
 }
