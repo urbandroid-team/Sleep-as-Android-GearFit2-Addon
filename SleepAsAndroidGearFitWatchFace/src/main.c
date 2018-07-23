@@ -33,11 +33,15 @@ typedef struct appdata {
 	Evas_Object *label;
 	Evas_Object *ic;
 	Evas_Object *btn;
-	Evas_Object *btn_snooze;
-	Evas_Object *btn_dismiss;
+	Evas_Object *btn_snz;
+	Evas_Object *btn_dis;
+	Evas_Object *bg;
 	Evas_Object *gest;
 
 } appdata_s;
+
+int g_height;
+int g_width;
 
 #define TEXT_BUF_SIZE 256
 #define IMAGE_PATH "images/unnamed.png"
@@ -104,9 +108,9 @@ static void send_service_command(const char* command) {
 
 
 static Evas_Event_Flags
-double_tap_end(void *data, void *event_info)
+double_tap_end_base_gui(void *data, void *event_info)
 {
-	dlog_print(DLOG_INFO, LOG_TAG,"Line End");
+	dlog_print(DLOG_INFO, LOG_TAG,"Double Tap");
 
 	  send_service_command("start");
 
@@ -132,20 +136,21 @@ create_base_gui(appdata_s *ad, int width, int height)
 
 	/* Conformant */
 	ad->conform = elm_conformant_add(ad->win);
-	evas_object_size_hint_weight_set(ad->conform, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->conform, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_win_resize_object_add(ad->win, ad->conform);
 	evas_object_show(ad->conform);
 
 	/* Naviframe */
 	ad->nf = elm_naviframe_add(ad->conform);
-	evas_object_show(ad->nf);
-	elm_naviframe_prev_btn_auto_pushed_set(ad->nf, EINA_TRUE);
+	elm_naviframe_item_title_enabled_set(ad->nf, EINA_FALSE, EINA_FALSE);
+	elm_naviframe_item_title_visible_set(ad->nf, EINA_TRUE);
 	elm_object_content_set(ad->conform, ad->nf);
+	evas_object_show(ad->nf);
 
 	/* Box */
     ad->box = elm_box_add(ad->nf);
     evas_object_show(ad->box);
-    elm_naviframe_item_push(ad->nf, NULL, NULL, NULL, ad->box, NULL);
+    elm_naviframe_item_push(ad->nf, "Title Shows :(", NULL, NULL, ad->box, NULL);
 
 	/* Label */
 	ad->label = elm_label_add(ad->box);
@@ -172,7 +177,7 @@ create_base_gui(appdata_s *ad, int width, int height)
 	/* Gesture */
 	ad->gest = elm_gesture_layer_add(ad->win);
 	elm_gesture_layer_attach(ad->gest, ad->btn);
-	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_DOUBLE_TAPS, ELM_GESTURE_STATE_END,double_tap_end, NULL);
+	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_DOUBLE_TAPS, ELM_GESTURE_STATE_END,double_tap_end_base_gui, NULL);
 	evas_object_show(ad->gest);
 
 	evas_object_show(ad->btn);
@@ -189,40 +194,41 @@ create_base_gui(appdata_s *ad, int width, int height)
 	/* Show window after base gui is set up */
 	evas_object_show(ad->win);
 
+	dlog_print(DLOG_INFO, LOG_TAG, "Finished Base Gui");
+
 
 }
 
 static void
 switch_to_alarm_gui(appdata_s *ad)
 {
+	dlog_print(DLOG_INFO, LOG_TAG, "alarm face gui started with width: %d, heigh: %d",g_width,g_height);
+
 	/* Box */
 	ad->box = elm_box_add(ad->nf);
-	evas_object_show(ad->box);
-	elm_naviframe_item_push(ad->nf, NULL, NULL, NULL, ad->box, NULL);
+	elm_naviframe_item_push(ad->nf, "Alarm Title", NULL, NULL, ad->box, NULL);
 
 	/* Button Snooze */
- 	ad->btn_snooze = elm_button_add(ad->box);
-	evas_object_size_hint_weight_set(ad->btn_snooze, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(ad->btn_snooze, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	elm_box_pack_end(ad->box, ad->btn_snooze);
+ 	ad->btn_snz = elm_button_add(ad->box);
+ 	elm_object_text_set(ad->btn_snz,"Snooze");
+    evas_object_size_hint_align_set(ad->btn_snz, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	elm_box_pack_end(ad->box, ad->btn_snz);
 
 	/* Label */
 	ad->label = elm_label_add(ad->box);
-	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	evas_object_show(ad->label);
+    evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_box_pack_end(ad->box, ad->label);
+	evas_object_show(ad->label);
 
 	/* Button Dismiss */
-	ad->btn_dismiss = elm_button_add(ad->box);
-	evas_object_size_hint_weight_set(ad->btn_dismiss, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(ad->btn_dismiss, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	elm_box_pack_end(ad->box, ad->btn_dismiss);
-
+	ad->btn_dis = elm_button_add(ad->box);
+ 	elm_object_text_set(ad->btn_dis,"Dismiss");
+    evas_object_size_hint_align_set(ad->btn_dis, EVAS_HINT_FILL, 100);
+	elm_box_pack_end(ad->box, ad->btn_dis);
 	/* Gesture */
 
-	evas_object_show(ad->btn_snooze);
-	evas_object_show(ad->btn_dismiss);
+	evas_object_show(ad->btn_snz);
+	evas_object_show(ad->btn_dis);
 
 }
 
@@ -336,7 +342,12 @@ static bool app_create(int width, int height, void *data)
 		dlog_print(DLOG_ERROR, LOG_TAG, "watch_app_add_event_handler () is failed");
 
 	appdata_s *ad = data;
+
+	g_width = width;
+	g_height = height;
 	create_base_gui(ad, width, height);
+
+	switch_to_alarm_gui(ad);
 
 	// send_service_command("start");
 
