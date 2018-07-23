@@ -46,11 +46,9 @@ typedef struct appdata {
 	Evas_Object *btn_dis;
 	Evas_Object *bg;
 	Evas_Object *gest;
+	Evas_Object *label_tracking;
 
 } appdata_s;
-
-int g_height;
-int g_width;
 
 bool is_tracking = false;
 
@@ -72,13 +70,26 @@ update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 	watch_time_get_second(watch_time, &second);
 	if (!ambient) {
 		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center font_size=50><br/>%02d:%02d:%02d</align>",
-			hour24, minute, second);
+				hour24, minute, second);
 	} else {
 		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center font_size=50><br/>%02d:%02d</align>",
-			hour24, minute);
+				hour24, minute);
 	}
 
 	elm_object_text_set(ad->label, watch_text);
+}
+
+static void tracking_updater(appdata_s *ad, bool tracking){
+	is_tracking = tracking;
+
+	if (is_tracking){
+		dlog_print(DLOG_INFO, LOG_TAG, "UI: Tracking on");
+		elm_object_text_set(ad->btn,"Tracking");
+	} else{
+		dlog_print(DLOG_INFO, LOG_TAG, "UI: Tracking off");
+		elm_object_text_set(ad->btn,"Not Tracking");
+	}
+
 }
 
 static char *_create_resource_path(const char *file_name)
@@ -99,21 +110,21 @@ static char *_create_resource_path(const char *file_name)
 }
 
 static void send_service_command(const char* command) {
-    app_control_h app_control;
+	app_control_h app_control;
 	if (app_control_create(&app_control) == APP_CONTROL_ERROR_NONE) {
 		int res1 = 0, res2 = 0, res3 = 0;
 		if (((res1 = app_control_set_app_id(app_control, "com.urbandroid.sleep.gearfit.service")) == APP_CONTROL_ERROR_NONE)
-			&& ((res2 = app_control_add_extra_data(app_control, "app_action", command)) == APP_CONTROL_ERROR_NONE)
-			&& ((res3 = app_control_send_launch_request(app_control, NULL, NULL)) == APP_CONTROL_ERROR_NONE)) {
-			dlog_print(DLOG_INFO, LOG_TAG, "App command request sent: %s", command);
+				&& ((res2 = app_control_add_extra_data(app_control, "app_action", command)) == APP_CONTROL_ERROR_NONE)
+				&& ((res3 = app_control_send_launch_request(app_control, NULL, NULL)) == APP_CONTROL_ERROR_NONE)) {
+			dlog_print(DLOG_INFO, LOG_TAG, "WatchFace: App command request sent: %s", command);
 		} else {
-			dlog_print(DLOG_ERROR, LOG_TAG, "App command request sending failed! Err: %d %d %d", res1, res2, res3);
+			dlog_print(DLOG_ERROR, LOG_TAG, "WatchFace: App command request sending failed! Err: %d %d %d", res1, res2, res3);
 		}
 		if (app_control_destroy(app_control) == APP_CONTROL_ERROR_NONE) {
-			dlog_print(DLOG_INFO, LOG_TAG, "App control destroyed.");
+			dlog_print(DLOG_INFO, LOG_TAG, "WatchFace: App control destroyed.");
 		}
 	} else {
-		dlog_print(DLOG_ERROR, LOG_TAG, "App control creation failed!");
+		dlog_print(DLOG_ERROR, LOG_TAG, "WatchFace: App control creation failed!");
 	}
 }
 
@@ -123,9 +134,11 @@ double_tap_end_base_gui(void *data, void *event_info)
 {
 	dlog_print(DLOG_INFO, LOG_TAG,"Double Tap");
 
-	  send_service_command("start");
+	//tracking_updater(data, !is_tracking );
+	send_service_command("start_tracking");
 
-    return EVAS_EVENT_FLAG_ON_HOLD;
+
+	return EVAS_EVENT_FLAG_ON_HOLD;
 }
 
 static void
@@ -157,33 +170,34 @@ create_base_gui(appdata_s *ad, int width, int height)
 	evas_object_show(ad->nf);
 
 	/* Box */
-    ad->box = elm_box_add(ad->nf);
-    evas_object_show(ad->box);
-    elm_naviframe_item_push(ad->nf, "Title Shows :(", NULL, NULL, ad->box, NULL);
+	ad->box = elm_box_add(ad->nf);
+	evas_object_show(ad->box);
+	elm_naviframe_item_push(ad->nf, NULL,NULL, NULL, ad->box, NULL);
 
 	/* Label */
 	ad->label = elm_label_add(ad->box);
-    evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, 0.8);
-    evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, 0.8);
+	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(ad->label);
 	elm_box_pack_end(ad->box, ad->label);
 
 
-    /* Button */
-    ad->btn = elm_button_add(ad->box);
-    elm_object_text_set(ad->btn_snz,"Snooze");
-    evas_object_size_hint_weight_set(ad->btn, EVAS_HINT_EXPAND, 0.2);
-    evas_object_size_hint_align_set(ad->btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_box_pack_end(ad->box, ad->btn);
+	/* Button */
+	ad->btn = elm_button_add(ad->box);
+	//evas_object_color_set(ad->btn, 232, 63, 51, 255);
+	evas_object_size_hint_weight_set(ad->btn, EVAS_HINT_EXPAND, 0.2);
+	evas_object_size_hint_align_set(ad->btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	elm_box_pack_end(ad->box, ad->btn);
 
 	/*Icon */
-    ad->ic = elm_icon_add(ad->btn);
-    char *image_path = NULL;
-    image_path = _create_resource_path(IMAGE_PATH);
-    elm_image_file_set(ad->ic, image_path, NULL);
-    elm_object_part_content_set(ad->btn, "icon", ad->ic);
-    evas_object_show(ad->ic);
-    evas_object_show(ad->btn);
+	ad->ic = elm_icon_add(ad->btn);
+	char *image_path = NULL;
+	image_path = _create_resource_path(IMAGE_PATH);
+	elm_image_file_set(ad->ic, image_path, NULL);
+	elm_object_text_set(ad->btn, "Not Tracking");
+	elm_object_content_set(ad->btn, ad->ic);
+	evas_object_show(ad->ic);
+	evas_object_show(ad->btn);
 
 	/* Gesture */
 	ad->gest = elm_gesture_layer_add(ad->win);
@@ -226,22 +240,22 @@ switch_to_alarm_gui(appdata_s *ad)
 	elm_naviframe_item_push(ad->nf, NULL, NULL, NULL, ad->bg, NULL);
 
 	/* Button Snooze */
- 	ad->btn_snz = elm_button_add(ad->box);
- 	elm_object_text_set(ad->btn_snz,"Snooze");
-    evas_object_size_hint_align_set(ad->btn_snz, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	ad->btn_snz = elm_button_add(ad->box);
+	elm_object_text_set(ad->btn_snz,"Snooze");
+	evas_object_size_hint_align_set(ad->btn_snz, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_box_pack_end(ad->box, ad->btn_snz);
 
 	/* Label */
 	ad->label = elm_label_add(ad->box);
-    evas_object_color_set(ad->label, ALARM_TEXT_R, ALARM_TEXT_G, ALARM_TEXT_B, ALARM_TEXT_A);
-    evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_color_set(ad->label, ALARM_TEXT_R, ALARM_TEXT_G, ALARM_TEXT_B, ALARM_TEXT_A);
+	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_box_pack_end(ad->box, ad->label);
 	evas_object_show(ad->label);
 
 	/* Button Dismiss */
 	ad->btn_dis = elm_button_add(ad->box);
- 	elm_object_text_set(ad->btn_dis,"Dismiss");
-    evas_object_size_hint_align_set(ad->btn_dis, EVAS_HINT_FILL, 100);
+	elm_object_text_set(ad->btn_dis,"Dismiss");
+	evas_object_size_hint_align_set(ad->btn_dis, EVAS_HINT_FILL, 100);
 	elm_box_pack_end(ad->box, ad->btn_dis);
 	/* Gesture */
 
@@ -362,9 +376,7 @@ static bool app_create(int width, int height, void *data)
 	appdata_s *ad = data;
 	create_base_gui(ad, width, height);
 
-	switch_to_alarm_gui(ad);
-
-	// send_service_command("start");
+	send_service_command("start");
 
 	return true;
 }
@@ -374,27 +386,31 @@ static bool app_create(int width, int height, void *data)
  * sends the launch request to the application
  */
 static void app_control(app_control_h app_control, void *data){
-	dlog_print(DLOG_INFO, LOG_TAG, "Service app control received");
+	dlog_print(DLOG_INFO, LOG_TAG, "WatchFace: app control received");
 	char *caller_id = NULL;
 	if (app_control_get_caller(app_control, &caller_id) == APP_CONTROL_ERROR_NONE) {
-		dlog_print(DLOG_INFO, LOG_TAG, "Caller: %s", caller_id);
+		dlog_print(DLOG_INFO, LOG_TAG, "WatchFace: Caller: %s", caller_id);
 		free(caller_id);
 	}
 
 	char *action_value = NULL;
-	    if (app_control_get_extra_data(app_control, "app_action", &action_value) == APP_CONTROL_ERROR_NONE) {
-	    	dlog_print(DLOG_INFO, LOG_TAG, "App control action: %s", action_value);
+	if (app_control_get_extra_data(app_control, "app_action", &action_value) == APP_CONTROL_ERROR_NONE) {
+		dlog_print(DLOG_INFO, LOG_TAG, "WatchFace: App control action: %s", action_value);
 
-	    	// Add start?
-	    	if (action_value != NULL && strcmp(action_value, "alarm_started") == 0) {
-	    		switch_to_alarm_gui(data);
-			} else {
-				dlog_print(DLOG_INFO, LOG_TAG, "Unsupported action! Doing nothing...");
-				free(action_value);
-			}
-		} else {
-			dlog_print(DLOG_ERROR, LOG_TAG, "Failed to get app control attribute");
+		// Add start?
+		if (action_value != NULL && strcmp(action_value, "alarm_started") == 0) {
+			switch_to_alarm_gui(data);
+		} else if (action_value != NULL && strcmp(action_value, "tracking_on") == 0) {
+			tracking_updater(data, true);
+		} else if (action_value != NULL && strcmp(action_value, "tracking_off") == 0) {
+			tracking_updater(data, false);
+		} else{
+			dlog_print(DLOG_INFO, LOG_TAG, "WatchFace: Unsupported action! Doing nothing...");
+			free(action_value);
 		}
+	} else {
+		dlog_print(DLOG_ERROR, LOG_TAG, "WatchFace: Failed to get app control attribute");
+	}
 
 }
 
@@ -502,13 +518,13 @@ int main(int argc, char *argv[])
 
 	watch_app_add_event_handler(&handlers[APP_EVENT_LANGUAGE_CHANGED],
 			APP_EVENT_LANGUAGE_CHANGED, watch_app_lang_changed, &ad);
-		watch_app_add_event_handler(&handlers[APP_EVENT_REGION_FORMAT_CHANGED],
+	watch_app_add_event_handler(&handlers[APP_EVENT_REGION_FORMAT_CHANGED],
 			APP_EVENT_REGION_FORMAT_CHANGED, watch_app_region_changed, &ad);
 
-		ret = watch_app_main(argc, argv, &event_callback, &ad);
-		if (ret != APP_ERROR_NONE) {
-			dlog_print(DLOG_ERROR, LOG_TAG, "watch_app_main() is failed. err = %d", ret);
-		}
+	ret = watch_app_main(argc, argv, &event_callback, &ad);
+	if (ret != APP_ERROR_NONE) {
+		dlog_print(DLOG_ERROR, LOG_TAG, "watch_app_main() is failed. err = %d", ret);
+	}
 
 	return ret;
 }

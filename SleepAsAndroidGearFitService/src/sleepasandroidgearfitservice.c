@@ -308,13 +308,14 @@ static Eina_Bool update_ui_cb(void *data EINA_UNUSED) {
 	return ECORE_CALLBACK_RENEW;
 }
 
+
+
 static void start_tracking() {
 	dlog_print(DLOG_INFO, TAG, "Starting tracking");
 	if (is_tracking) {
 		dlog_print(DLOG_INFO, TAG, "Duplicate start called");
 		return;
 	}
-
 	setenv("LC_NUMBERS", "en_US.utf8", 1);
 	elm_language_set("en_US.utf8");
 
@@ -328,6 +329,9 @@ static void start_tracking() {
 	if (hr_enabled) {
 		start_hr();
 	}
+
+	send_ui_command("tracking_on");
+
 }
 
 static void stop_tracking() {
@@ -347,6 +351,9 @@ static void stop_tracking() {
 		ecore_timer_del(hr_timer);
 		hr_timer = NULL;
 	}
+
+	send_ui_command("tracking_off");
+
 }
 
 static void send_ui_command(const char* command) {
@@ -356,15 +363,15 @@ static void send_ui_command(const char* command) {
 		if (((res1 = app_control_set_app_id(app_control, "com.urbandroid.sleep.gearfit.watchface")) == APP_CONTROL_ERROR_NONE)
 			&& ((res2 = app_control_add_extra_data(app_control, "app_action", command)) == APP_CONTROL_ERROR_NONE)
 			&& ((res3 = app_control_send_launch_request(app_control, NULL, NULL)) == APP_CONTROL_ERROR_NONE)) {
-			dlog_print(DLOG_INFO, TAG, "App command request sent: %s", command);
+			dlog_print(DLOG_INFO, TAG, "Service: App command request sent: %s", command);
 		} else {
-			dlog_print(DLOG_ERROR, TAG, "App command request sending failed! Err: %d %d %d", res1, res2, res3);
+			dlog_print(DLOG_ERROR, TAG, "Service: App command request sending failed! Err: %d %d %d", res1, res2, res3);
 		}
 		if (app_control_destroy(app_control) == APP_CONTROL_ERROR_NONE) {
-			dlog_print(DLOG_INFO, TAG, "App control destroyed.");
+			dlog_print(DLOG_INFO, TAG, "Service: App control destroyed.");
 		}
 	} else {
-		dlog_print(DLOG_ERROR, TAG, "App control creation failed!");
+		dlog_print(DLOG_ERROR, TAG, "Service: App control creation failed!");
 	}
 }
 
@@ -534,9 +541,12 @@ static void handle_data_received(unsigned int payload_length, void *buffer) {
 }
 
 bool service_app_create(void *data) {
+
 	dlog_print(DLOG_INFO, TAG, "Service started");
 	initialize_sap(handle_data_received);
 	dlog_print(DLOG_INFO, TAG, "SAP initialized");
+
+
 
     return true;
 }
@@ -549,19 +559,20 @@ void service_app_terminate(void *data) {
 }
 
 void service_app_control(app_control_h app_control, void *data) {
-	dlog_print(DLOG_INFO, LOG_TAG, "Service app control received");
+	dlog_print(DLOG_INFO, LOG_TAG, "Service: App control received");
 	char *caller_id = NULL;
 	if (app_control_get_caller(app_control, &caller_id) == APP_CONTROL_ERROR_NONE) {
-		dlog_print(DLOG_INFO, LOG_TAG, "Caller: %s", caller_id);
+		dlog_print(DLOG_INFO, LOG_TAG, "Service: Caller: %s", caller_id);
 		free(caller_id);
 	}
-
 	char *action_value = NULL;
     if (app_control_get_extra_data(app_control, "app_action", &action_value) == APP_CONTROL_ERROR_NONE) {
-    	dlog_print(DLOG_INFO, LOG_TAG, "App control action: %s", action_value);
+    	dlog_print(DLOG_INFO, LOG_TAG, "Service: App control action: %s", action_value);
 
     	// Add start?
-    	if (action_value != NULL && strcmp(action_value, "pause") == 0) {
+    	if (action_value != NULL && strcmp(action_value, "start_tracking") == 0) {
+    		start_tracking();
+		} else if (action_value != NULL && strcmp(action_value, "pause") == 0) {
 			send_data("PAUSE");
 		} else if (action_value != NULL && strcmp(action_value, "resume") == 0) {
 			send_data("RESUME");
@@ -570,11 +581,12 @@ void service_app_control(app_control_h app_control, void *data) {
 		} else if (action_value != NULL && strcmp(action_value, "dismiss") == 0) {
 			send_data("DISMISS");
 		} else {
-			dlog_print(DLOG_INFO, LOG_TAG, "Unsupported action! Doing nothing...");
+			dlog_print(DLOG_INFO, LOG_TAG, "Service: Unsupported action! Doing nothing...");
 			free(action_value);
 		}
 	} else {
-		dlog_print(DLOG_ERROR, LOG_TAG, "Failed to get app control attribute");
+		dlog_print(DLOG_ERROR, LOG_TAG, "Service: Failed to get app control attribute");
+
 	}
 }
 
