@@ -23,6 +23,15 @@
 
 #define MAIN_EDJ "icon/main.edj"
 
+#define ALARM_BG_R 240
+#define  ALARM_BG_B 240
+#define  ALARM_BG_G 240
+
+#define ALARM_TEXT_R 30
+#define  ALARM_TEXT_B 30
+#define  ALARM_TEXT_G 30
+#define  ALARM_TEXT_A 255
+
 static char *_create_resource_path(const char *file_name);
 
 typedef struct appdata {
@@ -42,6 +51,8 @@ typedef struct appdata {
 
 int g_height;
 int g_width;
+
+bool is_tracking = false;
 
 #define TEXT_BUF_SIZE 256
 #define IMAGE_PATH "images/unnamed.png"
@@ -142,8 +153,6 @@ create_base_gui(appdata_s *ad, int width, int height)
 
 	/* Naviframe */
 	ad->nf = elm_naviframe_add(ad->conform);
-	elm_naviframe_item_title_enabled_set(ad->nf, EINA_FALSE, EINA_FALSE);
-	elm_naviframe_item_title_visible_set(ad->nf, EINA_TRUE);
 	elm_object_content_set(ad->conform, ad->nf);
 	evas_object_show(ad->nf);
 
@@ -159,8 +168,10 @@ create_base_gui(appdata_s *ad, int width, int height)
 	evas_object_show(ad->label);
 	elm_box_pack_end(ad->box, ad->label);
 
+
     /* Button */
     ad->btn = elm_button_add(ad->box);
+    elm_object_text_set(ad->btn_snz,"Snooze");
     evas_object_size_hint_weight_set(ad->btn, EVAS_HINT_EXPAND, 0.2);
     evas_object_size_hint_align_set(ad->btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_box_pack_end(ad->box, ad->btn);
@@ -202,11 +213,17 @@ create_base_gui(appdata_s *ad, int width, int height)
 static void
 switch_to_alarm_gui(appdata_s *ad)
 {
-	dlog_print(DLOG_INFO, LOG_TAG, "alarm face gui started with width: %d, heigh: %d",g_width,g_height);
+	dlog_print(DLOG_INFO, LOG_TAG, "alarm face gui started");
 
-	/* Box */
-	ad->box = elm_box_add(ad->nf);
-	elm_naviframe_item_push(ad->nf, "Alarm Title", NULL, NULL, ad->box, NULL);
+	/* Box/Background */
+	ad->bg = elm_bg_add(ad->nf);
+	elm_bg_color_set(ad->bg, ALARM_BG_R, ALARM_BG_G, ALARM_BG_B);
+	//elm_bg_file_set(obj, file, group)        // Set image for background,read documentation about sizing
+
+
+	ad->box = elm_box_add(ad->bg);
+	elm_object_content_set(ad->bg,ad->box);
+	elm_naviframe_item_push(ad->nf, NULL, NULL, NULL, ad->bg, NULL);
 
 	/* Button Snooze */
  	ad->btn_snz = elm_button_add(ad->box);
@@ -216,6 +233,7 @@ switch_to_alarm_gui(appdata_s *ad)
 
 	/* Label */
 	ad->label = elm_label_add(ad->box);
+    evas_object_color_set(ad->label, ALARM_TEXT_R, ALARM_TEXT_G, ALARM_TEXT_B, ALARM_TEXT_A);
     evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_box_pack_end(ad->box, ad->label);
 	evas_object_show(ad->label);
@@ -342,9 +360,6 @@ static bool app_create(int width, int height, void *data)
 		dlog_print(DLOG_ERROR, LOG_TAG, "watch_app_add_event_handler () is failed");
 
 	appdata_s *ad = data;
-
-	g_width = width;
-	g_height = height;
 	create_base_gui(ad, width, height);
 
 	switch_to_alarm_gui(ad);
