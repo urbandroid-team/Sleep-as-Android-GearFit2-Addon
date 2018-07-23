@@ -33,6 +33,8 @@ typedef struct appdata {
 	Evas_Object *label;
 	Evas_Object *ic;
 	Evas_Object *btn;
+	Evas_Object *btn_snooze;
+	Evas_Object *btn_dismiss;
 	Evas_Object *gest;
 
 } appdata_s;
@@ -101,61 +103,12 @@ static void send_service_command(const char* command) {
 }
 
 
-
 static Evas_Event_Flags
-line_start(void *data, void *event_info)
-{
-
-	dlog_print(DLOG_INFO, LOG_TAG,"Line Start");
-
-	 return EVAS_EVENT_FLAG_ON_HOLD;
-}
-
-static Evas_Event_Flags
-line_move(void *data, void *event_info)
-{
-	dlog_print(DLOG_INFO, LOG_TAG,"Line Move");
-	/* Elm_Gesture_Line_Info *p = (Elm_Gesture_Line_Info *)event_info;
-
-
-	dlog_print(DLOG_INFO, LOG_TAG,"Line Up Info: line end angle=<%lf> x1,y1=<%d,%d> x2,y2=<%d,%d> tx,ty=<%u,%u>\n",
-	           p->angle, p->momentum.x1, p->momentum.y1, p->momentum.x2, p->momentum.y2,
-	           p->momentum.tx, p->momentum.ty);
-	           */
-    return EVAS_EVENT_FLAG_ON_HOLD;
-}
-
-static Evas_Event_Flags
-line_end(void *data, void *event_info)
+double_tap_end(void *data, void *event_info)
 {
 	dlog_print(DLOG_INFO, LOG_TAG,"Line End");
-	Elm_Gesture_Line_Info *p = (Elm_Gesture_Line_Info *)event_info;
 
-
-	dlog_print(DLOG_INFO, LOG_TAG,"Line Up Info: line end angle=<%lf> x1,y1=<%d,%d> x2,y2=<%d,%d> tx,ty=<%u,%u>\n",
-	           p->angle, p->momentum.x1, p->momentum.y1, p->momentum.x2, p->momentum.y2,
-	           p->momentum.tx, p->momentum.ty);
-
-	if (p->angle > 270 || p-> angle < 90){
-		dlog_print(DLOG_INFO, LOG_TAG,"Line Direction UP");
-		send_service_command("start");
-		dlog_print(DLOG_INFO, LOG_TAG,"Created Service");
-	}
-    return EVAS_EVENT_FLAG_ON_HOLD;
-}
-
-static Evas_Event_Flags
-line_abort(void *data, void *event_info)
-{
-
-	Elm_Gesture_Line_Info *p = (Elm_Gesture_Line_Info *)event_info;
-
-	dlog_print(DLOG_INFO, LOG_TAG,"Line Abort");
-	dlog_print(DLOG_INFO, LOG_TAG,"Line Up Info: line end angle=<%lf> x1,y1=<%d,%d> x2,y2=<%d,%d> tx,ty=<%u,%u>\n",
-	           p->angle, p->momentum.x1, p->momentum.y1, p->momentum.x2, p->momentum.y2,
-	           p->momentum.tx, p->momentum.ty);
-
-
+	  send_service_command("start");
 
     return EVAS_EVENT_FLAG_ON_HOLD;
 }
@@ -219,18 +172,10 @@ create_base_gui(appdata_s *ad, int width, int height)
 	/* Gesture */
 	ad->gest = elm_gesture_layer_add(ad->win);
 	elm_gesture_layer_attach(ad->gest, ad->btn);
-	//elm_gesture_layer_line_min_length_set(ad->gest, 0);
-	//elm_gesture_layer_continues_enable_set(ad->gest, EINA_FALSE);
-	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_FLICKS, ELM_GESTURE_STATE_START,line_start, NULL);
-	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_FLICKS, ELM_GESTURE_STATE_MOVE,line_move, NULL);
-	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_FLICKS, ELM_GESTURE_STATE_END,line_end, NULL);
-	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_LINES, ELM_GESTURE_STATE_ABORT,line_abort, NULL);
+	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_DOUBLE_TAPS, ELM_GESTURE_STATE_END,double_tap_end, NULL);
 	evas_object_show(ad->gest);
 
 	evas_object_show(ad->btn);
-
-
-
 
 
 	ret = watch_time_get_current_time(&watch_time);
@@ -247,7 +192,39 @@ create_base_gui(appdata_s *ad, int width, int height)
 
 }
 
+static void
+switch_to_alarm_gui(appdata_s *ad)
+{
+	/* Box */
+	ad->box = elm_box_add(ad->nf);
+	evas_object_show(ad->box);
+	elm_naviframe_item_push(ad->nf, NULL, NULL, NULL, ad->box, NULL);
 
+	/* Button Snooze */
+ 	ad->btn_snooze = elm_button_add(ad->box);
+	evas_object_size_hint_weight_set(ad->btn_snooze, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->btn_snooze, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	elm_box_pack_end(ad->box, ad->btn_snooze);
+
+	/* Label */
+	ad->label = elm_label_add(ad->box);
+	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(ad->label);
+	elm_box_pack_end(ad->box, ad->label);
+
+	/* Button Dismiss */
+	ad->btn_dismiss = elm_button_add(ad->box);
+	evas_object_size_hint_weight_set(ad->btn_dismiss, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->btn_dismiss, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	elm_box_pack_end(ad->box, ad->btn_dismiss);
+
+	/* Gesture */
+
+	evas_object_show(ad->btn_snooze);
+	evas_object_show(ad->btn_dismiss);
+
+}
 
 /*
  * @brief The system language changed event callback function
@@ -370,11 +347,29 @@ static bool app_create(int width, int height, void *data)
  * @brief: This callback function is called when another application
  * sends the launch request to the application
  */
-static void app_control(app_control_h app_control, void *data)
-{
-	/*
-	 * Handle the launch request.
-	 */
+static void app_control(app_control_h app_control, void *data){
+	dlog_print(DLOG_INFO, LOG_TAG, "Service app control received");
+	char *caller_id = NULL;
+	if (app_control_get_caller(app_control, &caller_id) == APP_CONTROL_ERROR_NONE) {
+		dlog_print(DLOG_INFO, LOG_TAG, "Caller: %s", caller_id);
+		free(caller_id);
+	}
+
+	char *action_value = NULL;
+	    if (app_control_get_extra_data(app_control, "app_action", &action_value) == APP_CONTROL_ERROR_NONE) {
+	    	dlog_print(DLOG_INFO, LOG_TAG, "App control action: %s", action_value);
+
+	    	// Add start?
+	    	if (action_value != NULL && strcmp(action_value, "alarm_started") == 0) {
+	    		switch_to_alarm_gui(data);
+			} else {
+				dlog_print(DLOG_INFO, LOG_TAG, "Unsupported action! Doing nothing...");
+				free(action_value);
+			}
+		} else {
+			dlog_print(DLOG_ERROR, LOG_TAG, "Failed to get app control attribute");
+		}
+
 }
 
 /*
