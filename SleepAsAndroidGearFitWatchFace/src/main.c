@@ -176,7 +176,7 @@ create_base_gui(appdata_s *ad, int width, int height)
 
 	/* Conformant */
 	ad->conform = elm_conformant_add(ad->win);
-	evas_object_size_hint_align_set(ad->conform, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_size_hint_weight_set(ad->conform, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	elm_win_resize_object_add(ad->win, ad->conform);
 	evas_object_show(ad->conform);
 
