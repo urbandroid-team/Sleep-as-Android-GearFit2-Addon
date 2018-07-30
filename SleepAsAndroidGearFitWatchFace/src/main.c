@@ -258,6 +258,7 @@ switch_to_alarm_gui(appdata_s *ad)
 
 	/* Button Snooze */
 	ad->btn_snz = elm_button_add(ad->box);
+	elm_object_style_set(ad->btn_snz, "green");
 	elm_object_text_set(ad->btn_snz,"Snooze");
 	evas_object_smart_callback_add(ad->btn_snz, "clicked", snz_button_clicked, NULL);
 
@@ -278,6 +279,7 @@ switch_to_alarm_gui(appdata_s *ad)
 	/* Button Dismiss */
 	ad->btn_dis = elm_button_add(ad->box);
 	elm_object_text_set(ad->btn_dis,"Dismiss");
+	elm_object_style_set(ad->btn_dis, "red");
 	evas_object_smart_callback_add(ad->btn_dis, "clicked", dis_button_clicked, NULL);
 	evas_object_size_hint_weight_set(ad->btn_dis, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->btn_dis, EVAS_HINT_FILL, EVAS_HINT_FILL);
