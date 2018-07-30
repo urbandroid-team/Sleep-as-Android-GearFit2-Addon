@@ -392,7 +392,6 @@ static bool app_create(int width, int height, void *data)
 
 	appdata_s *ad = data;
 	create_base_gui(ad, width, height);
-	switch_to_alarm_gui(ad);
 	send_service_command("start");
 
 	return true;
