@@ -141,6 +141,22 @@ double_tap_end_base_gui(void *data, void *event_info)
 	return EVAS_EVENT_FLAG_ON_HOLD;
 }
 
+static Evas_Event_Flags
+snz_button_clicked(void *data, void *event_info)
+{
+	dlog_print(DLOG_INFO, LOG_TAG,"Watchface: Snooze Clicked");
+	send_service_command("snooze");
+	return EVAS_EVENT_FLAG_ON_HOLD;
+}
+
+static Evas_Event_Flags
+dis_button_clicked(void *data, void *event_info)
+{
+	dlog_print(DLOG_INFO, LOG_TAG,"Watchface: Dismiss Clicked");
+	send_service_command("dismiss");
+	return EVAS_EVENT_FLAG_ON_HOLD;
+}
+
 static void
 create_base_gui(appdata_s *ad, int width, int height)
 {
@@ -180,6 +196,7 @@ create_base_gui(appdata_s *ad, int width, int height)
 	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(ad->label);
 	elm_box_pack_end(ad->box, ad->label);
+
 
 
 	/* Button */
@@ -242,8 +259,10 @@ switch_to_alarm_gui(appdata_s *ad)
 	/* Button Snooze */
 	ad->btn_snz = elm_button_add(ad->box);
 	elm_object_text_set(ad->btn_snz,"Snooze");
+	evas_object_smart_callback_add(ad->btn_snz, "clicked", snz_button_clicked, NULL);
 	evas_object_size_hint_align_set(ad->btn_snz, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_box_pack_end(ad->box, ad->btn_snz);
+	evas_object_show(ad->btn_snz);
 
 	/* Label */
 	ad->label = elm_label_add(ad->box);
@@ -255,11 +274,9 @@ switch_to_alarm_gui(appdata_s *ad)
 	/* Button Dismiss */
 	ad->btn_dis = elm_button_add(ad->box);
 	elm_object_text_set(ad->btn_dis,"Dismiss");
+	evas_object_smart_callback_add(ad->btn_dis, "clicked", dis_button_clicked, NULL);
 	evas_object_size_hint_align_set(ad->btn_dis, EVAS_HINT_FILL, 100);
 	elm_box_pack_end(ad->box, ad->btn_dis);
-	/* Gesture */
-
-	evas_object_show(ad->btn_snz);
 	evas_object_show(ad->btn_dis);
 
 }
@@ -375,7 +392,7 @@ static bool app_create(int width, int height, void *data)
 
 	appdata_s *ad = data;
 	create_base_gui(ad, width, height);
-
+	switch_to_alarm_gui(ad);
 	send_service_command("start");
 
 	return true;
