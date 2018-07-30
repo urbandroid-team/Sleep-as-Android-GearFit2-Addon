@@ -260,6 +260,8 @@ switch_to_alarm_gui(appdata_s *ad)
 	ad->btn_snz = elm_button_add(ad->box);
 	elm_object_text_set(ad->btn_snz,"Snooze");
 	evas_object_smart_callback_add(ad->btn_snz, "clicked", snz_button_clicked, NULL);
+
+	evas_object_size_hint_weight_set(ad->btn_dis, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->btn_snz, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_box_pack_end(ad->box, ad->btn_snz);
 	evas_object_show(ad->btn_snz);
@@ -267,6 +269,8 @@ switch_to_alarm_gui(appdata_s *ad)
 	/* Label */
 	ad->label = elm_label_add(ad->box);
 	evas_object_color_set(ad->label, ALARM_TEXT_R, ALARM_TEXT_G, ALARM_TEXT_B, ALARM_TEXT_A);
+
+	evas_object_size_hint_weight_set(ad->btn_dis, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_box_pack_end(ad->box, ad->label);
 	evas_object_show(ad->label);
@@ -275,7 +279,8 @@ switch_to_alarm_gui(appdata_s *ad)
 	ad->btn_dis = elm_button_add(ad->box);
 	elm_object_text_set(ad->btn_dis,"Dismiss");
 	evas_object_smart_callback_add(ad->btn_dis, "clicked", dis_button_clicked, NULL);
-	evas_object_size_hint_align_set(ad->btn_dis, EVAS_HINT_FILL, 100);
+	evas_object_size_hint_weight_set(ad->btn_dis, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->btn_dis, EVAS_HINT_FILL, EVAS_HINT_FILL);
 	elm_box_pack_end(ad->box, ad->btn_dis);
 	evas_object_show(ad->btn_dis);
 
@@ -392,6 +397,9 @@ static bool app_create(int width, int height, void *data)
 
 	appdata_s *ad = data;
 	create_base_gui(ad, width, height);
+
+	switch_to_alarm_gui(ad);
+
 	send_service_command("start");
 
 	return true;
