@@ -356,7 +356,7 @@ void low_battery(app_event_info_h event_info, void* data)
 	/*
 	 * Takes necessary actions when system is running on low battery
 	 */
-	watch_app_exit();
+//	watch_app_exit();
 }
 
 /*
@@ -369,7 +369,7 @@ void low_memory(app_event_info_h event_info, void* data)
 	/*
 	 * Takes necessary actions when system is running on low memory
 	 */
-	watch_app_exit();
+//	watch_app_exit();
 }
 
 /*
@@ -425,9 +425,9 @@ static bool app_create(int width, int height, void *data)
 	appdata_s *ad = data;
 	create_base_gui(ad, width, height);
 
-	switch_to_alarm_gui(ad);
+//	switch_to_alarm_gui(ad);
 
-	send_service_command("start");
+//	send_service_command("start");
 
 	return true;
 }
@@ -451,6 +451,8 @@ static void app_control(app_control_h app_control, void *data){
 		// Add start?
 		if (action_value != NULL && strcmp(action_value, "alarm_started") == 0) {
 			switch_to_alarm_gui(data);
+		} else if (action_value != NULL && strcmp(action_value, "alarm_finished") == 0) {
+//			tracking_updater(data, true);
 		} else if (action_value != NULL && strcmp(action_value, "tracking_on") == 0) {
 			tracking_updater(data, true);
 		} else if (action_value != NULL && strcmp(action_value, "tracking_off") == 0) {
@@ -493,7 +495,7 @@ static void app_resume(void *data)
  */
 static void app_terminate(void *data)
 {
-
+	send_service_command("terminate");
 }
 
 /*
