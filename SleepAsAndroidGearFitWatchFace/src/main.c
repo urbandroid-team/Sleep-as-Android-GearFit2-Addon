@@ -71,10 +71,10 @@ update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 	watch_time_get_minute(watch_time, &minute);
 	watch_time_get_second(watch_time, &second);
 	if (!ambient) {
-		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center font_size=50><br/>%02d:%02d:%02d</align>",
+		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center valign=middle font_size=50><br/>%02d:%02d:%02d</align>",
 				hour24, minute, second);
 	} else {
-		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center font_size=50><br/>%02d:%02d</align>",
+		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center valign=middle font_size=50><br/>%02d:%02d</align>",
 				hour24, minute);
 	}
 
@@ -192,6 +192,8 @@ create_base_gui(appdata_s *ad, int width, int height)
 	evas_object_show(ad->box);
 	elm_naviframe_item_push(ad->nf, NULL,NULL, NULL, ad->box, NULL);
 
+
+
 	/* Label */
 	ad->label_time = elm_label_add(ad->box);
 	evas_object_size_hint_weight_set(ad->label_time, EVAS_HINT_EXPAND, 0.8);
@@ -246,7 +248,7 @@ create_base_gui(appdata_s *ad, int width, int height)
 static void
 switch_to_alarm_gui(appdata_s *ad)
 {
-	dlog_print(DLOG_INFO, LOG_TAG, "alarm face gui started");
+	dlog_print(DLOG_INFO, LOG_TAG, "Alarm GUI started");
 
 
 	ad->bg = elm_bg_add(ad->nf);
@@ -276,23 +278,22 @@ switch_to_alarm_gui(appdata_s *ad)
 	elm_object_content_set(bg_dis,label_dis);
 	evas_object_size_hint_align_set(label_dis,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(label_dis,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	elm_object_text_set(label_dis,"<align=center> DISMISS </align> ");
+	elm_object_text_set(label_dis,"<align=center valign=middle> DISMISS </align> ");
 	elm_table_pack(table_alarm,bg_dis,0,1,1,1);
 	evas_object_show(label_dis);
 
 	/* Label Time */
 	ad->label_time = elm_label_add(table_alarm);
-	elm_object_text_set(ad->label_time,"<align=center> TIME </align> ");
-	//evas_object_size_hint_min_set(ad->label_time, g_width, g_height/2);
+	evas_object_color_set(ad->label_time,30,30,30,255);
+	elm_object_text_set(ad->label_time,"<align=center color=#303030  valign=middle> TIME </align> ");
 	evas_object_size_hint_align_set(ad->label_time,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(ad->label_time,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	elm_table_pack(table_alarm,ad->label_time,0,4,1,1);
 	evas_object_show(ad->label_time);
 
-	/* Dismiss Snooze */
+	/* Background Snooze */
 	Evas_Object *bg_snz = elm_bg_add(table_alarm);
 	elm_bg_color_set(bg_snz,0,140,0);
-	//evas_object_size_hint_min_set(bg_snz, g_width, g_height/4);
 	evas_object_size_hint_weight_set(bg_snz,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(bg_snz,EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(bg_snz);
@@ -303,11 +304,19 @@ switch_to_alarm_gui(appdata_s *ad)
 	elm_object_content_set(bg_snz,label_snz);
 	evas_object_size_hint_align_set(label_snz,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(label_snz,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	elm_object_text_set(label_snz,"<align=center> Snooze </align> ");
+	elm_object_text_set(label_snz,"<align=center valign=middle> Snooze </align> ");
 	elm_table_pack(table_alarm,bg_snz,0,7,1,1);
 	evas_object_show(label_snz);
 
+	/* Gestures */
+	Evas_Object *gest_dis = elm_gesture_layer_add(ad->win);
+	elm_gesture_layer_attach(gest_dis, bg_dis);
+	elm_gesture_layer_cb_set(gest_dis, ELM_GESTURE_N_TAPS, ELM_GESTURE_STATE_END, dis_button_clicked, NULL);
+	Evas_Object *gest_snz = elm_gesture_layer_add(ad->win);
+	elm_gesture_layer_attach(gest_snz, bg_snz);
+	elm_gesture_layer_cb_set(gest_snz, ELM_GESTURE_N_TAPS, ELM_GESTURE_STATE_END, snz_button_clicked, NULL);
 
+	dlog_print(DLOG_INFO, LOG_TAG, "Alarm GUI Finished");
 }
 
 /*
