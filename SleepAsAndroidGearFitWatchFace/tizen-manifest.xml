@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <manifest xmlns="http://tizen.org/ns/packages" api-version="2.3.1" package="com.urbandroid.sleep.gearfit" version="1.0.0">
     <profile name="wearable"/>
-    <watch-application ambient-support="true" appid="com.urbandroid.sleep.gearfit.watchface" exec="sleepasandroidgearfitwatchface">
+    <watch-application ambient-support="false" appid="com.urbandroid.sleep.gearfit.watchface" exec="sleepasandroidgearfitwatchface">
         <label>sleepasandroidgearfitwatchface</label>
         <icon>sleepasandroidgearfitwatchface.png</icon>
     </watch-application>
