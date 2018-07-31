@@ -39,7 +39,7 @@ typedef struct appdata {
 	Evas_Object *conform;
 	Evas_Object *nf;
 	Evas_Object *box;
-	Evas_Object *label;
+	Evas_Object *label_time;
 	Evas_Object *ic;
 	Evas_Object *btn;
 	Evas_Object *btn_snz;
@@ -51,6 +51,8 @@ typedef struct appdata {
 } appdata_s;
 
 bool is_tracking = false;
+int g_width;
+int g_height;
 
 #define TEXT_BUF_SIZE 256
 #define IMAGE_PATH "images/unnamed.png"
@@ -76,7 +78,7 @@ update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 				hour24, minute);
 	}
 
-	elm_object_text_set(ad->label, watch_text);
+	elm_object_text_set(ad->label_time, watch_text);
 }
 
 static void tracking_updater(appdata_s *ad, bool tracking){
@@ -191,11 +193,11 @@ create_base_gui(appdata_s *ad, int width, int height)
 	elm_naviframe_item_push(ad->nf, NULL,NULL, NULL, ad->box, NULL);
 
 	/* Label */
-	ad->label = elm_label_add(ad->box);
-	evas_object_size_hint_weight_set(ad->label, EVAS_HINT_EXPAND, 0.8);
-	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	evas_object_show(ad->label);
-	elm_box_pack_end(ad->box, ad->label);
+	ad->label_time = elm_label_add(ad->box);
+	evas_object_size_hint_weight_set(ad->label_time, EVAS_HINT_EXPAND, 0.8);
+	evas_object_size_hint_align_set(ad->label_time, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(ad->label_time);
+	elm_box_pack_end(ad->box, ad->label_time);
 
 
 
@@ -246,45 +248,65 @@ switch_to_alarm_gui(appdata_s *ad)
 {
 	dlog_print(DLOG_INFO, LOG_TAG, "alarm face gui started");
 
-	/* Box/Background */
+
 	ad->bg = elm_bg_add(ad->nf);
-	elm_bg_color_set(ad->bg, ALARM_BG_R, ALARM_BG_G, ALARM_BG_B);
-	//elm_bg_file_set(obj, file, group)        // Set image for background,read documentation about sizing
+	elm_bg_color_set(ad->bg,240,240,240);
+	evas_object_show(ad->bg);
 
 
-	ad->box = elm_box_add(ad->bg);
-	elm_object_content_set(ad->bg,ad->box);
-	elm_naviframe_item_push(ad->nf, NULL, NULL, NULL, ad->bg, NULL);
+	Evas_Object *table_alarm = elm_table_add(ad->nf);
+	evas_object_size_hint_weight_set(table_alarm,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(table_alarm,EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(table_alarm);
 
-	/* Button Snooze */
-	ad->btn_snz = elm_button_add(ad->box);
-	elm_object_style_set(ad->btn_snz, "green");
-	elm_object_text_set(ad->btn_snz,"Snooze");
-	evas_object_smart_callback_add(ad->btn_snz, "clicked", snz_button_clicked, NULL);
+	elm_object_content_set(ad->bg,table_alarm);
+	elm_naviframe_item_push(ad->nf, NULL,NULL, NULL, ad->bg, NULL);
 
-	evas_object_size_hint_weight_set(ad->btn_dis, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(ad->btn_snz, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	elm_box_pack_end(ad->box, ad->btn_snz);
-	evas_object_show(ad->btn_snz);
+	/* Dismiss Background */
+	Evas_Object *bg_dis = elm_bg_add(table_alarm);
+	elm_bg_color_set(bg_dis,250,0,0);
+	//evas_object_size_hint_min_set(bg_dis, g_width, g_height/4);
+	evas_object_size_hint_weight_set(bg_dis,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(bg_dis,EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(bg_dis);
+	elm_table_pack(table_alarm,bg_dis,0,0,1,3);
 
-	/* Label */
-	ad->label = elm_label_add(ad->box);
-	evas_object_color_set(ad->label, ALARM_TEXT_R, ALARM_TEXT_G, ALARM_TEXT_B, ALARM_TEXT_A);
+	/* Label Dismiss */
+	Evas_Object *label_dis = elm_label_add(table_alarm);
+	elm_object_content_set(bg_dis,label_dis);
+	evas_object_size_hint_align_set(label_dis,EVAS_HINT_FILL,EVAS_HINT_FILL);
+	evas_object_size_hint_weight_set(label_dis,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	elm_object_text_set(label_dis,"<align=center> DISMISS </align> ");
+	elm_table_pack(table_alarm,bg_dis,0,1,1,1);
+	evas_object_show(label_dis);
 
-	evas_object_size_hint_weight_set(ad->btn_dis, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(ad->label, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	elm_box_pack_end(ad->box, ad->label);
-	evas_object_show(ad->label);
+	/* Label Time */
+	ad->label_time = elm_label_add(table_alarm);
+	elm_object_text_set(ad->label_time,"<align=center> TIME </align> ");
+	//evas_object_size_hint_min_set(ad->label_time, g_width, g_height/2);
+	evas_object_size_hint_align_set(ad->label_time,EVAS_HINT_FILL,EVAS_HINT_FILL);
+	evas_object_size_hint_weight_set(ad->label_time,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	elm_table_pack(table_alarm,ad->label_time,0,4,1,1);
+	evas_object_show(ad->label_time);
 
-	/* Button Dismiss */
-	ad->btn_dis = elm_button_add(ad->box);
-	elm_object_text_set(ad->btn_dis,"Dismiss");
-	elm_object_style_set(ad->btn_dis, "red");
-	evas_object_smart_callback_add(ad->btn_dis, "clicked", dis_button_clicked, NULL);
-	evas_object_size_hint_weight_set(ad->btn_dis, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(ad->btn_dis, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	elm_box_pack_end(ad->box, ad->btn_dis);
-	evas_object_show(ad->btn_dis);
+	/* Dismiss Snooze */
+	Evas_Object *bg_snz = elm_bg_add(table_alarm);
+	elm_bg_color_set(bg_snz,0,140,0);
+	//evas_object_size_hint_min_set(bg_snz, g_width, g_height/4);
+	evas_object_size_hint_weight_set(bg_snz,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(bg_snz,EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(bg_snz);
+	elm_table_pack(table_alarm,bg_snz,0,6,1,3);
+
+	/* Label Snooze */
+	Evas_Object *label_snz = elm_label_add(table_alarm);
+	elm_object_content_set(bg_snz,label_snz);
+	evas_object_size_hint_align_set(label_snz,EVAS_HINT_FILL,EVAS_HINT_FILL);
+	evas_object_size_hint_weight_set(label_snz,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	elm_object_text_set(label_snz,"<align=center> Snooze </align> ");
+	elm_table_pack(table_alarm,bg_snz,0,7,1,1);
+	evas_object_show(label_snz);
+
 
 }
 
@@ -376,6 +398,9 @@ static bool app_create(int width, int height, void *data)
 	 * Hook to take necessary actions before main event loop starts
 	 * Initialize UI resources and application's data
 	 */
+
+	g_width = width;
+	g_height = height;
 
 	app_event_handler_h handlers[5] = {NULL, };
 
