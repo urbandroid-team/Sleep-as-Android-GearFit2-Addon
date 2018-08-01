@@ -33,6 +33,7 @@ typedef struct appdata {
 	Evas_Object *label_tracking;
 	Evas_Object *bg_snz;
 	Evas_Object *bg_dis;
+	Evas_Object *bg_track;
 
 } appdata_s;
 
@@ -125,8 +126,7 @@ static void send_service_command(const char* command) {
 	}
 }
 
-
-
+/*
 static Evas_Event_Flags
 tracking_button_clicked(void *data, void *event_info)
 {
@@ -134,11 +134,38 @@ tracking_button_clicked(void *data, void *event_info)
 
 	//tracking_updater(data, !is_tracking );
 	send_service_command("start_tracking");
+	return EVAS_EVENT_FLAG_ON_HOLD;
+}
+*/
 
+static Evas_Event_Flags
+tracking_button_clicked(void *data, void *event_info)
+{
+	appdata_s *ad = data;
+
+	int t_x,t_y,t_w,t_h; // s for snooze, d for dismiss
+	evas_object_geometry_get(ad->bg_track,&t_x,&t_y,&t_w,&t_h);
+//	dlog_print(DLOG_INFO,LOG_TAG, " bg_track coords: %d %d %d %d",t_x,t_y,t_w,t_h);
+
+	Elm_Gesture_Taps_Info *p = (Elm_Gesture_Taps_Info *)event_info;
+//	dlog_print(DLOG_INFO, LOG_TAG,"N tap started <%p> x,y=<%d,%d> count=<%d> timestamp=<%d> \n",
+//		           event_info, p->x, p->y, p->n, p->timestamp);
+
+
+	//	if (p->x > 0 && p->y > 0 && p->x < g_width && p->y < g_height){}
+	if (p->y > t_y){ // on dismiss
+		dlog_print(DLOG_INFO, LOG_TAG,"Watchface: Tracking Button Double Clicked");
+
+		//tracking_updater(data, !is_tracking );
+		send_service_command("start_tracking");
+	}else{
+		dlog_print(DLOG_INFO,LOG_TAG, "Not Tracking Button");
+	}
 
 
 	return EVAS_EVENT_FLAG_ON_HOLD;
 }
+
 
 static void
 snz_button_clicked(void *data)
@@ -161,25 +188,25 @@ touch_event(void *data, void *event_info)
 {
 	appdata_s *ad = data;
 
-	 Elm_Gesture_Taps_Info *p = (Elm_Gesture_Taps_Info *)event_info;
-//	 dlog_print(DLOG_INFO, LOG_TAG,"N tap started <%p> x,y=<%d,%d> count=<%d> timestamp=<%d> \n",
-//	           event_info, p->x, p->y, p->n, p->timestamp);
+	Elm_Gesture_Taps_Info *p = (Elm_Gesture_Taps_Info *)event_info;
+	//	dlog_print(DLOG_INFO, LOG_TAG,"N tap started <%p> x,y=<%d,%d> count=<%d> timestamp=<%d> \n",
+	//	           event_info, p->x, p->y, p->n, p->timestamp);
 
-	  int s_x,s_y,s_w,s_h; // s for snooze, d for dismiss
-	  int d_x,d_y,d_w,d_h;
-	  evas_object_geometry_get(ad->bg_snz,&s_x,&s_y,&s_w,&s_h);
-	  evas_object_geometry_get(ad->bg_dis,&d_x,&d_y,&d_w,&d_h);
-//	  dlog_print(DLOG_INFO,LOG_TAG, " bg_snz coords: %d %d %d %d",s_x,s_y,s_w,s_h);
-//	  dlog_print(DLOG_INFO,LOG_TAG, " bg_dis coords: %d %d %d %d",d_x,d_y,d_w,d_h);
+	int s_x,s_y,s_w,s_h; // s for snooze, d for dismiss
+	int d_x,d_y,d_w,d_h;
+	evas_object_geometry_get(ad->bg_snz,&s_x,&s_y,&s_w,&s_h);
+	evas_object_geometry_get(ad->bg_dis,&d_x,&d_y,&d_w,&d_h);
+	//	dlog_print(DLOG_INFO,LOG_TAG, " bg_snz coords: %d %d %d %d",s_x,s_y,s_w,s_h);
+	//	dlog_print(DLOG_INFO,LOG_TAG, " bg_dis coords: %d %d %d %d",d_x,d_y,d_w,d_h);
 
-	  //if (p->x > 0 && p->y > 0 && p->x < g_width && p->y < g_height){}
-	  if (p->y < d_h){ // on dismiss
-		  snz_button_clicked(ad);
-	  }else if(p->y > s_y){
-		  dis_button_clicked(ad);
-	  }else{
-		  dlog_print(DLOG_INFO,LOG_TAG, "Not dismiss or snooze click");
-	  }
+	//	if (p->x > 0 && p->y > 0 && p->x < g_width && p->y < g_height){}
+	if (p->y < d_h){ // on dismiss
+		snz_button_clicked(ad);
+	}else if(p->y > s_y){
+		dis_button_clicked(ad);
+	}else{
+		dlog_print(DLOG_INFO,LOG_TAG, "Not dismiss or snooze click");
+	}
 
 
 	return EVAS_EVENT_FLAG_ON_HOLD;
@@ -248,28 +275,29 @@ watchface_gui(appdata_s *ad)
 	evas_object_show(ad->label_watch_time);
 
 	/* Tracking Background*/
-	Evas_Object *bg_track = elm_bg_add(table_watch);
-	elm_bg_color_set(bg_track,0,140,0);
-	evas_object_size_hint_min_set(bg_track, g_width, g_height*.25);
-	evas_object_size_hint_weight_set(bg_track,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(bg_track,EVAS_HINT_FILL, EVAS_HINT_FILL);
-	evas_object_show(bg_track);
-	elm_table_pack(table_watch,bg_track,0,1,1,1);
+	ad->bg_track = elm_bg_add(table_watch);
+	elm_bg_color_set(ad->bg_track,0,140,0);
+	evas_object_size_hint_min_set(ad->bg_track, g_width, g_height*.25);
+	evas_object_size_hint_weight_set(ad->bg_track,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->bg_track,EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(ad->bg_track);
+	elm_table_pack(table_watch,ad->bg_track,0,1,1,1);
 
 	/* Label Tracking */
 	ad->label_tracking = elm_label_add(table_watch);
-	elm_object_content_set(bg_track,ad->label_tracking);
+	elm_object_content_set(ad->bg_track,ad->label_tracking);
 	evas_object_size_hint_align_set(ad->label_tracking,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(ad->label_tracking,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	elm_object_text_set(ad->label_tracking,"<align=center valign=middle> <br/>Tracker<br/></align> ");
+	//elm_object_text_set(ad->label_tracking,"<align=center valign=middle> <br/>Double Tap to Track<br/></align> ");
+	elm_object_text_set(ad->label_tracking,"<align=center valign=middle>Not Tracking</align>");
 	elm_table_pack(table_watch,ad->label_tracking,0,1,1,1);
 	evas_object_show(ad->label_tracking);
 	tracking_updater(ad, is_tracking);
 
 	/* Gesture */
-	Evas_Object *gest_track = elm_gesture_layer_add(ad->win);
-	elm_gesture_layer_attach(gest_track, bg_track);
-	elm_gesture_layer_cb_set(gest_track, ELM_GESTURE_N_DOUBLE_TAPS, ELM_GESTURE_STATE_END, tracking_button_clicked, NULL);
+	Evas_Object *gest_track = elm_gesture_layer_add(table_watch);
+	elm_gesture_layer_attach(gest_track,table_watch);
+	elm_gesture_layer_cb_set(gest_track, ELM_GESTURE_N_DOUBLE_TAPS, ELM_GESTURE_STATE_END, tracking_button_clicked, ad);
 
 
 	watch_time_h watch_time = NULL;
@@ -411,7 +439,7 @@ void low_battery(app_event_info_h event_info, void* data)
 	/*
 	 * Takes necessary actions when system is running on low battery
 	 */
-//	watch_app_exit();
+	//	watch_app_exit();
 }
 
 /*
@@ -424,7 +452,7 @@ void low_memory(app_event_info_h event_info, void* data)
 	/*
 	 * Takes necessary actions when system is running on low memory
 	 */
-//	watch_app_exit();
+	//	watch_app_exit();
 }
 
 /*
@@ -481,11 +509,11 @@ static bool app_create(int width, int height, void *data)
 	create_base_gui(ad, width, height);
 	watchface_gui(ad);
 
-	alarm_gui(ad);
+	//alarm_gui(ad);
 
 	evas_object_show(ad->win);
 
-//	send_service_command("start");
+	//	send_service_command("start");
 
 	return true;
 }
@@ -510,7 +538,7 @@ static void app_control(app_control_h app_control, void *data){
 		if (action_value != NULL && strcmp(action_value, "alarm_started") == 0) {
 			alarm_gui(data);
 		} else if (action_value != NULL && strcmp(action_value, "alarm_finished") == 0) {
-//			tracking_updater(data, true);
+			//			tracking_updater(data, true);
 		} else if (action_value != NULL && strcmp(action_value, "tracking_on") == 0) {
 			tracking_updater(data, true);
 		} else if (action_value != NULL && strcmp(action_value, "tracking_off") == 0) {
