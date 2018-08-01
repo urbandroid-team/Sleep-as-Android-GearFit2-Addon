@@ -23,27 +23,13 @@
 
 #define MAIN_EDJ "icon/main.edj"
 
-#define ALARM_BG_R 240
-#define  ALARM_BG_B 240
-#define  ALARM_BG_G 240
-
-#define ALARM_TEXT_R 30
-#define  ALARM_TEXT_B 30
-#define  ALARM_TEXT_G 30
-#define  ALARM_TEXT_A 255
-
-static char *_create_resource_path(const char *file_name);
 
 typedef struct appdata {
 	Evas_Object *win;
 	Evas_Object *conform;
 	Evas_Object *nf;
-	Evas_Object *box;
+	Evas_Object *table;
 	Evas_Object *label_time;
-	Evas_Object *ic;
-	Evas_Object *btn;
-	Evas_Object *btn_snz;
-	Evas_Object *btn_dis;
 	Evas_Object *bg;
 	Evas_Object *gest;
 	Evas_Object *label_tracking;
@@ -81,15 +67,20 @@ update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 	elm_object_text_set(ad->label_time, watch_text);
 }
 
+static void return_to_base_UI(appdata_s *ad){
+	dlog_print(DLOG_INFO, LOG_TAG, "Watchface: Return to Base GUI");
+	elm_naviframe_item_pop(ad->nf);
+}
+
 static void tracking_updater(appdata_s *ad, bool tracking){
 	is_tracking = tracking;
 
 	if (is_tracking){
 		dlog_print(DLOG_INFO, LOG_TAG, "UI: Tracking on");
-		elm_object_text_set(ad->btn,"Tracking");
+		elm_object_text_set(ad->label_tracking,"<align=center valign=middle>Tracking</align>");
 	} else{
 		dlog_print(DLOG_INFO, LOG_TAG, "UI: Tracking off");
-		elm_object_text_set(ad->btn,"Not Tracking");
+		elm_object_text_set(ad->label_tracking,"<align=center valign=middle>Not Tracking</align>");
 	}
 
 }
@@ -130,16 +121,38 @@ static void send_service_command(const char* command) {
 	}
 }
 
+static Eina_Bool
+naviframe_pop_cb(void *data, Elm_Object_Item *it)
+{
+	return EINA_TRUE;
+}
 
 static Evas_Event_Flags
-double_tap_end_base_gui(void *data, void *event_info)
+tracking_button_clicked(void *data, void *event_info)
 {
-	dlog_print(DLOG_INFO, LOG_TAG,"Double Tap");
+	dlog_print(DLOG_INFO, LOG_TAG,"Watchface: Tracking Button Double Clicked");
 
 	//tracking_updater(data, !is_tracking );
 	send_service_command("start_tracking");
 
 
+
+	return EVAS_EVENT_FLAG_ON_HOLD;
+}
+
+static Evas_Event_Flags
+touch_event(void *ad, void *event_info)
+{
+	dlog_print(DLOG_INFO, LOG_TAG,"Touch Event");
+
+	Elm_Gesture_Taps_Info *p = (Elm_Gesture_Taps_Info *) event_info;
+	dlog_print(DLOG_INFO, LOG_TAG,"N tap started <%p> x,y=<%d,%d> count=<%d> timestamp=<%d> \n",
+	           event_info, p->x, p->y, p->n, p->timestamp);
+
+	int snz_btn_x,snz_btn_y,snz_btn_w,snz_btn_h;
+	int dis_btn_x,dis_btn_y;
+
+	dlog_print(DLOG_INFO, LOG_TAG,"snzbutton position: x: %d, y:%d",snz_btn_x,snz_btn_y);
 	return EVAS_EVENT_FLAG_ON_HOLD;
 }
 
@@ -148,6 +161,7 @@ snz_button_clicked(void *data, void *event_info)
 {
 	dlog_print(DLOG_INFO, LOG_TAG,"Watchface: Snooze Clicked");
 	send_service_command("snooze");
+	return_to_base_UI(data);
 	return EVAS_EVENT_FLAG_ON_HOLD;
 }
 
@@ -162,10 +176,10 @@ dis_button_clicked(void *data, void *event_info)
 static void
 create_base_gui(appdata_s *ad, int width, int height)
 {
-	dlog_print(DLOG_INFO, LOG_TAG, "Start to create GUI");
+	dlog_print(DLOG_INFO, LOG_TAG, "Start Base GUI");
 
 	int ret;
-	watch_time_h watch_time = NULL;
+
 
 	/* Window */
 	ret = watch_app_get_elm_win(&ad->win);
@@ -187,134 +201,150 @@ create_base_gui(appdata_s *ad, int width, int height)
 	elm_object_content_set(ad->conform, ad->nf);
 	evas_object_show(ad->nf);
 
-	/* Box */
-	ad->box = elm_box_add(ad->nf);
-	evas_object_show(ad->box);
-	elm_naviframe_item_push(ad->nf, NULL,NULL, NULL, ad->box, NULL);
+	dlog_print(DLOG_INFO, LOG_TAG, "Finished Base GUI");
+}
+
+static void
+watchface_gui(appdata_s *ad)
+{
+	dlog_print(DLOG_INFO, LOG_TAG, "Started Watch Face GUI");
+
+	Evas_Object *watch_bg = elm_bg_add(ad->nf);
+	elm_bg_color_set(watch_bg,20,20,20);
+	evas_object_show(watch_bg);
+
+	ad->table = elm_table_add(ad->nf);
+	evas_object_size_hint_weight_set(ad->table,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->table,EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(ad->table);
+
+	elm_object_content_set(watch_bg,ad->table);
 
 
-
-	/* Label */
-	ad->label_time = elm_label_add(ad->box);
-	evas_object_size_hint_weight_set(ad->label_time, EVAS_HINT_EXPAND, 0.8);
-	evas_object_size_hint_align_set(ad->label_time, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	/* Label Time */
+	ad->label_time = elm_label_add(ad->table);
+	evas_object_color_set(ad->label_time,230,230,230,255);
+	elm_object_text_set(ad->label_time,"<align=center valign=top> TIME </align> ");
+	evas_object_size_hint_min_set(ad->label_time, g_width, g_height*.75);
+	evas_object_size_hint_align_set(ad->label_time,EVAS_HINT_FILL,EVAS_HINT_FILL);
+	evas_object_size_hint_weight_set(ad->label_time,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	elm_table_pack(ad->table,ad->label_time,0,0,1,1);
 	evas_object_show(ad->label_time);
-	elm_box_pack_end(ad->box, ad->label_time);
 
+	/* Tracking Background*/
+	Evas_Object *bg_track = elm_bg_add(ad->table);
+	elm_bg_color_set(bg_track,0,140,0);
+	evas_object_size_hint_min_set(bg_track, g_width, g_height*.25);
+	evas_object_size_hint_weight_set(bg_track,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(bg_track,EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(bg_track);
+	elm_table_pack(ad->table,bg_track,0,1,1,1);
 
-
-	/* Button */
-	ad->btn = elm_button_add(ad->box);
-	//evas_object_color_set(ad->btn, 232, 63, 51, 255);
-	evas_object_size_hint_weight_set(ad->btn, EVAS_HINT_EXPAND, 0.2);
-	evas_object_size_hint_align_set(ad->btn, EVAS_HINT_FILL, EVAS_HINT_FILL);
-	elm_box_pack_end(ad->box, ad->btn);
-
-	/*Icon */
-	ad->ic = elm_icon_add(ad->btn);
-	char *image_path = NULL;
-	image_path = _create_resource_path(IMAGE_PATH);
-	elm_image_file_set(ad->ic, image_path, NULL);
-	elm_object_text_set(ad->btn, "Not Tracking");
-	elm_object_content_set(ad->btn, ad->ic);
-	evas_object_show(ad->ic);
-	evas_object_show(ad->btn);
+	/* Label Tracking */
+	ad->label_tracking = elm_label_add(ad->table);
+	elm_object_content_set(bg_track,ad->label_tracking);
+	evas_object_size_hint_align_set(ad->label_tracking,EVAS_HINT_FILL,EVAS_HINT_FILL);
+	evas_object_size_hint_weight_set(ad->label_tracking,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	elm_object_text_set(ad->label_tracking,"<align=center valign=middle> Tracker </align> ");
+	elm_table_pack(ad->table,ad->label_tracking,0,1,1,1);
+	evas_object_show(ad->label_tracking);
+	tracking_updater(ad, is_tracking);
 
 	/* Gesture */
-	ad->gest = elm_gesture_layer_add(ad->win);
-	elm_gesture_layer_attach(ad->gest, ad->btn);
-	elm_gesture_layer_cb_set(ad->gest, ELM_GESTURE_N_DOUBLE_TAPS, ELM_GESTURE_STATE_END,double_tap_end_base_gui, NULL);
-	evas_object_show(ad->gest);
-
-	evas_object_show(ad->btn);
+	Evas_Object *gest_track = elm_gesture_layer_add(ad->win);
+	elm_gesture_layer_attach(gest_track, bg_track);
+	elm_gesture_layer_cb_set(gest_track, ELM_GESTURE_N_DOUBLE_TAPS, ELM_GESTURE_STATE_END, tracking_button_clicked, NULL);
 
 
-	ret = watch_time_get_current_time(&watch_time);
+
+	watch_time_h watch_time = NULL;
+	int ret = watch_time_get_current_time(&watch_time);
 	if (ret != APP_ERROR_NONE)
 		dlog_print(DLOG_ERROR, LOG_TAG, "failed to get current time. err = %d", ret);
 
 	update_watch(ad, watch_time, 0);
 	watch_time_delete(watch_time);
 
+	elm_naviframe_item_push(ad->nf, NULL,NULL, NULL,watch_bg, NULL);
 
-	/* Show window after base gui is set up */
-	evas_object_show(ad->win);
-
-	dlog_print(DLOG_INFO, LOG_TAG, "Finished Base Gui");
+	dlog_print(DLOG_INFO, LOG_TAG, "Finished Watch Face GUI");
 
 
 }
 
 static void
-switch_to_alarm_gui(appdata_s *ad)
+alarm_gui(appdata_s *ad)
 {
 	dlog_print(DLOG_INFO, LOG_TAG, "Alarm GUI started");
 
+	Evas_Object *alarm_bg = elm_bg_add(ad->nf);
+	elm_bg_color_set(alarm_bg,240,240,240);
+	evas_object_show(alarm_bg);
 
-	ad->bg = elm_bg_add(ad->nf);
-	elm_bg_color_set(ad->bg,240,240,240);
-	evas_object_show(ad->bg);
 
+	ad->table = elm_table_add(ad->nf);
+	evas_object_size_hint_weight_set(ad->table,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(ad->table,EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(ad->table);
 
-	Evas_Object *table_alarm = elm_table_add(ad->nf);
-	evas_object_size_hint_weight_set(table_alarm,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(table_alarm,EVAS_HINT_FILL, EVAS_HINT_FILL);
-	evas_object_show(table_alarm);
+	elm_object_content_set(alarm_bg,ad->table);
 
-	elm_object_content_set(ad->bg,table_alarm);
-	elm_naviframe_item_push(ad->nf, NULL,NULL, NULL, ad->bg, NULL);
 
 	/* Dismiss Background */
-	Evas_Object *bg_dis = elm_bg_add(table_alarm);
+	Evas_Object *bg_dis = elm_bg_add(ad->table);
 	elm_bg_color_set(bg_dis,250,0,0);
-	//evas_object_size_hint_min_set(bg_dis, g_width, g_height/4);
 	evas_object_size_hint_weight_set(bg_dis,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(bg_dis,EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(bg_dis);
-	elm_table_pack(table_alarm,bg_dis,0,0,1,3);
+	elm_table_pack(ad->table,bg_dis,0,0,1,3);
 
 	/* Label Dismiss */
-	Evas_Object *label_dis = elm_label_add(table_alarm);
+	Evas_Object *label_dis = elm_label_add(ad->table);
 	elm_object_content_set(bg_dis,label_dis);
 	evas_object_size_hint_align_set(label_dis,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(label_dis,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	elm_object_text_set(label_dis,"<align=center valign=middle> DISMISS </align> ");
-	elm_table_pack(table_alarm,bg_dis,0,1,1,1);
+	elm_table_pack(ad->table,bg_dis,0,1,1,1);
 	evas_object_show(label_dis);
 
 	/* Label Time */
-	ad->label_time = elm_label_add(table_alarm);
+	ad->label_time = elm_label_add(ad->table);
 	evas_object_color_set(ad->label_time,30,30,30,255);
 	elm_object_text_set(ad->label_time,"<align=center color=#303030  valign=middle> TIME </align> ");
 	evas_object_size_hint_align_set(ad->label_time,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(ad->label_time,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	elm_table_pack(table_alarm,ad->label_time,0,4,1,1);
+	elm_table_pack(ad->table,ad->label_time,0,4,1,1);
 	evas_object_show(ad->label_time);
 
 	/* Background Snooze */
-	Evas_Object *bg_snz = elm_bg_add(table_alarm);
+	Evas_Object *bg_snz = elm_bg_add(ad->table);
 	elm_bg_color_set(bg_snz,0,140,0);
 	evas_object_size_hint_weight_set(bg_snz,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(bg_snz,EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(bg_snz);
-	elm_table_pack(table_alarm,bg_snz,0,6,1,3);
+	elm_table_pack(ad->table,bg_snz,0,6,1,3);
 
 	/* Label Snooze */
-	Evas_Object *label_snz = elm_label_add(table_alarm);
+	Evas_Object *label_snz = elm_label_add(ad->table);
 	elm_object_content_set(bg_snz,label_snz);
 	evas_object_size_hint_align_set(label_snz,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(label_snz,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	elm_object_text_set(label_snz,"<align=center valign=middle> Snooze </align> ");
-	elm_table_pack(table_alarm,bg_snz,0,7,1,1);
+	elm_table_pack(ad->table,label_snz,0,7,1,1);
 	evas_object_show(label_snz);
 
 	/* Gestures */
-	Evas_Object *gest_dis = elm_gesture_layer_add(ad->win);
-	elm_gesture_layer_attach(gest_dis, bg_dis);
-	elm_gesture_layer_cb_set(gest_dis, ELM_GESTURE_N_TAPS, ELM_GESTURE_STATE_END, dis_button_clicked, NULL);
-	Evas_Object *gest_snz = elm_gesture_layer_add(ad->win);
-	elm_gesture_layer_attach(gest_snz, bg_snz);
-	elm_gesture_layer_cb_set(gest_snz, ELM_GESTURE_N_TAPS, ELM_GESTURE_STATE_END, snz_button_clicked, NULL);
+	Evas_Object *gest_snz = elm_gesture_layer_add(bg_snz);
+	elm_gesture_layer_attach(gest_snz,bg_snz);
+	elm_gesture_layer_cb_set(gest_snz, ELM_GESTURE_N_TAPS, ELM_GESTURE_STATE_END, snz_button_clicked,NULL);
+
+	Evas_Object *gest_dis = elm_gesture_layer_add(bg_dis);
+	elm_gesture_layer_attach(gest_dis,bg_dis);
+	elm_gesture_layer_cb_set(gest_dis,ELM_GESTURE_N_TAPS,ELM_GESTURE_STATE_END,dis_button_clicked,NULL);
+
+	elm_naviframe_item_pop_cb_set(ad->nf, naviframe_pop_cb, ad);
+
+	elm_naviframe_item_push(ad->nf, NULL,NULL, NULL, alarm_bg, NULL);
 
 	dlog_print(DLOG_INFO, LOG_TAG, "Alarm GUI Finished");
 }
@@ -433,8 +463,11 @@ static bool app_create(int width, int height, void *data)
 
 	appdata_s *ad = data;
 	create_base_gui(ad, width, height);
+	watchface_gui(ad);
 
-//	switch_to_alarm_gui(ad);
+	alarm_gui(ad);
+
+	evas_object_show(ad->win);
 
 //	send_service_command("start");
 
@@ -459,7 +492,7 @@ static void app_control(app_control_h app_control, void *data){
 
 		// Add start?
 		if (action_value != NULL && strcmp(action_value, "alarm_started") == 0) {
-			switch_to_alarm_gui(data);
+			alarm_gui(data);
 		} else if (action_value != NULL && strcmp(action_value, "alarm_finished") == 0) {
 //			tracking_updater(data, true);
 		} else if (action_value != NULL && strcmp(action_value, "tracking_on") == 0) {
