@@ -541,17 +541,11 @@ static void handle_data_received(unsigned int payload_length, void *buffer) {
 }
 
 bool service_app_create(void *data) {
-
 	dlog_print(DLOG_INFO, TAG, "Service started");
 	initialize_sap(handle_data_received);
 	dlog_print(DLOG_INFO, TAG, "SAP initialized");
-
-
-
     return true;
 }
-
-
 
 void service_app_terminate(void *data) {
 	terminate_sap();
@@ -580,6 +574,8 @@ void service_app_control(app_control_h app_control, void *data) {
 			send_data("SNOOZE");
 		} else if (action_value != NULL && strcmp(action_value, "dismiss") == 0) {
 			send_data("DISMISS");
+		} else if (action_value != NULL && strcmp(action_value, "terminate") == 0) {
+			service_app_exit();
 		} else {
 			dlog_print(DLOG_INFO, LOG_TAG, "Service: Unsupported action! Doing nothing...");
 			free(action_value);
