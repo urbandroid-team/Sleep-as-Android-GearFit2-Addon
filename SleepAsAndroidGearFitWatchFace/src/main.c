@@ -44,6 +44,9 @@ int g_height;
 #define IMAGE_PATH "images/unnamed.png"
 #define ServiceID "com.urbandroid.sleep.gearfit.service"
 
+static void create_base_gui(appdata_s *ad, int width, int height);
+static void watchface_gui(appdata_s *ad);
+
 static void
 update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 {
@@ -57,10 +60,10 @@ update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 	watch_time_get_minute(watch_time, &minute);
 	watch_time_get_second(watch_time, &second);
 	if (!ambient) {
-		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center valign=middle font_size=50><br/>%02d:%02d:%02d</align>",
+		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center valign=center font_size=50><br/>%02d:%02d:%02d<br/></align>",
 				hour24, minute, second);
 	} else {
-		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center valign=middle font_size=50><br/>%02d:%02d</align>",
+		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center valign=center font_size=50><br/>%02d:%02d<br/></align>",
 				hour24, minute);
 	}
 
@@ -70,6 +73,13 @@ update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 static void return_to_base_UI(appdata_s *ad){
 	dlog_print(DLOG_INFO, LOG_TAG, "Watchface: Return to Base GUI");
 	elm_naviframe_item_pop(ad->nf);
+}
+
+static Eina_Bool
+naviframe_pop_cb(void *data, Elm_Object_Item *it)
+{
+	dlog_print(DLOG_INFO, LOG_TAG, "Naviframe Pop");
+	return EINA_TRUE;
 }
 
 static void tracking_updater(appdata_s *ad, bool tracking){
@@ -121,11 +131,7 @@ static void send_service_command(const char* command) {
 	}
 }
 
-static Eina_Bool
-naviframe_pop_cb(void *data, Elm_Object_Item *it)
-{
-	return EINA_TRUE;
-}
+
 
 static Evas_Event_Flags
 tracking_button_clicked(void *data, void *event_info)
@@ -141,26 +147,10 @@ tracking_button_clicked(void *data, void *event_info)
 }
 
 static Evas_Event_Flags
-touch_event(void *ad, void *event_info)
-{
-	dlog_print(DLOG_INFO, LOG_TAG,"Touch Event");
-
-	Elm_Gesture_Taps_Info *p = (Elm_Gesture_Taps_Info *) event_info;
-	dlog_print(DLOG_INFO, LOG_TAG,"N tap started <%p> x,y=<%d,%d> count=<%d> timestamp=<%d> \n",
-	           event_info, p->x, p->y, p->n, p->timestamp);
-
-	int snz_btn_x,snz_btn_y,snz_btn_w,snz_btn_h;
-	int dis_btn_x,dis_btn_y;
-
-	dlog_print(DLOG_INFO, LOG_TAG,"snzbutton position: x: %d, y:%d",snz_btn_x,snz_btn_y);
-	return EVAS_EVENT_FLAG_ON_HOLD;
-}
-
-static Evas_Event_Flags
 snz_button_clicked(void *data, void *event_info)
 {
 	dlog_print(DLOG_INFO, LOG_TAG,"Watchface: Snooze Clicked");
-	send_service_command("snooze");
+	//send_service_command("snooze");
 	return_to_base_UI(data);
 	return EVAS_EVENT_FLAG_ON_HOLD;
 }
@@ -169,7 +159,8 @@ static Evas_Event_Flags
 dis_button_clicked(void *data, void *event_info)
 {
 	dlog_print(DLOG_INFO, LOG_TAG,"Watchface: Dismiss Clicked");
-	send_service_command("dismiss");
+	//send_service_command("dismiss");
+	watchface_gui(data);
 	return EVAS_EVENT_FLAG_ON_HOLD;
 }
 
@@ -293,54 +284,63 @@ alarm_gui(appdata_s *ad)
 	/* Dismiss Background */
 	Evas_Object *bg_dis = elm_bg_add(ad->table);
 	elm_bg_color_set(bg_dis,250,0,0);
+	evas_object_size_hint_min_set(bg_dis, g_width, g_height*.2);
 	evas_object_size_hint_weight_set(bg_dis,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(bg_dis,EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(bg_dis);
-	elm_table_pack(ad->table,bg_dis,0,0,1,3);
+	elm_table_pack(ad->table,bg_dis,0,0,1,1);
 
 	/* Label Dismiss */
 	Evas_Object *label_dis = elm_label_add(ad->table);
 	elm_object_content_set(bg_dis,label_dis);
+	evas_object_size_hint_min_set(label_dis, g_width, g_height*.2);
+	evas_object_size_hint_max_set(label_dis, g_width, g_height*.25);
 	evas_object_size_hint_align_set(label_dis,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(label_dis,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	elm_object_text_set(label_dis,"<align=center valign=middle> DISMISS </align> ");
-	elm_table_pack(ad->table,bg_dis,0,1,1,1);
+	elm_object_text_set(label_dis,"<align=center valign=center> <br/>DISMISS <br/> </align> ");
+	elm_table_pack(ad->table,bg_dis,0,0,1,1);
 	evas_object_show(label_dis);
+
+	/* Gestures */
+		Evas_Object *gest_dis = elm_gesture_layer_add(ad->table);
+		elm_gesture_layer_attach(gest_dis,bg_dis);
+		elm_gesture_layer_cb_set(gest_dis,ELM_GESTURE_N_TAPS,ELM_GESTURE_STATE_END,dis_button_clicked,NULL);
+
 
 	/* Label Time */
 	ad->label_time = elm_label_add(ad->table);
 	evas_object_color_set(ad->label_time,30,30,30,255);
-	elm_object_text_set(ad->label_time,"<align=center color=#303030  valign=middle> TIME </align> ");
+	elm_object_text_set(ad->label_time,"<align=center valign=center> TIME </align> ");
 	evas_object_size_hint_align_set(ad->label_time,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(ad->label_time,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	elm_table_pack(ad->table,ad->label_time,0,4,1,1);
+	elm_table_pack(ad->table,ad->label_time,0,1,1,1);
 	evas_object_show(ad->label_time);
 
 	/* Background Snooze */
 	Evas_Object *bg_snz = elm_bg_add(ad->table);
 	elm_bg_color_set(bg_snz,0,140,0);
+	evas_object_size_hint_min_set(bg_snz, g_width, g_height*.2);
+	evas_object_size_hint_max_set(bg_snz, g_width, g_height*.25);
 	evas_object_size_hint_weight_set(bg_snz,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(bg_snz,EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(bg_snz);
-	elm_table_pack(ad->table,bg_snz,0,6,1,3);
+	elm_table_pack(ad->table,bg_snz,0,2,1,1);
 
 	/* Label Snooze */
 	Evas_Object *label_snz = elm_label_add(ad->table);
 	elm_object_content_set(bg_snz,label_snz);
+
 	evas_object_size_hint_align_set(label_snz,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(label_snz,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	elm_object_text_set(label_snz,"<align=center valign=middle> Snooze </align> ");
-	elm_table_pack(ad->table,label_snz,0,7,1,1);
+	elm_object_text_set(label_snz,"<valign=center align=center> <br/> Snooze <br/> </valign> ");
+	elm_table_pack(ad->table,label_snz,0,2,1,1);
 	evas_object_show(label_snz);
 
-	/* Gestures */
-	Evas_Object *gest_snz = elm_gesture_layer_add(bg_snz);
+
+	Evas_Object *gest_snz = elm_gesture_layer_add(ad->table);
 	elm_gesture_layer_attach(gest_snz,bg_snz);
 	elm_gesture_layer_cb_set(gest_snz, ELM_GESTURE_N_TAPS, ELM_GESTURE_STATE_END, snz_button_clicked,NULL);
 
-	Evas_Object *gest_dis = elm_gesture_layer_add(bg_dis);
-	elm_gesture_layer_attach(gest_dis,bg_dis);
-	elm_gesture_layer_cb_set(gest_dis,ELM_GESTURE_N_TAPS,ELM_GESTURE_STATE_END,dis_button_clicked,NULL);
 
 	elm_naviframe_item_pop_cb_set(ad->nf, naviframe_pop_cb, ad);
 
