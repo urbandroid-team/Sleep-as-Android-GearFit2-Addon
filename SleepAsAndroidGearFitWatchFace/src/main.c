@@ -28,10 +28,8 @@ typedef struct appdata {
 	Evas_Object *win;
 	Evas_Object *conform;
 	Evas_Object *nf;
-	Evas_Object *table;
-	Evas_Object *label_time;
-	Evas_Object *bg;
-	Evas_Object *gest;
+	Evas_Object *label_watch_time;
+	Evas_Object *label_alarm_time;
 	Evas_Object *label_tracking;
 
 } appdata_s;
@@ -66,8 +64,8 @@ update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center valign=center font_size=50><br/>%02d:%02d<br/></align>",
 				hour24, minute);
 	}
-
-	elm_object_text_set(ad->label_time, watch_text);
+	elm_object_text_set(ad->label_alarm_time, watch_text);
+	elm_object_text_set(ad->label_watch_time, watch_text);
 }
 
 static void return_to_base_UI(appdata_s *ad){
@@ -75,12 +73,6 @@ static void return_to_base_UI(appdata_s *ad){
 	elm_naviframe_item_pop(ad->nf);
 }
 
-static Eina_Bool
-naviframe_pop_cb(void *data, Elm_Object_Item *it)
-{
-	dlog_print(DLOG_INFO, LOG_TAG, "Naviframe Pop");
-	return EINA_TRUE;
-}
 
 static void tracking_updater(appdata_s *ad, bool tracking){
 	is_tracking = tracking;
@@ -147,10 +139,21 @@ tracking_button_clicked(void *data, void *event_info)
 }
 
 static Evas_Event_Flags
+touch_event(void *data, void *event_info)
+{
+
+	 Elm_Gesture_Taps_Info *p = (Elm_Gesture_Taps_Info *)event_info;
+	 dlog_print(DLOG_INFO, LOG_TAG,"N tap started <%p> x,y=<%d,%d> count=<%d> timestamp=<%d> \n",
+	           event_info, p->x, p->y, p->n, p->timestamp);
+
+	return EVAS_EVENT_FLAG_ON_HOLD;
+}
+
+static Evas_Event_Flags
 snz_button_clicked(void *data, void *event_info)
 {
 	dlog_print(DLOG_INFO, LOG_TAG,"Watchface: Snooze Clicked");
-	//send_service_command("snooze");
+	send_service_command("snooze");
 	return_to_base_UI(data);
 	return EVAS_EVENT_FLAG_ON_HOLD;
 }
@@ -159,8 +162,8 @@ static Evas_Event_Flags
 dis_button_clicked(void *data, void *event_info)
 {
 	dlog_print(DLOG_INFO, LOG_TAG,"Watchface: Dismiss Clicked");
-	//send_service_command("dismiss");
-	watchface_gui(data);
+	send_service_command("dismiss");
+	return_to_base_UI(data);
 	return EVAS_EVENT_FLAG_ON_HOLD;
 }
 
@@ -195,6 +198,7 @@ create_base_gui(appdata_s *ad, int width, int height)
 	dlog_print(DLOG_INFO, LOG_TAG, "Finished Base GUI");
 }
 
+
 static void
 watchface_gui(appdata_s *ad)
 {
@@ -204,40 +208,41 @@ watchface_gui(appdata_s *ad)
 	elm_bg_color_set(watch_bg,20,20,20);
 	evas_object_show(watch_bg);
 
-	ad->table = elm_table_add(ad->nf);
-	evas_object_size_hint_weight_set(ad->table,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(ad->table,EVAS_HINT_FILL, EVAS_HINT_FILL);
-	evas_object_show(ad->table);
 
-	elm_object_content_set(watch_bg,ad->table);
+	Evas_Object *table_watch = elm_table_add(ad->nf);
+	evas_object_size_hint_weight_set(table_watch,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(table_watch,EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(table_watch);
+
+	elm_object_content_set(watch_bg,table_watch);
 
 
 	/* Label Time */
-	ad->label_time = elm_label_add(ad->table);
-	evas_object_color_set(ad->label_time,230,230,230,255);
-	elm_object_text_set(ad->label_time,"<align=center valign=top> TIME </align> ");
-	evas_object_size_hint_min_set(ad->label_time, g_width, g_height*.75);
-	evas_object_size_hint_align_set(ad->label_time,EVAS_HINT_FILL,EVAS_HINT_FILL);
-	evas_object_size_hint_weight_set(ad->label_time,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	elm_table_pack(ad->table,ad->label_time,0,0,1,1);
-	evas_object_show(ad->label_time);
+	ad->label_watch_time = elm_label_add(table_watch);
+	evas_object_color_set(ad->label_watch_time,230,230,230,255);
+	elm_object_text_set(ad->label_watch_time,"<align=center valign=top> TIME </align> ");
+	evas_object_size_hint_min_set(ad->label_watch_time, g_width, g_height*.75);
+	evas_object_size_hint_align_set(ad->label_watch_time,EVAS_HINT_FILL,EVAS_HINT_FILL);
+	evas_object_size_hint_weight_set(ad->label_watch_time,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	elm_table_pack(table_watch,ad->label_watch_time,0,0,1,1);
+	evas_object_show(ad->label_watch_time);
 
 	/* Tracking Background*/
-	Evas_Object *bg_track = elm_bg_add(ad->table);
+	Evas_Object *bg_track = elm_bg_add(table_watch);
 	elm_bg_color_set(bg_track,0,140,0);
 	evas_object_size_hint_min_set(bg_track, g_width, g_height*.25);
 	evas_object_size_hint_weight_set(bg_track,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(bg_track,EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(bg_track);
-	elm_table_pack(ad->table,bg_track,0,1,1,1);
+	elm_table_pack(table_watch,bg_track,0,1,1,1);
 
 	/* Label Tracking */
-	ad->label_tracking = elm_label_add(ad->table);
+	ad->label_tracking = elm_label_add(table_watch);
 	elm_object_content_set(bg_track,ad->label_tracking);
 	evas_object_size_hint_align_set(ad->label_tracking,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(ad->label_tracking,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	elm_object_text_set(ad->label_tracking,"<align=center valign=middle> Tracker </align> ");
-	elm_table_pack(ad->table,ad->label_tracking,0,1,1,1);
+	elm_table_pack(table_watch,ad->label_tracking,0,1,1,1);
 	evas_object_show(ad->label_tracking);
 	tracking_updater(ad, is_tracking);
 
@@ -245,7 +250,6 @@ watchface_gui(appdata_s *ad)
 	Evas_Object *gest_track = elm_gesture_layer_add(ad->win);
 	elm_gesture_layer_attach(gest_track, bg_track);
 	elm_gesture_layer_cb_set(gest_track, ELM_GESTURE_N_DOUBLE_TAPS, ELM_GESTURE_STATE_END, tracking_button_clicked, NULL);
-
 
 
 	watch_time_h watch_time = NULL;
@@ -273,78 +277,80 @@ alarm_gui(appdata_s *ad)
 	evas_object_show(alarm_bg);
 
 
-	ad->table = elm_table_add(ad->nf);
-	evas_object_size_hint_weight_set(ad->table,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	evas_object_size_hint_align_set(ad->table,EVAS_HINT_FILL, EVAS_HINT_FILL);
-	evas_object_show(ad->table);
+	Evas_Object *table_alarm = elm_table_add(ad->nf);
+	evas_object_size_hint_weight_set(table_alarm,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	evas_object_size_hint_align_set(table_alarm,EVAS_HINT_FILL, EVAS_HINT_FILL);
+	evas_object_show(table_alarm);
 
-	elm_object_content_set(alarm_bg,ad->table);
-
+	elm_object_content_set(alarm_bg,table_alarm);
 
 	/* Dismiss Background */
-	Evas_Object *bg_dis = elm_bg_add(ad->table);
+	Evas_Object *bg_dis = elm_bg_add(table_alarm);
 	elm_bg_color_set(bg_dis,250,0,0);
 	evas_object_size_hint_min_set(bg_dis, g_width, g_height*.2);
+	evas_object_size_hint_min_set(bg_dis, g_width, g_height*.3);
 	evas_object_size_hint_weight_set(bg_dis,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(bg_dis,EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(bg_dis);
-	elm_table_pack(ad->table,bg_dis,0,0,1,1);
+	elm_table_pack(table_alarm,bg_dis,0,0,1,1);
 
 	/* Label Dismiss */
-	Evas_Object *label_dis = elm_label_add(ad->table);
+	Evas_Object *label_dis = elm_label_add(table_alarm);
 	elm_object_content_set(bg_dis,label_dis);
 	evas_object_size_hint_min_set(label_dis, g_width, g_height*.2);
-	evas_object_size_hint_max_set(label_dis, g_width, g_height*.25);
+	evas_object_size_hint_max_set(label_dis, g_width, g_height*.3);
 	evas_object_size_hint_align_set(label_dis,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(label_dis,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	elm_object_text_set(label_dis,"<align=center valign=center> <br/>DISMISS <br/> </align> ");
-	elm_table_pack(ad->table,bg_dis,0,0,1,1);
+	elm_table_pack(table_alarm,bg_dis,0,0,1,1);
 	evas_object_show(label_dis);
 
 	/* Gestures */
-		Evas_Object *gest_dis = elm_gesture_layer_add(ad->table);
-		elm_gesture_layer_attach(gest_dis,bg_dis);
-		elm_gesture_layer_cb_set(gest_dis,ELM_GESTURE_N_TAPS,ELM_GESTURE_STATE_END,dis_button_clicked,NULL);
-
+	Evas_Object *gest_dis = elm_gesture_layer_add(bg_dis);
+	elm_gesture_layer_attach(gest_dis,bg_dis);
+	elm_gesture_layer_cb_set(gest_dis,ELM_GESTURE_N_TAPS,ELM_GESTURE_STATE_END,dis_button_clicked,ad);
 
 	/* Label Time */
-	ad->label_time = elm_label_add(ad->table);
-	evas_object_color_set(ad->label_time,30,30,30,255);
-	elm_object_text_set(ad->label_time,"<align=center valign=center> TIME </align> ");
-	evas_object_size_hint_align_set(ad->label_time,EVAS_HINT_FILL,EVAS_HINT_FILL);
-	evas_object_size_hint_weight_set(ad->label_time,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
-	elm_table_pack(ad->table,ad->label_time,0,1,1,1);
-	evas_object_show(ad->label_time);
+	ad->label_alarm_time = elm_label_add(table_alarm);
+	evas_object_color_set(ad->label_alarm_time,30,30,30,255);
+	elm_object_text_set(ad->label_alarm_time,"<align=center valign=center> TIME </align> ");
+	evas_object_size_hint_align_set(ad->label_alarm_time,EVAS_HINT_FILL,EVAS_HINT_FILL);
+	evas_object_size_hint_weight_set(ad->label_alarm_time,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
+	elm_table_pack(table_alarm,ad->label_alarm_time,0,1,1,1);
+	evas_object_show(ad->label_alarm_time);
 
 	/* Background Snooze */
-	Evas_Object *bg_snz = elm_bg_add(ad->table);
+	Evas_Object *bg_snz = elm_bg_add(table_alarm);
 	elm_bg_color_set(bg_snz,0,140,0);
 	evas_object_size_hint_min_set(bg_snz, g_width, g_height*.2);
-	evas_object_size_hint_max_set(bg_snz, g_width, g_height*.25);
+	evas_object_size_hint_max_set(bg_snz, g_width, g_height*.3);
 	evas_object_size_hint_weight_set(bg_snz,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(bg_snz,EVAS_HINT_FILL, EVAS_HINT_FILL);
 	evas_object_show(bg_snz);
-	elm_table_pack(ad->table,bg_snz,0,2,1,1);
+	elm_table_pack(table_alarm,bg_snz,0,2,1,1);
 
 	/* Label Snooze */
-	Evas_Object *label_snz = elm_label_add(ad->table);
+	Evas_Object *label_snz = elm_label_add(table_alarm);
 	elm_object_content_set(bg_snz,label_snz);
-
+	evas_object_size_hint_min_set(label_snz, g_width, g_height*.2);
+	evas_object_size_hint_max_set(label_snz, g_width, g_height*.3);
 	evas_object_size_hint_align_set(label_snz,EVAS_HINT_FILL,EVAS_HINT_FILL);
 	evas_object_size_hint_weight_set(label_snz,EVAS_HINT_EXPAND,EVAS_HINT_EXPAND);
 	elm_object_text_set(label_snz,"<valign=center align=center> <br/> Snooze <br/> </valign> ");
-	elm_table_pack(ad->table,label_snz,0,2,1,1);
+	elm_table_pack(table_alarm,label_snz,0,2,1,1);
 	evas_object_show(label_snz);
 
 
-	Evas_Object *gest_snz = elm_gesture_layer_add(ad->table);
+	Evas_Object *gest_snz = elm_gesture_layer_add(bg_snz);
 	elm_gesture_layer_attach(gest_snz,bg_snz);
-	elm_gesture_layer_cb_set(gest_snz, ELM_GESTURE_N_TAPS, ELM_GESTURE_STATE_END, snz_button_clicked,NULL);
+	elm_gesture_layer_cb_set(gest_snz, ELM_GESTURE_N_TAPS, ELM_GESTURE_STATE_END, snz_button_clicked,ad);
+
+	Evas_Object *gest_all = elm_gesture_layer_add(table_alarm);
+	elm_gesture_layer_attach(gest_all,table_alarm);
+	elm_gesture_layer_cb_set(gest_all, ELM_GESTURE_N_TAPS, ELM_GESTURE_STATE_END, touch_event,ad);
 
 
-	elm_naviframe_item_pop_cb_set(ad->nf, naviframe_pop_cb, ad);
-
-	elm_naviframe_item_push(ad->nf, NULL,NULL, NULL, alarm_bg, NULL);
+	elm_naviframe_item_push(ad->nf,NULL,NULL, NULL, alarm_bg, NULL);
 
 	dlog_print(DLOG_INFO, LOG_TAG, "Alarm GUI Finished");
 }
