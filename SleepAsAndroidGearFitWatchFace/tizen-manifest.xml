@@ -2,11 +2,17 @@
 <manifest xmlns="http://tizen.org/ns/packages" api-version="2.3.1" package="com.urbandroid.sleep.gearfit" version="1.0.0">
     <profile name="wearable"/>
     <watch-application ambient-support="false" appid="com.urbandroid.sleep.gearfit.watchface" exec="sleepasandroidgearfitwatchface">
-        <label>sleepasandroidgearfitwatchface</label>
-        <icon>sleepasandroidgearfitwatchface.png</icon>
+        <label>Sleep as Android</label>
+        <icon>launcher.png</icon>
+        <metadata key="master_app_name" value="Sleep As Android - Gear Add-on"/>
+        <metadata key="master_app_packagename" value="com.urbandroid.sleep.addon.generic.samsung"/>
+        <metadata key="master_app_playstore_deeplink" value="market://details?id=com.urbandroid.sleep.addon.generic.samsung"/>
     </watch-application>
     <privileges>
         <privilege>http://tizen.org/privilege/appmanager.launch</privilege>
         <privilege>http://tizen.org/privilege/alarm.set</privilege>
     </privileges>
+    <feature name="http://tizen.org/feature/screen.shape.rectangle">true</feature>
+    <feature name="http://tizen.org/feature/screen.shape.band">true</feature>
+    <feature name="http://tizen.org/feature/screen.size.all">true</feature>
 </manifest>

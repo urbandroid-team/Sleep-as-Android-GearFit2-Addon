@@ -438,7 +438,7 @@ static void stop_alarm() {
 
 	// If not tracking, we close the app after alarm is done.
 	if (!is_tracking) {
-		stop_ui();
+//		stop_ui(); we don't do this in Gear Fit 2 watchface...
 		service_app_exit();
 	}
 }
@@ -485,7 +485,7 @@ static void handle_data_received(unsigned int payload_length, void *buffer) {
 		free(split_data);
 	} else if (eina_str_has_prefix(data, "StopApp")) {
 		stop_tracking();
-		stop_ui();
+		stop_alarm();
 		service_app_exit();
 	} else if (eina_str_has_prefix(data, "BatchSize")) {
 		unsigned int num_elements = 0;
