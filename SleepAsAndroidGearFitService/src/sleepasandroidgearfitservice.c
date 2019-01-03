@@ -575,6 +575,7 @@ void service_app_control(app_control_h app_control, void *data) {
 		} else if (action_value != NULL && strcmp(action_value, "dismiss") == 0) {
 			send_data("DISMISS");
 		} else if (action_value != NULL && strcmp(action_value, "terminate") == 0) {
+			send_data("STOP");
 			service_app_exit();
 		} else {
 			dlog_print(DLOG_INFO, LOG_TAG, "Service: Unsupported action! Doing nothing...");
