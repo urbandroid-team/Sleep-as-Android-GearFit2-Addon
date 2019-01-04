@@ -420,8 +420,8 @@ static void start_alarm(int alarm_delay) {
 		dlog_print(DLOG_ERROR, TAG, "Failed to get vibrator!");
 	}
 
-	alarm_timer = ecore_timer_add(2, vibrate_one_sec, NULL);
 	if (alarm_delay > 0) {
+		alarm_timer = ecore_timer_add(2, vibrate_one_sec, NULL);
 		ecore_timer_delay(alarm_timer, alarm_delay / 1000);
 	}
 }
