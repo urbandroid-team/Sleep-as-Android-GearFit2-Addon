@@ -59,14 +59,14 @@ update_watch(appdata_s *ad, watch_time_h watch_time, int ambient)
 
 	watch_time_get_hour24(watch_time, &hour24);
 	watch_time_get_minute(watch_time, &minute);
-	watch_time_get_second(watch_time, &second);
-	if (!ambient) {
-		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center valign=center font_size=50><br/>%02d:%02d:%02d<br/></align>",
-				hour24, minute, second);
-	} else {
+//	watch_time_get_second(watch_time, &second);
+//	if (!ambient) {
+//		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center valign=center font_size=50><br/>%02d:%02d:%02d<br/></align>",
+//				hour24, minute, second);
+//	} else {
 		snprintf(watch_text, TEXT_BUF_SIZE, "<align=center valign=center font_size=50><br/>%02d:%02d<br/></align>",
 				hour24, minute);
-	}
+//	}
 	elm_object_text_set(ad->label_alarm_time, watch_text);
 	elm_object_text_set(ad->label_watch_time, watch_text);
 }
@@ -616,8 +616,8 @@ static void app_terminate(void *data)
 static void app_time_tick(watch_time_h watch_time, void *data)
 {
 	/* Called at each second while your app is visible. Update watch UI. */
-	appdata_s *ad = data;
-	update_watch(ad, watch_time, 0);
+//	appdata_s *ad = data;
+//	update_watch(ad, watch_time, 0);
 }
 
 /*
@@ -675,7 +675,7 @@ int main(int argc, char *argv[])
 	event_callback.pause = app_pause;
 	event_callback.resume = app_resume;
 	event_callback.app_control = app_control;
-	event_callback.time_tick = app_time_tick;
+//	event_callback.time_tick = app_time_tick;
 	event_callback.ambient_tick = app_ambient_tick;
 	event_callback.ambient_changed = app_ambient_changed;
 
